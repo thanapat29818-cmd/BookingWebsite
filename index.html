@@ -21,7 +21,7 @@ h1{font-size:20px;margin:0}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
 .dow{font-size:12px;color:var(--mu);padding:3px 0}
 
-/* ช่องวันที่บนปฏิทิน รองรับแถบงานหลายวัน + จุดสีงานวันเดียว */
+/* ช่องวันที่บนปฏิทิน */
 .day{
   min-height:66px;font-size:16px;font-weight:600;
   border:1px solid transparent;border-radius:10px;
@@ -59,6 +59,20 @@ h1{font-size:20px;margin:0}
 .sw-auto.on{border-color:var(--pr);background:var(--ac);box-shadow:none}
 .day-info{font-size:12px;color:var(--pr);font-weight:600;margin-top:3px}
 
+/* กล่องกรอกแผนงานรายวันในฟอร์ม */
+.dp-box{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px;margin-top:2px}
+.dp-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.dp-row{display:grid;grid-template-columns:110px 1fr;gap:8px;align-items:center}
+.dp-lbl{font-size:12.5px;font-weight:600;color:var(--tx);white-space:nowrap}
+.dp-inp{background:var(--card);padding:6px 9px;font-size:14px}
+
+/* กล่องแสดงแผนงานรายวันบนการ์ดงาน */
+.dp-card{margin:8px 0 4px;padding:8px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;font-size:13.5px}
+.dp-card-title{font-size:12px;font-weight:700;color:var(--mu);margin-bottom:4px}
+.dp-item{padding:3px 6px;border-radius:6px;line-height:1.5}
+.dp-item.now{background:var(--ac);font-weight:700;color:var(--tx)}
+.dp-badge{font-size:11px;background:var(--pr);color:var(--prt);padding:1px 6px;border-radius:6px;margin-left:4px}
+
 button,input,select,textarea{font:inherit;color:var(--tx)}
 .btn{background:var(--pr);color:var(--prt);border:0;border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
 .btn.g{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
@@ -90,7 +104,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;border-radius:30px;padding:13px 20px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:block!important}
 @media(max-width:860px){.wrap{padding-bottom:90px}}
-@media(max-width:560px){input,select,textarea{font-size:16px}#fm{grid-template-columns:1fr}.btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}.lk a{padding:8px 12px;font-size:14px}.day .n{font-size:9px;padding:0 4px}.dow{font-size:11px}.wrap{padding:10px}}
+@media(max-width:560px){input,select,textarea{font-size:16px}#fm{grid-template-columns:1fr}.dp-row{grid-template-columns:1fr;gap:3px}.btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}.lk a{padding:8px 12px;font-size:14px}.day .n{font-size:9px;padding:0 4px}.dow{font-size:11px}.wrap{padding:10px}}
 @media(min-width:861px){
   .grid{grid-template-columns:560px minmax(0,1fr)}
   .day{min-height:86px;font-size:18px}
@@ -99,7 +113,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 #ov{display:none}
 #ov.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40}
 .addpop{display:none}
-.addpop.show{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;width:min(560px,94vw);max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.addpop.show{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;width:min(580px,94vw);max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -129,6 +143,13 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
             <input type="date" id="endDate">
             <div class="day-info" id="dayInfo"></div>
           </div>
+
+          <!-- ช่องกรอกรายละเอียดรายวัน (จะแสดงอัตโนมัติเมื่อจองตั้งแต่ 2 วันขึ้นไป) -->
+          <div class="f dp-box" id="dayPlansBox" hidden>
+            <label style="color:var(--pr);font-weight:700">📋 แผนงานรายวัน (ระบุรายละเอียดแต่ละวัน)</label>
+            <div class="dp-list" id="dayPlansList"></div>
+          </div>
+
           <div><label>เวลา (24 ชม.)</label><input id="time" inputmode="numeric" maxlength="5" placeholder="14:30" autocomplete="off"></div>
           <div><label>ประเภทงาน</label><select id="type"><option>รับ</option><option>ส่ง</option><option>ทัวร์</option><option>อื่นๆ</option></select></div>
           <div><label>สถานะ</label><select id="st"><option>รอยืนยัน</option><option>ยืนยันแล้ว</option><option>เสร็จแล้ว</option><option>ยกเลิก</option></select></div>
@@ -145,7 +166,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <div class="f"><label>ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์</label><input id="to" placeholder="เช่น ดอยอินทนนท์"></div>
           <div><label>จำนวนคน</label><input type="number" id="pax" min="0" placeholder="0"></div>
           <div><label>ราคา (บาท)</label><input type="number" id="price" min="0" placeholder="0"></div>
-          <div class="f"><label>รายละเอียด / หมายเหตุ</label><textarea id="note" placeholder="เที่ยวบิน, ที่นั่งเด็ก, ป้ายชื่อ ฯลฯ"></textarea></div>
+          <div class="f"><label>รายละเอียด / หมายเหตุรวม</label><textarea id="note" placeholder="เที่ยวบิน, ที่นั่งเด็ก, ป้ายชื่อ ฯลฯ"></textarea></div>
           <div class="f" style="display:flex;gap:8px"><button class="btn" style="flex:1" type="submit" id="sv">บันทึก</button><button class="btn g" type="button" id="cn" hidden>ยกเลิกแก้ไข</button></div>
         </form>
       </div>
@@ -161,7 +182,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <button class="btn g sm" id="sy">☁️ ซิงก์เลย</button>
         </div>
       </div>
-      <input id="q" placeholder="🔍 ค้นหาชื่อ / สถานที่ / เบอร์" style="margin-bottom:10px">
+      <input id="q" placeholder="🔍 ค้นหาชื่อ / สถานที่ / แผนรายวัน / เบอร์" style="margin-bottom:10px">
       <div id="list"></div>
     </div>
   </div>
@@ -186,7 +207,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 // =======================================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5kMUgdEdBwMcaN4UYsnMQbHRutZsB7UjK5IZGGRaHhUkDFQp5HW-bDdWbO9xpGdOTPg/exec';
 
-// ชุดสีสำหรับเลือกแบ่งสีงานจองหลายวัน (เพิ่มหรือเปลี่ยนโค้ดสีได้ตามต้องการ)
+// ชุดสีสำหรับเลือกแบ่งสีงานจองหลายวัน
 const COLOR_PALETTE = [
   { code: '',        label: 'สีตามประเภท' },
   { code: '#7c3aed', label: 'ม่วง' },
@@ -205,15 +226,55 @@ const $=id=>document.getElementById(id);
 const KEY='booking-planner-v1';
 
 // =======================================================
-// 2. ฟังก์ชันช่วยคำนวณงานหลายวันและสี
+// 2. ฟังก์ชันจัดการวันที่/เวลา (แก้ปัญหา GMT และวันที่เพี้ยน)
 // =======================================================
 const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// แปลง YYYY-MM-DD เป็น Date ตามเวลาท้องถิ่น (ไม่พึ่ง UTC/GMT)
+function parseLocal(s){
+  if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
+  const [y,m,d]=s.split('-').map(Number);
+  return new Date(y,m-1,d);
+}
+
+// ล้างค่าวันที่ที่อาจติด GMT จากการซิงก์รอบก่อนหน้าให้กลับมาเป็น YYYY-MM-DD
+function cleanDate(v){
+  const s=String(v||'').trim();
+  if(!s)return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  const d=new Date(s);
+  return isNaN(d.getTime())?'':iso(d);
+}
+
+// ล้างค่าเวลาที่อาจติด GMT (เช่น 1899 GMT+0700) ให้กลับมาเป็น HH:mm
+function cleanTime(v){
+  const s=String(v||'').trim();
+  if(!s)return '';
+  if(/^\d{1,2}:\d{2}$/.test(s)){
+    const [h,m]=s.split(':');
+    return pad(h)+':'+pad(m);
+  }
+  if(s.includes('GMT')||s.includes('1899')){
+    const d=new Date(s);
+    if(!isNaN(d.getTime()))return pad(d.getHours())+':'+pad(d.getMinutes());
+  }
+  return s;
+}
+
 const thMonth=d=>d.toLocaleDateString('th-TH',{month:'long',year:'numeric'});
-const thDate=s=>new Date(s+'T00:00').toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-const thShort=s=>new Date(s+'T00:00').toLocaleDateString('th-TH',{day:'numeric',month:'short'});
+const thDate=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'short',year:'numeric'}):s};
+const thShort=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{day:'numeric',month:'short'}):s};
 const baht=n=>Number(n||0).toLocaleString('th-TH');
+
+// บวกวันเพิ่มจากวันที่เริ่ม (ใช้หาข้อความวันที่ของแต่ละวันในงานยาว)
+function addDays(startIso, offset){
+  const d=parseLocal(startIso);
+  if(!d)return '';
+  d.setDate(d.getDate()+offset);
+  return iso(d);
+}
 
 const getEndDate=j=>(j.endDate&&j.endDate>=j.date)?j.endDate:j.date;
 const coversDate=(j,d)=>Boolean(j.date)&&d>=j.date&&d<=getEndDate(j);
@@ -226,16 +287,74 @@ const overlapsMonth=(j,y,m)=>{
 };
 
 function dayCount(j){
-  const e=getEndDate(j);
-  if(!j.date||e<=j.date)return 1;
-  return Math.round((new Date(e+'T00:00')-new Date(j.date+'T00:00'))/86400000)+1;
+  const s=parseLocal(j.date), e=parseLocal(getEndDate(j));
+  if(!s||!e||e<=s)return 1;
+  return Math.round((e-s)/86400000)+1;
 }
 
 function dayNumber(j,d){
-  return Math.round((new Date(d+'T00:00')-new Date(j.date+'T00:00'))/86400000)+1;
+  const s=parseLocal(j.date), curD=parseLocal(d);
+  if(!s||!curD)return 1;
+  return Math.round((curD-s)/86400000)+1;
 }
 
 const jobColor=j=>j.color||TC[j.type]||'#64748b';
+
+// =======================================================
+// 3. ระบบสร้างช่องกรอกแผนงานรายวัน (ในฟอร์มเพิ่ม/แก้ไข)
+// =======================================================
+function getCurrentDayPlanInputs(){
+  return [...document.querySelectorAll('.dp-inp')].map(el=>el.value.trim());
+}
+
+function renderDayPlanInputs(presetPlans){
+  const s=$('date').value, e=$('endDate').value;
+  $('endDate').min=s||'';
+  const sD=parseLocal(s), eD=parseLocal(e);
+
+  if(!sD||!eD||eD<=sD){
+    $('dayInfo').textContent='';
+    $('dayPlansBox').hidden=true;
+    $('dayPlansList').innerHTML='';
+    return;
+  }
+
+  const n=Math.round((eD-sD)/86400000)+1;
+  $('dayInfo').textContent=`📅 งานจองยาว ${n} วัน (${thShort(s)} – ${thShort(e)})`;
+
+  // เก็บข้อความที่ผู้ใช้พิมพ์ค้างไว้ก่อนสร้างช่องใหม่
+  const prev = Array.isArray(presetPlans) ? presetPlans : getCurrentDayPlanInputs();
+  const limit = Math.min(n, 60); // จำกัดสูงสุด 60 วันเพื่อความลื่นไหล
+  const placeholders = [
+    'เช่น รับเข้าสนามบิน -> ส่งโรงแรม',
+    'เช่น พาเที่ยววัด / คาเฟ่',
+    'เช่น ไปดอยสุเทพ / ดอยอินทนนท์',
+    'เช่น ไปอ่างเก็บน้ำ / ตลาด',
+    'เช่น ส่งสนามบิน / จบทริป'
+  ];
+
+  let html='';
+  for(let i=0;i<limit;i++){
+    const dStr=addDays(s,i);
+    const val=prev[i]||'';
+    const ph=placeholders[Math.min(i,placeholders.length-1)];
+    html+=`<div class="dp-row">
+      <div class="dp-lbl">วันที่ ${i+1} (${thShort(dStr)})</div>
+      <input type="text" class="dp-inp" data-i="${i}" value="${esc(val)}" placeholder="${ph}">
+    </div>`;
+  }
+  if(n>60){
+    html+=`<div class="sum">แสดงช่องกรอกสูงสุด 60 วันแรก</div>`;
+  }
+  $('dayPlansList').innerHTML=html;
+  $('dayPlansBox').hidden=false;
+}
+
+$('date').addEventListener('change',()=>{
+  if($('endDate').value&&$('endDate').value<$('date').value)$('endDate').value=$('date').value;
+  renderDayPlanInputs();
+});
+$('endDate').addEventListener('change',()=>renderDayPlanInputs());
 
 function drawSwatches(selected){
   $('color').value=selected||'';
@@ -249,28 +368,27 @@ function drawSwatches(selected){
   $('swatches').querySelectorAll('.sw').forEach(b=>b.onclick=()=>drawSwatches(b.dataset.c));
 }
 
-function updateDayInfo(){
-  const s=$('date').value, e=$('endDate').value;
-  $('endDate').min=s||'';
-  if(s&&e&&e>s){
-    const n=Math.round((new Date(e+'T00:00')-new Date(s+'T00:00'))/86400000)+1;
-    $('dayInfo').textContent=`📅 งานจองยาว ${n} วัน (${thShort(s)} – ${thShort(e)})`;
-  }else{
-    $('dayInfo').textContent='';
-  }
-}
-$('date').addEventListener('change',()=>{
-  if($('endDate').value&&$('endDate').value<$('date').value)$('endDate').value=$('date').value;
-  updateDayInfo();
-});
-$('endDate').addEventListener('change',updateDayInfo);
-
 // =======================================================
-// 3. ระบบจัดการสมุดจองงานหลัก
+// 4. ระบบจัดการข้อมูลและแสดงผลสมุดจองงาน
 // =======================================================
 let jobs=[];try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){jobs=[]}
 let trash=[];try{trash=JSON.parse(localStorage.getItem(KEY+'-trash')||'[]')}catch(e){trash=[]}
-const fixT=a=>a.forEach(j=>{if(j.type==='รับ-ส่ง'||j.type==='รับ / ส่ง')j.type='รับ';else if(j.type==='เช่ารถ')j.type='อื่นๆ'});fixT(jobs);fixT(trash);
+
+// ทำความสะอาดข้อมูลเก่า (ซ่อมวันที่/เวลาที่อาจติด GMT และแปลง dayPlans เป็นอาเรย์)
+const fixT=a=>a.forEach(j=>{
+  if(j.type==='รับ-ส่ง'||j.type==='รับ / ส่ง')j.type='รับ';
+  else if(j.type==='เช่ารถ')j.type='อื่นๆ';
+  j.date=cleanDate(j.date);
+  j.endDate=cleanDate(j.endDate);
+  if(j.endDate&&j.endDate<=j.date)j.endDate='';
+  j.time=cleanTime(j.time);
+  if(typeof j.dayPlans==='string'){
+    try{j.dayPlans=JSON.parse(j.dayPlans)}catch(e){j.dayPlans=[]}
+  }
+  if(!Array.isArray(j.dayPlans))j.dayPlans=[];
+});
+fixT(jobs);fixT(trash);
+
 const saveL=()=>{try{localStorage.setItem(KEY,JSON.stringify(jobs));localStorage.setItem(KEY+'-trash',JSON.stringify(trash))}catch(e){}};
 const save=()=>{saveL();sched()};
 const today=new Date();
@@ -305,7 +423,11 @@ function renderCal(){
     const single=dj.filter(j=>dayCount(j)===1);
 
     const barsHtml=multi.length
-      ? `<span class="mbars">${multi.slice(0,3).map(j=>`<span class="mbar" style="background:${jobColor(j)}" title="${esc(j.name)} (${dayCount(j)} วัน)">${esc(j.name)}</span>`).join('')}</span>`
+      ? `<span class="mbars">${multi.slice(0,3).map(j=>{
+          const idx=dayNumber(j,s)-1;
+          const pText=(j.dayPlans&&j.dayPlans[idx])?` : ${j.dayPlans[idx]}`:'';
+          return `<span class="mbar" style="background:${jobColor(j)}" title="${esc(j.name)} (วันที่ ${idx+1}/${dayCount(j)}${esc(pText)})">${esc(j.name)}</span>`;
+        }).join('')}</span>`
       : '';
     const dotsHtml=single.length
       ? `<span class="dots">${single.slice(0,4).map(j=>`<i style="background:${jobColor(j)}"></i>`).join('')}</span>`
@@ -327,17 +449,36 @@ function render(){
   renderCal();
   const y=cur.getFullYear(),m=cur.getMonth(),q=$('q').value.trim().toLowerCase();
   let list=jobs.filter(j=>mode==='day'?coversDate(j,sel):overlapsMonth(j,y,m));
-  if(q)list=jobs.filter(j=>[j.name,j.owner,j.from,j.to,j.ct,j.note,j.type].join(' ').toLowerCase().includes(q));
+  if(q)list=jobs.filter(j=>[j.name,j.owner,j.from,j.to,j.ct,j.note,j.type,...(j.dayPlans||[])].join(' ').toLowerCase().includes(q));
   list.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
   $('lt').textContent=q?'ผลการค้นหา':mode==='day'?'งานวันที่ '+thDate(sel):'งานทั้งเดือน '+thMonth(cur);
   const act=list.filter(j=>j.st!=='ยกเลิก'),tot=act.reduce((a,j)=>a+Number(j.price||0),0);
   $('sm').textContent=`${act.length} งาน · รวม ${baht(tot)} บาท`;
+
   $('list').innerHTML=list.length?list.map(j=>{
     const col=jobColor(j);
     const days=dayCount(j);
+    const curDayNum=(mode==='day'&&!q)?dayNumber(j,sel):0;
     const spanBadge=days>1
-      ? `<span class="tag" style="background:${col};color:#fff">📅 ${days} วัน (${thShort(j.date)}–${thShort(getEndDate(j))})${mode==='day'&&!q?` · วันที่ ${dayNumber(j,sel)}/${days}`:''}</span>`
+      ? `<span class="tag" style="background:${col};color:#fff">📅 ${days} วัน (${thShort(j.date)}–${thShort(getEndDate(j))})${curDayNum?` · วันที่ ${curDayNum}/${days}`:''}</span>`
       : '';
+
+    // สร้างกล่องแสดงแผนงานรายวัน (หากมีการกรอกไว้อย่างน้อย 1 วัน)
+    let plansHtml='';
+    const plans=Array.isArray(j.dayPlans)?j.dayPlans:[];
+    if(days>1 && plans.some(p=>p&&p.trim())){
+      let rows='';
+      for(let i=0;i<Math.min(days,60);i++){
+        const dStr=addDays(j.date,i);
+        const text=plans[i]?esc(plans[i]):'<span class="sum">—</span>';
+        const isNow=(curDayNum===i+1);
+        rows+=`<div class="dp-item${isNow?' now':''}">
+          วันที่ ${i+1} (${thShort(dStr)}): ${text}${isNow?'<span class="dp-badge">วันนี้</span>':''}
+        </div>`;
+      }
+      plansHtml=`<div class="dp-card"><div class="dp-card-title">📋 แผนงานรายวัน</div>${rows}</div>`;
+    }
+
     const lk=links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
     return `<div class="job${j.st==='เสร็จแล้ว'||j.st==='ยกเลิก'?' done':''}" style="border-left:6px solid ${col}">
       <div class="top"><div><div class="t">${esc(j.time||'--:--')} · ${esc(j.name)}</div>
@@ -348,10 +489,12 @@ function render(){
         ${(mode==='month'||q)&&days===1?`<span class="sum">${thDate(j.date)}</span>`:''}
       </div></div>
       <div class="pr">${j.price?baht(j.price)+' ฿':''}</div></div>
+      ${plansHtml}
       <div class="rt">${j.from?'🚏 รับ: '+esc(j.from)+'<br>':''}${j.to?'🏁 ไป: '+esc(j.to)+'<br>':''}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
       <div class="sum">ติดต่อ: ${esc(j.ch)} ${esc(j.ct)}</div>
       ${lk?`<div class="lk">${lk}</div>`:''}
       <div class="acts"><button class="btn g sm" data-e="${j.id}">แก้ไข</button><button class="btn g sm" data-x="${j.id}" style="color:var(--rd)">ลบ</button></div></div>`}).join(''):'<div class="empty">ยังไม่มีงาน</div>';
+
   $('list').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>edit(b.dataset.e));
   $('list').querySelectorAll('[data-x]').forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>x.id===b.dataset.x);if(j&&await ask('ลบงานนี้? (ดูย้อนหลังและกู้คืนได้ที่ถังขยะ)')){trash.unshift({...j,del:new Date().toISOString()});jobs=jobs.filter(x=>x.id!==j.id);save();render()}});
 }
@@ -363,7 +506,7 @@ function edit(id){
   F.forEach(k=>$(k).value=j[k]??'');
   setT(j.time);
   drawSwatches(j.color||'');
-  updateDayInfo();
+  renderDayPlanInputs(j.dayPlans||[]);
   $('ft').textContent='แก้ไขงาน';$('sv').textContent='อัปเดต';$('cn').hidden=false;
   $('ad').classList.add('show');$('ov').classList.add('show');
 }
@@ -373,7 +516,7 @@ function reset(){
   $('owner').value=lo;$('onew').style.display='none';
   $('date').value=sel;$('endDate').value='';
   drawSwatches('');
-  updateDayInfo();
+  renderDayPlanInputs([]);
   $('ft').textContent='เพิ่มงานใหม่';$('sv').textContent='บันทึก';$('cn').hidden=true;
 }
 $('fm').onsubmit=e=>{
@@ -381,7 +524,12 @@ $('fm').onsubmit=e=>{
   $('time').onblur({target:$('time')});
   const o={};F.forEach(k=>o[k]=$(k).value.trim());
   if(o.owner==='__new')o.owner=$('onew').value.trim();
-  if(!o.endDate||o.endDate<=o.date)o.endDate='';
+  if(!o.endDate||o.endDate<=o.date){
+    o.endDate='';
+    o.dayPlans=[];
+  }else{
+    o.dayPlans=getCurrentDayPlanInputs();
+  }
   addOwner(o.owner);window.lastOw=o.owner;
   if(editId){jobs=jobs.map(j=>j.id===editId?{...o,id:editId,upd:Date.now()}:j)}
   else jobs.push({...o,id:Date.now().toString(36),upd:Date.now()});
@@ -411,7 +559,7 @@ function addOwner(n){if(n&&!owners.includes(n)){owners.push(n);owners.sort();try
 drawOwners();
 
 // =======================================================
-// 4. ระบบซิงก์ข้อมูลกับ Google Sheets อัตโนมัติ (ไม่ต้องใช้รหัสผ่าน)
+// 5. ระบบซิงก์ข้อมูลกับ Google Sheets อัตโนมัติ
 // =======================================================
 let busy=false,again=false,stm;
 const setS=t=>{$('ss').textContent=t};
@@ -447,7 +595,7 @@ async function sync(){
     const all=[...m.values()].map(x=>({...x,upd:+x.upd||0}));
     jobs=all.filter(x=>!x.del);
     trash=all.filter(x=>x.del).sort((a,b)=>String(b.del).localeCompare(String(a.del)));
-    fixT(jobs);saveL();render();
+    fixT(jobs);fixT(trash);saveL();render();
 
     const saveRes=await callSheetApi({action:'save',data:[...jobs,...trash]});
     if(!saveRes.ok)throw new Error(saveRes.message||'บันทึกไม่สำเร็จ');
@@ -475,7 +623,6 @@ $('tr').onclick=()=>{renderTrash();$('td').showModal()};
 $('tx').onclick=()=>$('td').close();
 $('tc').onclick=async()=>{if(trash.length&&await ask('ล้างถังขยะทั้งหมด? กู้คืนไม่ได้อีก')){trash=trash.map(x=>({...x,purged:1,del:new Date().toISOString()}));save();renderTrash()}};
 
-// เริ่มต้นแอปและซิงก์ทันที
 $('date').value=sel;
 drawSwatches('');
 render();
