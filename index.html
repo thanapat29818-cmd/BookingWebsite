@@ -14,25 +14,33 @@ body{margin:0;background:var(--bg);color:var(--tx);font-family:'Noto Sans Thai',
 .wrap{max-width:1280px;margin:0 auto;padding:14px}
 .head-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:4px 0 12px}
 h1{font-size:20px;margin:0}
-.grid{display:grid;grid-template-columns:340px 1fr;gap:14px}
+.grid{display:grid;grid-template-columns:340px 1fr;gap:14px;align-items:start}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
-.cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:700;font-size:20px}
+
+/* หัวปฏิทินและส่วนแบ่ง 2 เดือน (บน-ล่าง) */
+.cal-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;font-weight:700;font-size:17px}
+.cal-nav-g{display:flex;gap:6px;align-items:center}
+.cal-m-title{font-size:15px;font-weight:700;color:var(--pr);margin:10px 0 6px;display:flex;justify-content:space-between;align-items:center}
+.cal-m-title:first-child{margin-top:2px}
+.cal-sep{border:0;border-top:1px dashed var(--bd);margin:12px 0 6px}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
 .dow{font-size:12px;color:var(--mu);padding:3px 0}
 
 /* ช่องวันที่บนปฏิทิน */
 .day{
-  min-height:66px;font-size:16px;font-weight:600;
+  min-height:60px;font-size:15px;font-weight:600;
   border:1px solid transparent;border-radius:10px;
   background:none;color:var(--tx);font-family:inherit;cursor:pointer;
-  position:relative;padding:4px 2px 14px;
+  position:relative;padding:4px 2px 13px;
   display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
   overflow:hidden;
 }
 .day:hover{background:var(--bg)}
 .day.today{border-color:var(--pr)}
-.day.sel{background:var(--pr);color:var(--prt)}
+.day.next-m{background:var(--bg);color:var(--mu);border-color:var(--bd)}
+.day.next-m .dnum{font-size:12px;font-weight:600}
+.day.sel{background:var(--pr);color:var(--prt);border-color:var(--pr)}
 .day .dnum{line-height:1.2}
 .day .n{position:absolute;top:2px;right:3px;font-size:10px;font-weight:700;background:var(--ac);color:var(--tx);border-radius:8px;padding:0 5px}
 .day.sel .n{background:var(--prt);color:var(--pr)}
@@ -80,7 +88,7 @@ button,input,select,textarea{font:inherit;color:var(--tx)}
 .btn{background:var(--pr);color:var(--prt);border:0;border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
 .btn.g{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
 .btn.sm{padding:4px 9px;font-size:13px}
-.nav{background:var(--bg);border:1px solid var(--bd);border-radius:8px;font-size:22px;padding:4px 16px;cursor:pointer}
+.nav{background:var(--bg);border:1px solid var(--bd);border-radius:8px;font-size:20px;padding:3px 14px;cursor:pointer}
 #fm{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 #fm .f{grid-column:1/-1}
 label{font-size:12px;color:var(--mu);display:block;margin-bottom:2px}
@@ -103,7 +111,7 @@ textarea{min-height:56px;resize:vertical}
 dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);width:min(520px,92vw)}
 .dots{position:absolute;bottom:4px;left:0;right:0;display:flex;justify-content:center;gap:2px}
 .dots i{width:7px;height:7px;border-radius:50%;display:block;box-shadow:0 0 0 1px rgba(255,255,255,.7)}
-.lg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:8px}
+.lg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:10px}
 .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;border-radius:30px;padding:13px 20px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:block!important}
 @media(max-width:860px){.wrap{padding-bottom:90px}}
@@ -117,7 +125,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 }
 @media(min-width:861px){
   .grid{grid-template-columns:560px minmax(0,1fr)}
-  .day{min-height:86px;font-size:18px}
+  .day{min-height:74px;font-size:17px}
   .mbar{height:15px;font-size:10px;line-height:15px;color:#fff;padding:0 4px;text-align:left;font-weight:600}
 }
 #ov{display:none}
@@ -135,12 +143,22 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
   </div>
   <div class="grid">
     <div>
+      <!-- การ์ดปฏิทินแบบ 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไปจนจบสัปดาห์ -->
       <div class="card">
-        <div class="cal-h"><button class="nav" id="pv">‹</button><span id="mt"></span><button class="nav" id="nx">›</button></div>
-        <div class="cal" id="cal"></div>
+        <div class="cal-h">
+          <button class="nav" id="pv" title="ย้อนกลับ 1 เดือน">‹</button>
+          <span id="mt"></span>
+          <div class="cal-nav-g">
+            <button class="btn g sm" id="tdBtn">วันนี้</button>
+            <button class="nav" id="nx" title="ถัดไป 1 เดือน">›</button>
+          </div>
+        </div>
+        <div id="calWrap"></div>
         <div class="lg" id="lg"></div>
-        <div class="sum" style="margin-top:4px;font-size:11.5px">💡 แถบสีแนวนอน = งานจองหลายวัน · จุดสีด้านล่าง = งานวันเดียว</div>
+        <div class="sum" style="margin-top:4px;font-size:11.5px">💡 แถบสีแนวนอน = งานจองหลายวัน · จุดสีด้านล่าง = งานวันเดียว · ช่องสีเทาอ่อน = ต้นเดือนถัดไป</div>
       </div>
+
+      <!-- ป๊อปอัปเพิ่ม/แก้ไขงาน -->
       <div class="card addpop" id="ad" style="margin-top:14px">
         <b id="ft">เพิ่มงานใหม่</b><button class="btn g sm" id="adx" type="button" style="float:right">ปิด</button>
         <form id="fm">
@@ -154,7 +172,6 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
             <div class="day-info" id="dayInfo"></div>
           </div>
 
-          <!-- ช่องกรอกรายละเอียดรายวัน + ราคาต่อวัน -->
           <div class="f dp-box" id="dayPlansBox" hidden>
             <label style="color:var(--pr);font-weight:700">📋 แผนงานรายวัน & ราคาต่อวัน (บาท)</label>
             <div class="dp-list" id="dayPlansList"></div>
@@ -182,6 +199,8 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
         </form>
       </div>
     </div>
+
+    <!-- รายการงานฝั่งขวา -->
     <div class="card">
       <div class="row">
         <div><b id="lt"></b><div class="sum" id="sm"></div><div class="sum" id="ss"></div></div>
@@ -214,11 +233,11 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 
 <script>
 // =======================================================
-// 1. ตั้งค่าที่ปรับเปลี่ยนได้
+// 1. ตั้งค่าหลัก (ใส่ลิงก์ Web App /exec ของคุณไว้เรียบร้อยแล้ว)
 // =======================================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5kMUgdEdBwMcaN4UYsnMQbHRutZsB7UjK5IZGGRaHhUkDFQp5HW-bDdWbO9xpGdOTPg/exec';
 
-// ชุดสีสำหรับเลือกแบ่งสีงานจองหลายวัน
+// ชุดสีสำหรับเลือกแบ่งสีงานจองหลายวัน (ปรับแก้หรือเพิ่มสีได้ที่นี่)
 const COLOR_PALETTE = [
   { code: '',        label: 'สีตามประเภท' },
   { code: '#7c3aed', label: 'ม่วง' },
@@ -237,7 +256,7 @@ const $=id=>document.getElementById(id);
 const KEY='booking-planner-v1';
 
 // =======================================================
-// 2. ฟังก์ชันจัดการวันที่/เวลา (ป้องกันปัญหา GMT)
+// 2. ฟังก์ชันจัดการวันที่/เวลา (ป้องกัน GMT และคำนวณช่วงวัน)
 // =======================================================
 const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
@@ -272,6 +291,7 @@ function cleanTime(v){
 }
 
 const thMonth=d=>d.toLocaleDateString('th-TH',{month:'long',year:'numeric'});
+const thMonthShort=d=>d.toLocaleDateString('th-TH',{month:'short',year:'2-digit'});
 const thDate=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'short',year:'numeric'}):s};
 const thShort=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{day:'numeric',month:'short'}):s};
 const baht=n=>Number(n||0).toLocaleString('th-TH');
@@ -307,7 +327,6 @@ function dayNumber(j,d){
 
 const jobColor=j=>j.color||TC[j.type]||'#64748b';
 
-// แปลงข้อมูล dayPlans ให้เป็นรูปแบบมาตรฐาน { text, price } (รองรับข้อมูลเก่าที่เป็นข้อความล้วนด้วย)
 function normalizePlans(arr){
   if(!Array.isArray(arr))return [];
   return arr.map(item=>{
@@ -323,7 +342,7 @@ function normalizePlans(arr){
 }
 
 // =======================================================
-// 3. ระบบสร้างช่องกรอกแผนงานรายวัน + ราคารายวันในฟอร์ม
+// 3. ระบบแผนงานรายวัน + ราคารายวันในฟอร์ม
 // =======================================================
 function getCurrentDayPlanInputs(){
   return [...document.querySelectorAll('.dp-row')].map(row=>({
@@ -332,21 +351,15 @@ function getCurrentDayPlanInputs(){
   }));
 }
 
-// คำนวณยอดรวมจากช่องราคารายวัน แล้วนำไปอัปเดตช่อง "ราคารวมทั้งหมด" อัตโนมัติ
 function recalcDayPrices(syncMainPrice){
   const inputs=[...document.querySelectorAll('.dp-price')];
   let sum=0, hasAny=false;
   inputs.forEach(el=>{
     const v=el.value.trim();
-    if(v!==''){
-      hasAny=true;
-      sum+=Number(v)||0;
-    }
+    if(v!==''){ hasAny=true; sum+=Number(v)||0; }
   });
   $('dpTotal').textContent=hasAny?`รวมราคารายวัน: ${baht(sum)} บาท`:'';
-  if(syncMainPrice && hasAny){
-    $('price').value=sum;
-  }
+  if(syncMainPrice && hasAny) $('price').value=sum;
 }
 
 function renderDayPlanInputs(presetPlans){
@@ -386,13 +399,10 @@ function renderDayPlanInputs(presetPlans){
       <input type="number" class="dp-price" min="0" value="${esc(item.price)}" placeholder="ราคา (฿)">
     </div>`;
   }
-  if(n>60){
-    html+=`<div class="sum">แสดงช่องกรอกสูงสุด 60 วันแรก</div>`;
-  }
+  if(n>60) html+=`<div class="sum">แสดงช่องกรอกสูงสุด 60 วันแรก</div>`;
   $('dayPlansList').innerHTML=html;
   $('dayPlansBox').hidden=false;
 
-  // ผูกเหตุการณ์ให้บวกราคารวมทันทีเมื่อพิมพ์ราคาของแต่ละวัน
   $('dayPlansList').querySelectorAll('.dp-price').forEach(el=>{
     el.addEventListener('input',()=>recalcDayPrices(true));
   });
@@ -409,16 +419,14 @@ function drawSwatches(selected){
   $('color').value=selected||'';
   $('swatches').innerHTML=COLOR_PALETTE.map(c=>{
     const on=(selected||'')===c.code?' on':'';
-    if(!c.code){
-      return `<button type="button" class="sw sw-auto${on}" data-c="" title="${c.label}">${c.label}</button>`;
-    }
+    if(!c.code) return `<button type="button" class="sw sw-auto${on}" data-c="" title="${c.label}">${c.label}</button>`;
     return `<button type="button" class="sw${on}" data-c="${c.code}" style="background:${c.code}" title="${c.label}"></button>`;
   }).join('');
   $('swatches').querySelectorAll('.sw').forEach(b=>b.onclick=()=>drawSwatches(b.dataset.c));
 }
 
 // =======================================================
-// 4. ระบบจัดการข้อมูลและแสดงผลสมุดจองงาน
+// 4. ระบบจัดการข้อมูลและวาดปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไป
 // =======================================================
 let jobs=[];try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){jobs=[]}
 let trash=[];try{trash=JSON.parse(localStorage.getItem(KEY+'-trash')||'[]')}catch(e){trash=[]}
@@ -457,47 +465,100 @@ function links(j){
   return out;
 }
 
-function renderCal(){
-  $('mt').textContent=thMonth(cur);
-  const y=cur.getFullYear(),m=cur.getMonth(),first=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
-  let h=['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<div class="dow">${d}</div>`).join('');
-  for(let i=0;i<first;i++)h+='<div></div>';
+// ฟังก์ชันสร้างปุ่มวันที่ 1 ช่องบนปฏิทิน (ใช้ร่วมกันทั้งเดือนหลักและต้นเดือนถัดไป)
+function buildDayCell(dateIso, labelText, isNextMonth){
+  const dj=jobs.filter(j=>coversDate(j,dateIso)&&j.st!=='ยกเลิก');
+  const n=dj.length;
+  const multi=dj.filter(j=>dayCount(j)>1).sort((a,b)=>a.date.localeCompare(b.date));
+  const single=dj.filter(j=>dayCount(j)===1);
+
+  const barsHtml=multi.length
+    ? `<span class="mbars">${multi.slice(0,3).map(j=>{
+        const idx=dayNumber(j,dateIso)-1;
+        const pItem=(j.dayPlans&&j.dayPlans[idx])||{};
+        const pText=pItem.text?` : ${pItem.text}`:'';
+        const pPrice=pItem.price?` (${baht(pItem.price)} ฿)`:'';
+        return `<span class="mbar" style="background:${jobColor(j)}" title="${esc(j.name)} (วันที่ ${idx+1}/${dayCount(j)}${esc(pText)}${esc(pPrice)})">${esc(j.name)}</span>`;
+      }).join('')}</span>`
+    : '';
+  const dotsHtml=single.length
+    ? `<span class="dots">${single.slice(0,4).map(j=>`<i style="background:${jobColor(j)}"></i>`).join('')}</span>`
+    : '';
+
+  const cls='day'
+    +(isNextMonth?' next-m':'')
+    +(dateIso===iso(today)?' today':'')
+    +(dateIso===sel?' sel':'');
+
+  return `<button class="${cls}" data-d="${dateIso}">
+    <span class="dnum">${labelText}</span>
+    ${n?`<span class="n">${n}</span>`:''}
+    ${barsHtml}
+    ${dotsHtml}
+  </button>`;
+}
+
+// ฟังก์ชันสร้างตาราง 1 เดือน (ถ้า includeTrailing=true จะเติมต้นเดือนถัดไปจนจบสัปดาห์)
+function buildMonthHtml(year, month, includeTrailing){
+  const dObj=new Date(year, month, 1);
+  const first=dObj.getDay();
+  const dim=new Date(year, month+1, 0).getDate();
+  const dowHtml=['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<div class="dow">${d}</div>`).join('');
+
+  let cells=dowHtml;
+  for(let i=0;i<first;i++) cells+='<div></div>';
   for(let d=1;d<=dim;d++){
-    const s=y+'-'+pad(m+1)+'-'+pad(d);
-    const dj=jobs.filter(j=>coversDate(j,s)&&j.st!=='ยกเลิก');
-    const n=dj.length;
-
-    const multi=dj.filter(j=>dayCount(j)>1).sort((a,b)=>a.date.localeCompare(b.date));
-    const single=dj.filter(j=>dayCount(j)===1);
-
-    const barsHtml=multi.length
-      ? `<span class="mbars">${multi.slice(0,3).map(j=>{
-          const idx=dayNumber(j,s)-1;
-          const pItem=(j.dayPlans&&j.dayPlans[idx])||{};
-          const pText=pItem.text?` : ${pItem.text}`:'';
-          const pPrice=pItem.price?` (${baht(pItem.price)} ฿)`:'';
-          return `<span class="mbar" style="background:${jobColor(j)}" title="${esc(j.name)} (วันที่ ${idx+1}/${dayCount(j)}${esc(pText)}${esc(pPrice)})">${esc(j.name)}</span>`;
-        }).join('')}</span>`
-      : '';
-    const dotsHtml=single.length
-      ? `<span class="dots">${single.slice(0,4).map(j=>`<i style="background:${jobColor(j)}"></i>`).join('')}</span>`
-      : '';
-
-    h+=`<button class="day${s===iso(today)?' today':''}${s===sel?' sel':''}" data-d="${s}">
-      <span class="dnum">${d}</span>
-      ${n?`<span class="n">${n}</span>`:''}
-      ${barsHtml}
-      ${dotsHtml}
-    </button>`;
+    const s=year+'-'+pad(month+1)+'-'+pad(d);
+    cells+=buildDayCell(s, String(d), false);
   }
-  $('cal').innerHTML=h;
-  $('cal').querySelectorAll('.day').forEach(b=>b.onclick=()=>{sel=b.dataset.d;mode='day';$('date').value=sel;render()});
+
+  let titleExtra='';
+  if(includeTrailing){
+    // คำนวณจำนวนวันที่เหลือจนจบสัปดาห์ (วันเสาร์) ของเดือนที่ 2
+    const lastDow=new Date(year, month, dim).getDay();
+    const trailingCount = (lastDow===6) ? 7 : (6 - lastDow); // ถ้าจบวันเสาร์พอดี ให้แสดงสัปดาห์แรกของเดือนถัดไป 7 วัน
+    const nextMonthDate=new Date(year, month+1, 1);
+    const ny=nextMonthDate.getFullYear(), nm=nextMonthDate.getMonth();
+    const nmShort=nextMonthDate.toLocaleDateString('th-TH',{month:'short'});
+    titleExtra=` <span class="sum" style="font-weight:400">+ ต้น ${nmShort}</span>`;
+
+    for(let td=1; td<=trailingCount; td++){
+      const s=ny+'-'+pad(nm+1)+'-'+pad(td);
+      cells+=buildDayCell(s, `${td} ${nmShort}`, true);
+    }
+  }
+
+  return `<div class="cal-m-title"><span>${thMonth(dObj)}${titleExtra}</span></div>
+    <div class="cal">${cells}</div>`;
+}
+
+function renderCal(){
+  const m1=new Date(cur.getFullYear(), cur.getMonth(), 1);
+  const m2=new Date(cur.getFullYear(), cur.getMonth()+1, 1);
+
+  $('mt').textContent=`${thMonthShort(m1)} – ${thMonthShort(m2)}`;
+  $('calWrap').innerHTML =
+    buildMonthHtml(m1.getFullYear(), m1.getMonth(), false) +
+    '<hr class="cal-sep">' +
+    buildMonthHtml(m2.getFullYear(), m2.getMonth(), true);
+
+  $('calWrap').querySelectorAll('.day').forEach(b=>b.onclick=()=>{
+    sel=b.dataset.d;
+    mode='day';
+    $('date').value=sel;
+    render();
+  });
 }
 
 function render(){
   jobs.forEach(j=>{if(j.owner)addOwner(j.owner)});
   renderCal();
-  const y=cur.getFullYear(),m=cur.getMonth(),q=$('q').value.trim().toLowerCase();
+
+  // ใช้เดือนของวันที่เลือกอยู่เป็นเกณฑ์เมื่อกดปุ่ม "ทั้งเดือน"
+  const selObj=parseLocal(sel)||cur;
+  const y=selObj.getFullYear(), m=selObj.getMonth();
+  const q=$('q').value.trim().toLowerCase();
+
   let list=jobs.filter(j=>mode==='day'?coversDate(j,sel):overlapsMonth(j,y,m));
   if(q){
     list=jobs.filter(j=>[
@@ -506,7 +567,7 @@ function render(){
     ].join(' ').toLowerCase().includes(q));
   }
   list.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
-  $('lt').textContent=q?'ผลการค้นหา':mode==='day'?'งานวันที่ '+thDate(sel):'งานทั้งเดือน '+thMonth(cur);
+  $('lt').textContent=q?'ผลการค้นหา':mode==='day'?'งานวันที่ '+thDate(sel):'งานทั้งเดือน '+thMonth(new Date(y,m,1));
   const act=list.filter(j=>j.st!=='ยกเลิก'),tot=act.reduce((a,j)=>a+Number(j.price||0),0);
   $('sm').textContent=`${act.length} งาน · รวม ${baht(tot)} บาท`;
 
@@ -518,7 +579,6 @@ function render(){
       ? `<span class="tag" style="background:${col};color:#fff">📅 ${days} วัน (${thShort(j.date)}–${thShort(getEndDate(j))})${curDayNum?` · วันที่ ${curDayNum}/${days}`:''}</span>`
       : '';
 
-    // แสดงกล่องแผนงานรายวันพร้อมราคาลงท้ายแต่ละวัน
     let plansHtml='';
     const plans=normalizePlans(j.dayPlans);
     if(days>1 && plans.some(p=>p.text||p.price)){
@@ -596,8 +656,12 @@ $('fm').onsubmit=e=>{
   if(innerWidth<=860)$('lt').scrollIntoView({behavior:'smooth'});
 };
 $('cn').onclick=()=>{reset();closeAd()};
+
+// เลื่อนปฏิทินทีละ 1 เดือน + ปุ่มกลับวันนี้
 $('pv').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);render()};
 $('nx').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);render()};
+$('tdBtn').onclick=()=>{cur=new Date(today.getFullYear(),today.getMonth(),1);sel=iso(today);mode='day';$('date').value=sel;render()};
+
 $('vd').onclick=()=>{mode='day';render()};$('vm').onclick=()=>{mode='month';render()};
 $('q').oninput=render;
 $('bk').onclick=()=>{$('bx').value=JSON.stringify(jobs);$('dg').showModal()};
