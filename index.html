@@ -14,24 +14,51 @@ body{margin:0;background:var(--bg);color:var(--tx);font-family:'Noto Sans Thai',
 .wrap{max-width:1280px;margin:0 auto;padding:14px}
 .head-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:4px 0 12px}
 h1{font-size:20px;margin:0}
-.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
-.login-card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:28px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.08)}
-.login-card h2{margin:0 0 8px;font-size:22px}
-.login-card p{color:var(--mu);margin:0 0 18px;font-size:14px}
-.login-form{display:flex;flex-direction:column;gap:10px}
-.login-err{color:var(--rd);font-size:13px;margin-top:12px;min-height:20px}
 .grid{display:grid;grid-template-columns:340px 1fr;gap:14px}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
 .cal-h{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;font-weight:700;font-size:20px}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
 .dow{font-size:12px;color:var(--mu);padding:3px 0}
-.day{aspect-ratio:auto;min-height:58px;font-size:18px;font-weight:600;border:1px solid transparent;border-radius:10px;background:none;color:var(--tx);font-family:inherit;cursor:pointer;position:relative;padding:0}
+
+/* ช่องวันที่บนปฏิทิน รองรับแถบงานหลายวัน + จุดสีงานวันเดียว */
+.day{
+  min-height:66px;font-size:16px;font-weight:600;
+  border:1px solid transparent;border-radius:10px;
+  background:none;color:var(--tx);font-family:inherit;cursor:pointer;
+  position:relative;padding:4px 2px 14px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  overflow:hidden;
+}
 .day:hover{background:var(--bg)}
 .day.today{border-color:var(--pr)}
 .day.sel{background:var(--pr);color:var(--prt)}
-.day .n{position:absolute;top:2px;right:4px;font-size:10px;font-weight:700;background:var(--ac);color:var(--tx);border-radius:8px;padding:0 5px}
+.day .dnum{line-height:1.2}
+.day .n{position:absolute;top:2px;right:3px;font-size:10px;font-weight:700;background:var(--ac);color:var(--tx);border-radius:8px;padding:0 5px}
 .day.sel .n{background:var(--prt);color:var(--pr)}
+
+/* แถบสีงานจองหลายวันบนปฏิทิน */
+.mbars{width:100%;display:flex;flex-direction:column;gap:2px;margin-top:3px;padding:0 1px}
+.mbar{
+  width:100%;height:7px;border-radius:4px;
+  font-size:0;line-height:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+  box-shadow:0 0 0 1px rgba(255,255,255,.45);
+}
+.day.sel .mbar{box-shadow:0 0 0 1px rgba(255,255,255,.85)}
+
+/* ปุ่มเลือกสีในฟอร์ม */
+.swatches{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:4px}
+.sw{
+  width:28px;height:28px;border-radius:50%;border:2px solid transparent;
+  cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;transition:transform .12s;
+}
+.sw:hover{transform:scale(1.1)}
+.sw.on{border-color:var(--tx);box-shadow:0 0 0 2px var(--card) inset}
+.sw-auto{width:auto;padding:0 10px;border-radius:14px;background:var(--bg);border:1px solid var(--bd);color:var(--tx)}
+.sw-auto.on{border-color:var(--pr);background:var(--ac);box-shadow:none}
+.day-info{font-size:12px;color:var(--pr);font-weight:600;margin-top:3px}
+
 button,input,select,textarea{font:inherit;color:var(--tx)}
 .btn{background:var(--pr);color:var(--prt);border:0;border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
 .btn.g{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
@@ -48,7 +75,7 @@ textarea{min-height:56px;resize:vertical}
 .job.done{opacity:.6}
 .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .t{font-weight:700}
-.tag{display:inline-block;font-size:11px;border-radius:7px;padding:1px 7px;background:var(--ac);margin-right:4px}
+.tag{display:inline-block;font-size:11px;border-radius:7px;padding:1px 7px;background:var(--ac);margin-right:4px;margin-top:2px}
 .pr{font-weight:700;color:var(--pr);white-space:nowrap}
 .rt{margin:6px 0;line-height:1.6}
 .lk{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
@@ -58,13 +85,17 @@ textarea{min-height:56px;resize:vertical}
 .empty{text-align:center;color:var(--mu);padding:26px}
 dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);width:min(520px,92vw)}
 .dots{position:absolute;bottom:4px;left:0;right:0;display:flex;justify-content:center;gap:2px}
-.dots i{width:8px;height:8px;border-radius:50%;display:block;box-shadow:0 0 0 1px rgba(255,255,255,.7)}
+.dots i{width:7px;height:7px;border-radius:50%;display:block;box-shadow:0 0 0 1px rgba(255,255,255,.7)}
 .lg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:8px}
 .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;border-radius:30px;padding:13px 20px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:block!important}
 @media(max-width:860px){.wrap{padding-bottom:90px}}
 @media(max-width:560px){input,select,textarea{font-size:16px}#fm{grid-template-columns:1fr}.btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}.lk a{padding:8px 12px;font-size:14px}.day .n{font-size:9px;padding:0 4px}.dow{font-size:11px}.wrap{padding:10px}}
-@media(min-width:861px){.grid{grid-template-columns:560px minmax(0,1fr)}.day{min-height:76px;font-size:20px}}
+@media(min-width:861px){
+  .grid{grid-template-columns:560px minmax(0,1fr)}
+  .day{min-height:86px;font-size:18px}
+  .mbar{height:15px;font-size:10px;line-height:15px;color:#fff;padding:0 4px;text-align:left;font-weight:600}
+}
 #ov{display:none}
 #ov.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40}
 .addpop{display:none}
@@ -74,70 +105,68 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 </head>
 <body>
 
-<!-- หน้าจอล็อกอินด้วยรหัสผ่าน -->
-<div id="loginScreen" class="login-screen">
-  <div class="login-card">
-    <h2>📒 สมุดจองงาน</h2>
-    <p>กรอกรหัสผ่านเพื่อเข้าใช้งานและซิงก์กับ Google Sheets</p>
-    <form id="loginForm" class="login-form">
-      <input type="password" id="passInput" placeholder="กรอกรหัสผ่าน" autocomplete="current-password" required style="text-align:center;font-size:18px;padding:10px">
-      <button type="submit" class="btn" id="loginBtn" style="padding:11px">เข้าสู่ระบบ</button>
-    </form>
-    <div id="loginErr" class="login-err"></div>
+<div class="wrap">
+  <div class="head-bar">
+    <h1>📒 สมุดจองงาน — รับส่ง / ทัวร์</h1>
   </div>
-</div>
-
-<!-- หน้าจอแอปหลัก -->
-<div id="appScreen" hidden>
-  <div class="wrap">
-    <div class="head-bar">
-      <h1>📒 สมุดจองงาน — รับส่ง / ทัวร์</h1>
-      <button class="btn g sm" id="logoutBtn">🔒 ออกจากระบบ</button>
-    </div>
-    <div class="grid">
-      <div>
-        <div class="card">
-          <div class="cal-h"><button class="nav" id="pv">‹</button><span id="mt"></span><button class="nav" id="nx">›</button></div>
-          <div class="cal" id="cal"></div><div class="lg" id="lg"></div>
-        </div>
-        <div class="card addpop" id="ad" style="margin-top:14px">
-          <b id="ft">เพิ่มงานใหม่</b><button class="btn g sm" id="adx" type="button" style="float:right">ปิด</button>
-          <form id="fm">
-            <div><label>วันที่</label><input type="date" id="date" required></div>
-            <div><label>เวลา (24 ชม.)</label><input id="time" inputmode="numeric" maxlength="5" placeholder="14:30" autocomplete="off"></div>
-            <div><label>ประเภทงาน</label><select id="type"><option>รับ</option><option>ส่ง</option><option>ทัวร์</option><option>อื่นๆ</option></select></div>
-            <div><label>สถานะ</label><select id="st"><option>รอยืนยัน</option><option>ยืนยันแล้ว</option><option>เสร็จแล้ว</option><option>ยกเลิก</option></select></div>
-            <div class="f"><label>ชื่อลูกค้า</label><input id="name" required placeholder="เช่น คุณสมชาย"></div>
-            <div><label>เจ้าของงาน</label><select id="owner"></select><input id="onew" placeholder="พิมพ์ชื่อเจ้าของใหม่" autocomplete="off" style="margin-top:6px;display:none"></div>
-            <div><label>ช่องทางติดต่อ</label><select id="ch"><option>WhatsApp</option><option>Line</option><option>Facebook</option><option>Telegram</option><option>Instagram</option><option>โทร</option><option>อื่นๆ</option></select></div>
-            <div><label>เบอร์ / ID / ลิงก์</label><input id="ct" placeholder="เช่น 0812345678"></div>
-            <div class="f"><label>รับจากที่ไหน</label><input id="from" placeholder="โรงแรม / สนามบิน / จุดนัด"></div>
-            <div class="f"><label>ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์</label><input id="to" placeholder="เช่น ดอยอินทนนท์"></div>
-            <div><label>จำนวนคน</label><input type="number" id="pax" min="0" placeholder="0"></div>
-            <div><label>ราคา (บาท)</label><input type="number" id="price" min="0" placeholder="0"></div>
-            <div class="f"><label>รายละเอียด / หมายเหตุ</label><textarea id="note" placeholder="เที่ยวบิน, ที่นั่งเด็ก, ป้ายชื่อ ฯลฯ"></textarea></div>
-            <div class="f" style="display:flex;gap:8px"><button class="btn" style="flex:1" type="submit" id="sv">บันทึก</button><button class="btn g" type="button" id="cn" hidden>ยกเลิกแก้ไข</button></div>
-          </form>
-        </div>
-      </div>
+  <div class="grid">
+    <div>
       <div class="card">
-        <div class="row">
-          <div><b id="lt"></b><div class="sum" id="sm"></div><div class="sum" id="ss"></div></div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap">
-            <button class="btn g sm" id="vd">เฉพาะวันที่เลือก</button>
-            <button class="btn g sm" id="vm">ทั้งเดือน</button>
-            <button class="btn g sm" id="bk">สำรองข้อมูล</button>
-            <button class="btn g sm" id="tr">🗑️ ถังขยะ</button>
-            <button class="btn g sm" id="sy">☁️ ซิงก์เลย</button>
+        <div class="cal-h"><button class="nav" id="pv">‹</button><span id="mt"></span><button class="nav" id="nx">›</button></div>
+        <div class="cal" id="cal"></div>
+        <div class="lg" id="lg"></div>
+        <div class="sum" style="margin-top:4px;font-size:11.5px">💡 แถบสีแนวนอน = งานจองหลายวัน · จุดสีด้านล่าง = งานวันเดียว</div>
+      </div>
+      <div class="card addpop" id="ad" style="margin-top:14px">
+        <b id="ft">เพิ่มงานใหม่</b><button class="btn g sm" id="adx" type="button" style="float:right">ปิด</button>
+        <form id="fm">
+          <div>
+            <label>วันที่เริ่ม</label>
+            <input type="date" id="date" required>
           </div>
-        </div>
-        <input id="q" placeholder="🔍 ค้นหาชื่อ / สถานที่ / เบอร์" style="margin-bottom:10px">
-        <div id="list"></div>
+          <div>
+            <label>วันที่สิ้นสุด (ถ้าจองหลายวัน)</label>
+            <input type="date" id="endDate">
+            <div class="day-info" id="dayInfo"></div>
+          </div>
+          <div><label>เวลา (24 ชม.)</label><input id="time" inputmode="numeric" maxlength="5" placeholder="14:30" autocomplete="off"></div>
+          <div><label>ประเภทงาน</label><select id="type"><option>รับ</option><option>ส่ง</option><option>ทัวร์</option><option>อื่นๆ</option></select></div>
+          <div><label>สถานะ</label><select id="st"><option>รอยืนยัน</option><option>ยืนยันแล้ว</option><option>เสร็จแล้ว</option><option>ยกเลิก</option></select></div>
+          <div><label>เจ้าของงาน</label><select id="owner"></select><input id="onew" placeholder="พิมพ์ชื่อเจ้าของใหม่" autocomplete="off" style="margin-top:6px;display:none"></div>
+          <div class="f"><label>ชื่อลูกค้า</label><input id="name" required placeholder="เช่น คุณสมชาย"></div>
+          <div class="f">
+            <label>🎨 สีแถบงานบนปฏิทิน (แบ่งสีงานหลายวัน)</label>
+            <input type="hidden" id="color" value="">
+            <div class="swatches" id="swatches"></div>
+          </div>
+          <div><label>ช่องทางติดต่อ</label><select id="ch"><option>WhatsApp</option><option>Line</option><option>Facebook</option><option>Telegram</option><option>Instagram</option><option>โทร</option><option>อื่นๆ</option></select></div>
+          <div><label>เบอร์ / ID / ลิงก์</label><input id="ct" placeholder="เช่น 0812345678"></div>
+          <div class="f"><label>รับจากที่ไหน</label><input id="from" placeholder="โรงแรม / สนามบิน / จุดนัด"></div>
+          <div class="f"><label>ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์</label><input id="to" placeholder="เช่น ดอยอินทนนท์"></div>
+          <div><label>จำนวนคน</label><input type="number" id="pax" min="0" placeholder="0"></div>
+          <div><label>ราคา (บาท)</label><input type="number" id="price" min="0" placeholder="0"></div>
+          <div class="f"><label>รายละเอียด / หมายเหตุ</label><textarea id="note" placeholder="เที่ยวบิน, ที่นั่งเด็ก, ป้ายชื่อ ฯลฯ"></textarea></div>
+          <div class="f" style="display:flex;gap:8px"><button class="btn" style="flex:1" type="submit" id="sv">บันทึก</button><button class="btn g" type="button" id="cn" hidden>ยกเลิกแก้ไข</button></div>
+        </form>
       </div>
     </div>
+    <div class="card">
+      <div class="row">
+        <div><b id="lt"></b><div class="sum" id="sm"></div><div class="sum" id="ss"></div></div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="btn g sm" id="vd">เฉพาะวันที่เลือก</button>
+          <button class="btn g sm" id="vm">ทั้งเดือน</button>
+          <button class="btn g sm" id="bk">สำรองข้อมูล</button>
+          <button class="btn g sm" id="tr">🗑️ ถังขยะ</button>
+          <button class="btn g sm" id="sy">☁️ ซิงก์เลย</button>
+        </div>
+      </div>
+      <input id="q" placeholder="🔍 ค้นหาชื่อ / สถานที่ / เบอร์" style="margin-bottom:10px">
+      <div id="list"></div>
+    </div>
   </div>
-  <button class="btn fab" id="fab">+ เพิ่มงาน</button>
 </div>
+<button class="btn fab" id="fab">+ เพิ่มงาน</button>
 
 <dialog id="cf"><p id="cm" style="font-size:16px;margin:4px 0 14px"></p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn g" id="cno">ยกเลิก</button><button class="btn" id="cyes" style="background:var(--rd);color:#fff">ยืนยัน</button></div></dialog>
 <div id="ov"></div>
@@ -153,74 +182,99 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 
 <script>
 // =======================================================
-// แก้ไขแค่บรรทัดนี้บรรทัดเดียว: วางลิงก์ /exec ของ Google Apps Script
+// 1. ตั้งค่าที่ปรับเปลี่ยนได้
 // =======================================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5kMUgdEdBwMcaN4UYsnMQbHRutZsB7UjK5IZGGRaHhUkDFQp5HW-bDdWbO9xpGdOTPg/exec';
 
+// ชุดสีสำหรับเลือกแบ่งสีงานจองหลายวัน (เพิ่มหรือเปลี่ยนโค้ดสีได้ตามต้องการ)
+const COLOR_PALETTE = [
+  { code: '',        label: 'สีตามประเภท' },
+  { code: '#7c3aed', label: 'ม่วง' },
+  { code: '#ea580c', label: 'ส้ม' },
+  { code: '#db2777', label: 'ชมพู' },
+  { code: '#2563eb', label: 'น้ำเงิน' },
+  { code: '#ca8a04', label: 'เหลืองทอง' },
+  { code: '#0d9488', label: 'เขียวมิ้นต์' },
+  { code: '#dc2626', label: 'แดง' },
+  { code: '#475569', label: 'เทาเข้ม' }
+];
+
+const TC = { 'รับ':'#16a34a', 'ส่ง':'#dc2626', 'ทัวร์':'#0ea5e9', 'อื่นๆ':'#64748b' };
+
 const $=id=>document.getElementById(id);
 const KEY='booking-planner-v1';
-let appPass=localStorage.getItem(KEY+'-pass')||'';
 
 // =======================================================
-// ระบบล็อกอินด้วยรหัสผ่าน
+// 2. ฟังก์ชันช่วยคำนวณงานหลายวันและสี
 // =======================================================
-function showLogin(msg){
-  appPass='';
-  localStorage.removeItem(KEY+'-pass');
-  $('appScreen').hidden=true;
-  $('loginScreen').hidden=false;
-  $('passInput').value='';
-  $('loginErr').textContent=msg||'';
-}
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const thMonth=d=>d.toLocaleDateString('th-TH',{month:'long',year:'numeric'});
+const thDate=s=>new Date(s+'T00:00').toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+const thShort=s=>new Date(s+'T00:00').toLocaleDateString('th-TH',{day:'numeric',month:'short'});
+const baht=n=>Number(n||0).toLocaleString('th-TH');
 
-function showApp(){
-  $('loginScreen').hidden=true;
-  $('appScreen').hidden=false;
-  render();
-  sync();
-}
+const getEndDate=j=>(j.endDate&&j.endDate>=j.date)?j.endDate:j.date;
+const coversDate=(j,d)=>Boolean(j.date)&&d>=j.date&&d<=getEndDate(j);
 
-$('loginForm').onsubmit=async e=>{
-  e.preventDefault();
-  const p=$('passInput').value.trim();
-  if(!p)return;
-  $('loginBtn').disabled=true;
-  $('loginErr').textContent='กำลังตรวจสอบรหัสผ่าน...';
-  try{
-    appPass=p;
-    const res=await callSheetApi({action:'get'});
-    if(!res.ok){
-      appPass='';
-      $('loginErr').textContent=res.message||'รหัสผ่านไม่ถูกต้อง';
-    }else{
-      localStorage.setItem(KEY+'-pass',p);
-      showApp();
-    }
-  }catch(err){
-    appPass='';
-    $('loginErr').textContent='เชื่อมต่อไม่สำเร็จ: '+err.message;
-  }
-  $('loginBtn').disabled=false;
+const overlapsMonth=(j,y,m)=>{
+  if(!j.date)return false;
+  const mStart=y+'-'+pad(m+1)+'-01';
+  const mEnd=y+'-'+pad(m+1)+'-'+pad(new Date(y,m+1,0).getDate());
+  return j.date<=mEnd&&getEndDate(j)>=mStart;
 };
 
-$('logoutBtn').onclick=()=>showLogin('ออกจากระบบแล้ว');
+function dayCount(j){
+  const e=getEndDate(j);
+  if(!j.date||e<=j.date)return 1;
+  return Math.round((new Date(e+'T00:00')-new Date(j.date+'T00:00'))/86400000)+1;
+}
+
+function dayNumber(j,d){
+  return Math.round((new Date(d+'T00:00')-new Date(j.date+'T00:00'))/86400000)+1;
+}
+
+const jobColor=j=>j.color||TC[j.type]||'#64748b';
+
+function drawSwatches(selected){
+  $('color').value=selected||'';
+  $('swatches').innerHTML=COLOR_PALETTE.map(c=>{
+    const on=(selected||'')===c.code?' on':'';
+    if(!c.code){
+      return `<button type="button" class="sw sw-auto${on}" data-c="" title="${c.label}">${c.label}</button>`;
+    }
+    return `<button type="button" class="sw${on}" data-c="${c.code}" style="background:${c.code}" title="${c.label}"></button>`;
+  }).join('');
+  $('swatches').querySelectorAll('.sw').forEach(b=>b.onclick=()=>drawSwatches(b.dataset.c));
+}
+
+function updateDayInfo(){
+  const s=$('date').value, e=$('endDate').value;
+  $('endDate').min=s||'';
+  if(s&&e&&e>s){
+    const n=Math.round((new Date(e+'T00:00')-new Date(s+'T00:00'))/86400000)+1;
+    $('dayInfo').textContent=`📅 งานจองยาว ${n} วัน (${thShort(s)} – ${thShort(e)})`;
+  }else{
+    $('dayInfo').textContent='';
+  }
+}
+$('date').addEventListener('change',()=>{
+  if($('endDate').value&&$('endDate').value<$('date').value)$('endDate').value=$('date').value;
+  updateDayInfo();
+});
+$('endDate').addEventListener('change',updateDayInfo);
 
 // =======================================================
-// ระบบจัดการสมุดจองงาน
+// 3. ระบบจัดการสมุดจองงานหลัก
 // =======================================================
 let jobs=[];try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){jobs=[]}
 let trash=[];try{trash=JSON.parse(localStorage.getItem(KEY+'-trash')||'[]')}catch(e){trash=[]}
 const fixT=a=>a.forEach(j=>{if(j.type==='รับ-ส่ง'||j.type==='รับ / ส่ง')j.type='รับ';else if(j.type==='เช่ารถ')j.type='อื่นๆ'});fixT(jobs);fixT(trash);
 const saveL=()=>{try{localStorage.setItem(KEY,JSON.stringify(jobs));localStorage.setItem(KEY+'-trash',JSON.stringify(trash))}catch(e){}};
 const save=()=>{saveL();sched()};
-const pad=n=>String(n).padStart(2,'0');
-const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const today=new Date();
 let cur=new Date(today.getFullYear(),today.getMonth(),1),sel=iso(today),mode='day',editId=null;
-const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const thMonth=d=>d.toLocaleDateString('th-TH',{month:'long',year:'numeric'});
-const thDate=s=>new Date(s+'T00:00').toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-const baht=n=>Number(n||0).toLocaleString('th-TH');
 
 function links(j){
   const c=(j.ct||'').trim(),out=[];if(!c)return out;
@@ -236,7 +290,6 @@ function links(j){
   if(digits.length>=8&&!isUrl)out.push(['','📞 โทร','tel:'+c.replace(/[^\d+]/g,'')]);
   return out;
 }
-const map=q=>'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
 
 function renderCal(){
   $('mt').textContent=thMonth(cur);
@@ -244,8 +297,26 @@ function renderCal(){
   let h=['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<div class="dow">${d}</div>`).join('');
   for(let i=0;i<first;i++)h+='<div></div>';
   for(let d=1;d<=dim;d++){
-    const s=y+'-'+pad(m+1)+'-'+pad(d),dj=jobs.filter(j=>j.date===s&&j.st!=='ยกเลิก'),n=dj.length;
-    h+=`<button class="day${s===iso(today)?' today':''}${s===sel?' sel':''}" data-d="${s}">${d}${n?`<span class="n">${n}</span><span class="dots">${dj.slice(0,4).map(j=>`<i style="background:${TC[j.type]||'#64748b'}"></i>`).join('')}</span>`:''}</button>`;
+    const s=y+'-'+pad(m+1)+'-'+pad(d);
+    const dj=jobs.filter(j=>coversDate(j,s)&&j.st!=='ยกเลิก');
+    const n=dj.length;
+
+    const multi=dj.filter(j=>dayCount(j)>1).sort((a,b)=>a.date.localeCompare(b.date));
+    const single=dj.filter(j=>dayCount(j)===1);
+
+    const barsHtml=multi.length
+      ? `<span class="mbars">${multi.slice(0,3).map(j=>`<span class="mbar" style="background:${jobColor(j)}" title="${esc(j.name)} (${dayCount(j)} วัน)">${esc(j.name)}</span>`).join('')}</span>`
+      : '';
+    const dotsHtml=single.length
+      ? `<span class="dots">${single.slice(0,4).map(j=>`<i style="background:${jobColor(j)}"></i>`).join('')}</span>`
+      : '';
+
+    h+=`<button class="day${s===iso(today)?' today':''}${s===sel?' sel':''}" data-d="${s}">
+      <span class="dnum">${d}</span>
+      ${n?`<span class="n">${n}</span>`:''}
+      ${barsHtml}
+      ${dotsHtml}
+    </button>`;
   }
   $('cal').innerHTML=h;
   $('cal').querySelectorAll('.day').forEach(b=>b.onclick=()=>{sel=b.dataset.d;mode='day';$('date').value=sel;render()});
@@ -254,36 +325,70 @@ function renderCal(){
 function render(){
   jobs.forEach(j=>{if(j.owner)addOwner(j.owner)});
   renderCal();
-  const mp=cur.getFullYear()+'-'+pad(cur.getMonth()+1),q=$('q').value.trim().toLowerCase();
-  let list=jobs.filter(j=>mode==='day'?j.date===sel:j.date.startsWith(mp));
+  const y=cur.getFullYear(),m=cur.getMonth(),q=$('q').value.trim().toLowerCase();
+  let list=jobs.filter(j=>mode==='day'?coversDate(j,sel):overlapsMonth(j,y,m));
   if(q)list=jobs.filter(j=>[j.name,j.owner,j.from,j.to,j.ct,j.note,j.type].join(' ').toLowerCase().includes(q));
   list.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
   $('lt').textContent=q?'ผลการค้นหา':mode==='day'?'งานวันที่ '+thDate(sel):'งานทั้งเดือน '+thMonth(cur);
   const act=list.filter(j=>j.st!=='ยกเลิก'),tot=act.reduce((a,j)=>a+Number(j.price||0),0);
   $('sm').textContent=`${act.length} งาน · รวม ${baht(tot)} บาท`;
   $('list').innerHTML=list.length?list.map(j=>{
+    const col=jobColor(j);
+    const days=dayCount(j);
+    const spanBadge=days>1
+      ? `<span class="tag" style="background:${col};color:#fff">📅 ${days} วัน (${thShort(j.date)}–${thShort(getEndDate(j))})${mode==='day'&&!q?` · วันที่ ${dayNumber(j,sel)}/${days}`:''}</span>`
+      : '';
     const lk=links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
-    const mf=j.from?`<a href="${map(j.from)}" target="_blank" rel="noopener">📍 แผนที่ต้นทาง</a>`:'';
-    const mt=j.to?`<a href="${map(j.to)}" target="_blank" rel="noopener">🗺️ แผนที่ปลายทาง</a>`:'';
-    return `<div class="job${j.st==='เสร็จแล้ว'||j.st==='ยกเลิก'?' done':''}" style="border-left:5px solid ${TC[j.type]||'#64748b'}">
+    return `<div class="job${j.st==='เสร็จแล้ว'||j.st==='ยกเลิก'?' done':''}" style="border-left:6px solid ${col}">
       <div class="top"><div><div class="t">${esc(j.time||'--:--')} · ${esc(j.name)}</div>
-      <div><span class="tag" style="background:${TC[j.type]||'#64748b'};color:#fff">${esc(j.type)}</span><span class="tag">${esc(j.st)}</span>${mode==='month'||q?`<span class="sum">${thDate(j.date)}</span>`:''}</div></div>
+      <div>
+        <span class="tag" style="background:${TC[j.type]||'#64748b'};color:#fff">${esc(j.type)}</span>
+        <span class="tag">${esc(j.st)}</span>
+        ${spanBadge}
+        ${(mode==='month'||q)&&days===1?`<span class="sum">${thDate(j.date)}</span>`:''}
+      </div></div>
       <div class="pr">${j.price?baht(j.price)+' ฿':''}</div></div>
       <div class="rt">${j.from?'🚏 รับ: '+esc(j.from)+'<br>':''}${j.to?'🏁 ไป: '+esc(j.to)+'<br>':''}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
       <div class="sum">ติดต่อ: ${esc(j.ch)} ${esc(j.ct)}</div>
-      <div class="lk">${lk}${mf}${mt}</div>
+      ${lk?`<div class="lk">${lk}</div>`:''}
       <div class="acts"><button class="btn g sm" data-e="${j.id}">แก้ไข</button><button class="btn g sm" data-x="${j.id}" style="color:var(--rd)">ลบ</button></div></div>`}).join(''):'<div class="empty">ยังไม่มีงาน</div>';
   $('list').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>edit(b.dataset.e));
   $('list').querySelectorAll('[data-x]').forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>x.id===b.dataset.x);if(j&&await ask('ลบงานนี้? (ดูย้อนหลังและกู้คืนได้ที่ถังขยะ)')){trash.unshift({...j,del:new Date().toISOString()});jobs=jobs.filter(x=>x.id!==j.id);save();render()}});
 }
 
-const F=['date','time','type','st','name','owner','ch','ct','from','to','pax','price','note'];
-function edit(id){const j=jobs.find(x=>x.id===id);if(!j)return;editId=id;F.forEach(k=>$(k).value=j[k]??'');setT(j.time);$('ft').textContent='แก้ไขงาน';$('sv').textContent='อัปเดต';$('cn').hidden=false;$('ad').classList.add('show');$('ov').classList.add('show')}
-function reset(){const lo=window.lastOw||'';editId=null;$('fm').reset();$('owner').value=lo;$('onew').style.display='none';$('date').value=sel;$('ft').textContent='เพิ่มงานใหม่';$('sv').textContent='บันทึก';$('cn').hidden=true}
-$('fm').onsubmit=e=>{e.preventDefault();
-  $('time').onblur({target:$('time')});const o={};F.forEach(k=>o[k]=$(k).value.trim());if(o.owner==='__new')o.owner=$('onew').value.trim();addOwner(o.owner);window.lastOw=o.owner;
-  if(editId){jobs=jobs.map(j=>j.id===editId?{...o,id:editId,upd:Date.now()}:j)}else jobs.push({...o,id:Date.now().toString(36),upd:Date.now()});
-  save();sel=o.date;cur=new Date(sel.slice(0,4),sel.slice(5,7)-1,1);mode='day';reset();closeAd();render();if(innerWidth<=860)$('lt').scrollIntoView({behavior:'smooth'})};
+const F=['date','endDate','time','type','st','name','owner','ch','ct','from','to','pax','price','color','note'];
+function edit(id){
+  const j=jobs.find(x=>x.id===id);if(!j)return;
+  editId=id;
+  F.forEach(k=>$(k).value=j[k]??'');
+  setT(j.time);
+  drawSwatches(j.color||'');
+  updateDayInfo();
+  $('ft').textContent='แก้ไขงาน';$('sv').textContent='อัปเดต';$('cn').hidden=false;
+  $('ad').classList.add('show');$('ov').classList.add('show');
+}
+function reset(){
+  const lo=window.lastOw||'';
+  editId=null;$('fm').reset();
+  $('owner').value=lo;$('onew').style.display='none';
+  $('date').value=sel;$('endDate').value='';
+  drawSwatches('');
+  updateDayInfo();
+  $('ft').textContent='เพิ่มงานใหม่';$('sv').textContent='บันทึก';$('cn').hidden=true;
+}
+$('fm').onsubmit=e=>{
+  e.preventDefault();
+  $('time').onblur({target:$('time')});
+  const o={};F.forEach(k=>o[k]=$(k).value.trim());
+  if(o.owner==='__new')o.owner=$('onew').value.trim();
+  if(!o.endDate||o.endDate<=o.date)o.endDate='';
+  addOwner(o.owner);window.lastOw=o.owner;
+  if(editId){jobs=jobs.map(j=>j.id===editId?{...o,id:editId,upd:Date.now()}:j)}
+  else jobs.push({...o,id:Date.now().toString(36),upd:Date.now()});
+  save();sel=o.date;cur=new Date(sel.slice(0,4),sel.slice(5,7)-1,1);mode='day';
+  reset();closeAd();render();
+  if(innerWidth<=860)$('lt').scrollIntoView({behavior:'smooth'});
+};
 $('cn').onclick=()=>{reset();closeAd()};
 $('pv').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);render()};
 $('nx').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);render()};
@@ -306,11 +411,11 @@ function addOwner(n){if(n&&!owners.includes(n)){owners.push(n);owners.sort();try
 drawOwners();
 
 // =======================================================
-// ระบบซิงก์ข้อมูลกับ Google Sheets อัตโนมัติ
+// 4. ระบบซิงก์ข้อมูลกับ Google Sheets อัตโนมัติ (ไม่ต้องใช้รหัสผ่าน)
 // =======================================================
 let busy=false,again=false,stm;
 const setS=t=>{$('ss').textContent=t};
-function sched(){if(!appPass)return;clearTimeout(stm);stm=setTimeout(sync,1200)}
+function sched(){clearTimeout(stm);stm=setTimeout(sync,1200)}
 
 async function callSheetApi(payload){
   const url=(SCRIPT_URL||'').trim();
@@ -322,7 +427,7 @@ async function callSheetApi(payload){
     mode:'cors',
     redirect:'follow',
     headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({pass:appPass,...payload})
+    body:JSON.stringify(payload)
   });
   const text=await res.text();
   try{return JSON.parse(text)}catch(e){
@@ -331,15 +436,11 @@ async function callSheetApi(payload){
 }
 
 async function sync(){
-  if(!appPass)return;
   if(busy){again=true;return}
   busy=true;setS('☁️ กำลังซิงก์กับ Google Sheets...');
   try{
     const res=await callSheetApi({action:'get'});
-    if(!res.ok){
-      if(res.error==='AUTH'){busy=false;showLogin(res.message);return}
-      throw new Error(res.message||'ซิงก์ไม่สำเร็จ');
-    }
+    if(!res.ok)throw new Error(res.message||'ซิงก์ไม่สำเร็จ');
     const rem=res.data||[];
     const ts=x=>x.del?Math.max(+x.upd||0,Date.parse(x.del)||0):(+x.upd||0),m=new Map();
     [...jobs,...trash,...rem].forEach(x=>{if(!x.id)return;const o=m.get(x.id);if(!o||ts(x)>ts(o))m.set(x.id,x)});
@@ -359,25 +460,26 @@ async function sync(){
 }
 
 $('sy').onclick=()=>sync();
-document.addEventListener('visibilitychange',()=>{if(!document.hidden&&appPass)sync()});
-addEventListener('online',()=>{if(appPass)sync()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
+addEventListener('online',()=>sync());
 
 const ask=msg=>new Promise(r=>{const d=$('cf');$('cm').textContent=msg;const done=v=>{d.close();r(v)};$('cyes').onclick=()=>done(true);$('cno').onclick=()=>done(false);d.oncancel=()=>r(false);d.showModal()});
-const TC={'รับ':'#16a34a','ส่ง':'#dc2626','ทัวร์':'#0ea5e9','อื่นๆ':'#64748b'};
 $('lg').innerHTML=Object.entries(TC).map(([k,c])=>`<span><i style="background:${c}"></i>${k}</span>`).join('');
 
 function renderTrash(){
-  $('tb').innerHTML=trash.some(x=>!x.purged)?trash.map((j,i)=>j.purged?'':`<div class="job" style="border-left:5px solid ${TC[j.type]||'#64748b'}"><div class="t">${esc(j.name)} · ${thDate(j.date)} ${esc(j.time||'')}</div><div class="sum">${esc(j.type)}${j.from?' · '+esc(j.from):''}${j.to?' → '+esc(j.to):''}${j.price?' · '+baht(j.price)+' ฿':''}</div><div class="sum">ลบเมื่อ ${new Date(j.del).toLocaleString('th-TH',{hour12:false})}</div><div class="acts"><button class="btn sm" data-r="${i}">กู้คืน</button><button class="btn g sm" data-p="${i}" style="color:var(--rd)">ลบถาวร</button></div></div>`).join(''):'<div class="empty">ถังขยะว่าง</div>';
+  $('tb').innerHTML=trash.some(x=>!x.purged)?trash.map((j,i)=>j.purged?'':`<div class="job" style="border-left:5px solid ${jobColor(j)}"><div class="t">${esc(j.name)} · ${thDate(j.date)}${dayCount(j)>1?' – '+thShort(getEndDate(j)):''} ${esc(j.time||'')}</div><div class="sum">${esc(j.type)}${j.from?' · '+esc(j.from):''}${j.to?' → '+esc(j.to):''}${j.price?' · '+baht(j.price)+' ฿':''}</div><div class="sum">ลบเมื่อ ${new Date(j.del).toLocaleString('th-TH',{hour12:false})}</div><div class="acts"><button class="btn sm" data-r="${i}">กู้คืน</button><button class="btn g sm" data-p="${i}" style="color:var(--rd)">ลบถาวร</button></div></div>`).join(''):'<div class="empty">ถังขยะว่าง</div>';
   $('tb').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const t=trash.splice(+b.dataset.r,1)[0];delete t.del;delete t.purged;t.upd=Date.now();jobs.push(t);save();renderTrash();render()});
   $('tb').querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{if(await ask('ลบถาวร? กู้คืนไม่ได้อีก')){trash[+b.dataset.p]={...trash[+b.dataset.p],purged:1,del:new Date().toISOString()};save();renderTrash()}});
 }
 $('tr').onclick=()=>{renderTrash();$('td').showModal()};
 $('tx').onclick=()=>$('td').close();
 $('tc').onclick=async()=>{if(trash.length&&await ask('ล้างถังขยะทั้งหมด? กู้คืนไม่ได้อีก')){trash=trash.map(x=>({...x,purged:1,del:new Date().toISOString()}));save();renderTrash()}};
-$('date').value=sel;
 
-// เริ่มต้นแอป
-if(appPass){showApp()}else{showLogin('')}
+// เริ่มต้นแอปและซิงก์ทันที
+$('date').value=sel;
+drawSwatches('');
+render();
+sync();
 </script>
 </body>
 </html>
