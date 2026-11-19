@@ -59,19 +59,22 @@ h1{font-size:20px;margin:0}
 .sw-auto.on{border-color:var(--pr);background:var(--ac);box-shadow:none}
 .day-info{font-size:12px;color:var(--pr);font-weight:600;margin-top:3px}
 
-/* กล่องกรอกแผนงานรายวันในฟอร์ม */
+/* กล่องกรอกแผนงานรายวัน + ราคา ในฟอร์ม */
 .dp-box{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px;margin-top:2px}
-.dp-list{display:flex;flex-direction:column;gap:6px;margin-top:6px}
-.dp-row{display:grid;grid-template-columns:110px 1fr;gap:8px;align-items:center}
+.dp-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.dp-row{display:grid;grid-template-columns:110px 1fr 105px;gap:6px;align-items:center}
 .dp-lbl{font-size:12.5px;font-weight:600;color:var(--tx);white-space:nowrap}
-.dp-inp{background:var(--card);padding:6px 9px;font-size:14px}
+.dp-inp,.dp-price{background:var(--card);padding:6px 9px;font-size:14px}
+.dp-price{text-align:right}
+.dp-total{font-size:12.5px;font-weight:700;color:var(--pr);margin-top:8px;text-align:right}
 
-/* กล่องแสดงแผนงานรายวันบนการ์ดงาน */
+/* กล่องแสดงแผนงานรายวัน + ราคา บนการ์ดงาน */
 .dp-card{margin:8px 0 4px;padding:8px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;font-size:13.5px}
 .dp-card-title{font-size:12px;font-weight:700;color:var(--mu);margin-bottom:4px}
-.dp-item{padding:3px 6px;border-radius:6px;line-height:1.5}
+.dp-item{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 6px;border-radius:6px;line-height:1.5}
 .dp-item.now{background:var(--ac);font-weight:700;color:var(--tx)}
 .dp-badge{font-size:11px;background:var(--pr);color:var(--prt);padding:1px 6px;border-radius:6px;margin-left:4px}
+.dp-p{font-weight:700;color:var(--pr);white-space:nowrap}
 
 button,input,select,textarea{font:inherit;color:var(--tx)}
 .btn{background:var(--pr);color:var(--prt);border:0;border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
@@ -104,7 +107,14 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;border-radius:30px;padding:13px 20px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:block!important}
 @media(max-width:860px){.wrap{padding-bottom:90px}}
-@media(max-width:560px){input,select,textarea{font-size:16px}#fm{grid-template-columns:1fr}.dp-row{grid-template-columns:1fr;gap:3px}.btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}.lk a{padding:8px 12px;font-size:14px}.day .n{font-size:9px;padding:0 4px}.dow{font-size:11px}.wrap{padding:10px}}
+@media(max-width:560px){
+  input,select,textarea{font-size:16px}
+  #fm{grid-template-columns:1fr}
+  .dp-row{grid-template-columns:1fr 95px;gap:5px}
+  .dp-lbl{grid-column:1/-1;margin-top:2px}
+  .btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}
+  .lk a{padding:8px 12px;font-size:14px}.day .n{font-size:9px;padding:0 4px}.dow{font-size:11px}.wrap{padding:10px}
+}
 @media(min-width:861px){
   .grid{grid-template-columns:560px minmax(0,1fr)}
   .day{min-height:86px;font-size:18px}
@@ -113,7 +123,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 #ov{display:none}
 #ov.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40}
 .addpop{display:none}
-.addpop.show{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;width:min(580px,94vw);max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.addpop.show{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;width:min(600px,94vw);max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -144,10 +154,11 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
             <div class="day-info" id="dayInfo"></div>
           </div>
 
-          <!-- ช่องกรอกรายละเอียดรายวัน (จะแสดงอัตโนมัติเมื่อจองตั้งแต่ 2 วันขึ้นไป) -->
+          <!-- ช่องกรอกรายละเอียดรายวัน + ราคาต่อวัน -->
           <div class="f dp-box" id="dayPlansBox" hidden>
-            <label style="color:var(--pr);font-weight:700">📋 แผนงานรายวัน (ระบุรายละเอียดแต่ละวัน)</label>
+            <label style="color:var(--pr);font-weight:700">📋 แผนงานรายวัน & ราคาต่อวัน (บาท)</label>
             <div class="dp-list" id="dayPlansList"></div>
+            <div class="dp-total" id="dpTotal"></div>
           </div>
 
           <div><label>เวลา (24 ชม.)</label><input id="time" inputmode="numeric" maxlength="5" placeholder="14:30" autocomplete="off"></div>
@@ -165,7 +176,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <div class="f"><label>รับจากที่ไหน</label><input id="from" placeholder="โรงแรม / สนามบิน / จุดนัด"></div>
           <div class="f"><label>ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์</label><input id="to" placeholder="เช่น ดอยอินทนนท์"></div>
           <div><label>จำนวนคน</label><input type="number" id="pax" min="0" placeholder="0"></div>
-          <div><label>ราคา (บาท)</label><input type="number" id="price" min="0" placeholder="0"></div>
+          <div><label>ราคารวมทั้งหมด (บาท)</label><input type="number" id="price" min="0" placeholder="0"></div>
           <div class="f"><label>รายละเอียด / หมายเหตุรวม</label><textarea id="note" placeholder="เที่ยวบิน, ที่นั่งเด็ก, ป้ายชื่อ ฯลฯ"></textarea></div>
           <div class="f" style="display:flex;gap:8px"><button class="btn" style="flex:1" type="submit" id="sv">บันทึก</button><button class="btn g" type="button" id="cn" hidden>ยกเลิกแก้ไข</button></div>
         </form>
@@ -226,20 +237,18 @@ const $=id=>document.getElementById(id);
 const KEY='booking-planner-v1';
 
 // =======================================================
-// 2. ฟังก์ชันจัดการวันที่/เวลา (แก้ปัญหา GMT และวันที่เพี้ยน)
+// 2. ฟังก์ชันจัดการวันที่/เวลา (ป้องกันปัญหา GMT)
 // =======================================================
 const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// แปลง YYYY-MM-DD เป็น Date ตามเวลาท้องถิ่น (ไม่พึ่ง UTC/GMT)
 function parseLocal(s){
   if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
   const [y,m,d]=s.split('-').map(Number);
   return new Date(y,m-1,d);
 }
 
-// ล้างค่าวันที่ที่อาจติด GMT จากการซิงก์รอบก่อนหน้าให้กลับมาเป็น YYYY-MM-DD
 function cleanDate(v){
   const s=String(v||'').trim();
   if(!s)return '';
@@ -248,7 +257,6 @@ function cleanDate(v){
   return isNaN(d.getTime())?'':iso(d);
 }
 
-// ล้างค่าเวลาที่อาจติด GMT (เช่น 1899 GMT+0700) ให้กลับมาเป็น HH:mm
 function cleanTime(v){
   const s=String(v||'').trim();
   if(!s)return '';
@@ -268,7 +276,6 @@ const thDate=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{we
 const thShort=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{day:'numeric',month:'short'}):s};
 const baht=n=>Number(n||0).toLocaleString('th-TH');
 
-// บวกวันเพิ่มจากวันที่เริ่ม (ใช้หาข้อความวันที่ของแต่ละวันในงานยาว)
 function addDays(startIso, offset){
   const d=parseLocal(startIso);
   if(!d)return '';
@@ -300,11 +307,46 @@ function dayNumber(j,d){
 
 const jobColor=j=>j.color||TC[j.type]||'#64748b';
 
+// แปลงข้อมูล dayPlans ให้เป็นรูปแบบมาตรฐาน { text, price } (รองรับข้อมูลเก่าที่เป็นข้อความล้วนด้วย)
+function normalizePlans(arr){
+  if(!Array.isArray(arr))return [];
+  return arr.map(item=>{
+    if(typeof item==='string')return { text: item.trim(), price: '' };
+    if(item && typeof item==='object'){
+      return {
+        text: String(item.text||'').trim(),
+        price: item.price!==undefined && item.price!==null ? String(item.price).trim() : ''
+      };
+    }
+    return { text: '', price: '' };
+  });
+}
+
 // =======================================================
-// 3. ระบบสร้างช่องกรอกแผนงานรายวัน (ในฟอร์มเพิ่ม/แก้ไข)
+// 3. ระบบสร้างช่องกรอกแผนงานรายวัน + ราคารายวันในฟอร์ม
 // =======================================================
 function getCurrentDayPlanInputs(){
-  return [...document.querySelectorAll('.dp-inp')].map(el=>el.value.trim());
+  return [...document.querySelectorAll('.dp-row')].map(row=>({
+    text: (row.querySelector('.dp-inp')?.value||'').trim(),
+    price: (row.querySelector('.dp-price')?.value||'').trim()
+  }));
+}
+
+// คำนวณยอดรวมจากช่องราคารายวัน แล้วนำไปอัปเดตช่อง "ราคารวมทั้งหมด" อัตโนมัติ
+function recalcDayPrices(syncMainPrice){
+  const inputs=[...document.querySelectorAll('.dp-price')];
+  let sum=0, hasAny=false;
+  inputs.forEach(el=>{
+    const v=el.value.trim();
+    if(v!==''){
+      hasAny=true;
+      sum+=Number(v)||0;
+    }
+  });
+  $('dpTotal').textContent=hasAny?`รวมราคารายวัน: ${baht(sum)} บาท`:'';
+  if(syncMainPrice && hasAny){
+    $('price').value=sum;
+  }
 }
 
 function renderDayPlanInputs(presetPlans){
@@ -316,15 +358,15 @@ function renderDayPlanInputs(presetPlans){
     $('dayInfo').textContent='';
     $('dayPlansBox').hidden=true;
     $('dayPlansList').innerHTML='';
+    $('dpTotal').textContent='';
     return;
   }
 
   const n=Math.round((eD-sD)/86400000)+1;
   $('dayInfo').textContent=`📅 งานจองยาว ${n} วัน (${thShort(s)} – ${thShort(e)})`;
 
-  // เก็บข้อความที่ผู้ใช้พิมพ์ค้างไว้ก่อนสร้างช่องใหม่
-  const prev = Array.isArray(presetPlans) ? presetPlans : getCurrentDayPlanInputs();
-  const limit = Math.min(n, 60); // จำกัดสูงสุด 60 วันเพื่อความลื่นไหล
+  const prev = Array.isArray(presetPlans) ? normalizePlans(presetPlans) : getCurrentDayPlanInputs();
+  const limit = Math.min(n, 60);
   const placeholders = [
     'เช่น รับเข้าสนามบิน -> ส่งโรงแรม',
     'เช่น พาเที่ยววัด / คาเฟ่',
@@ -336,11 +378,12 @@ function renderDayPlanInputs(presetPlans){
   let html='';
   for(let i=0;i<limit;i++){
     const dStr=addDays(s,i);
-    const val=prev[i]||'';
+    const item=prev[i]||{ text:'', price:'' };
     const ph=placeholders[Math.min(i,placeholders.length-1)];
     html+=`<div class="dp-row">
       <div class="dp-lbl">วันที่ ${i+1} (${thShort(dStr)})</div>
-      <input type="text" class="dp-inp" data-i="${i}" value="${esc(val)}" placeholder="${ph}">
+      <input type="text" class="dp-inp" value="${esc(item.text)}" placeholder="${ph}">
+      <input type="number" class="dp-price" min="0" value="${esc(item.price)}" placeholder="ราคา (฿)">
     </div>`;
   }
   if(n>60){
@@ -348,6 +391,12 @@ function renderDayPlanInputs(presetPlans){
   }
   $('dayPlansList').innerHTML=html;
   $('dayPlansBox').hidden=false;
+
+  // ผูกเหตุการณ์ให้บวกราคารวมทันทีเมื่อพิมพ์ราคาของแต่ละวัน
+  $('dayPlansList').querySelectorAll('.dp-price').forEach(el=>{
+    el.addEventListener('input',()=>recalcDayPrices(true));
+  });
+  recalcDayPrices(false);
 }
 
 $('date').addEventListener('change',()=>{
@@ -374,7 +423,6 @@ function drawSwatches(selected){
 let jobs=[];try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){jobs=[]}
 let trash=[];try{trash=JSON.parse(localStorage.getItem(KEY+'-trash')||'[]')}catch(e){trash=[]}
 
-// ทำความสะอาดข้อมูลเก่า (ซ่อมวันที่/เวลาที่อาจติด GMT และแปลง dayPlans เป็นอาเรย์)
 const fixT=a=>a.forEach(j=>{
   if(j.type==='รับ-ส่ง'||j.type==='รับ / ส่ง')j.type='รับ';
   else if(j.type==='เช่ารถ')j.type='อื่นๆ';
@@ -385,7 +433,7 @@ const fixT=a=>a.forEach(j=>{
   if(typeof j.dayPlans==='string'){
     try{j.dayPlans=JSON.parse(j.dayPlans)}catch(e){j.dayPlans=[]}
   }
-  if(!Array.isArray(j.dayPlans))j.dayPlans=[];
+  j.dayPlans=normalizePlans(j.dayPlans);
 });
 fixT(jobs);fixT(trash);
 
@@ -425,8 +473,10 @@ function renderCal(){
     const barsHtml=multi.length
       ? `<span class="mbars">${multi.slice(0,3).map(j=>{
           const idx=dayNumber(j,s)-1;
-          const pText=(j.dayPlans&&j.dayPlans[idx])?` : ${j.dayPlans[idx]}`:'';
-          return `<span class="mbar" style="background:${jobColor(j)}" title="${esc(j.name)} (วันที่ ${idx+1}/${dayCount(j)}${esc(pText)})">${esc(j.name)}</span>`;
+          const pItem=(j.dayPlans&&j.dayPlans[idx])||{};
+          const pText=pItem.text?` : ${pItem.text}`:'';
+          const pPrice=pItem.price?` (${baht(pItem.price)} ฿)`:'';
+          return `<span class="mbar" style="background:${jobColor(j)}" title="${esc(j.name)} (วันที่ ${idx+1}/${dayCount(j)}${esc(pText)}${esc(pPrice)})">${esc(j.name)}</span>`;
         }).join('')}</span>`
       : '';
     const dotsHtml=single.length
@@ -449,7 +499,12 @@ function render(){
   renderCal();
   const y=cur.getFullYear(),m=cur.getMonth(),q=$('q').value.trim().toLowerCase();
   let list=jobs.filter(j=>mode==='day'?coversDate(j,sel):overlapsMonth(j,y,m));
-  if(q)list=jobs.filter(j=>[j.name,j.owner,j.from,j.to,j.ct,j.note,j.type,...(j.dayPlans||[])].join(' ').toLowerCase().includes(q));
+  if(q){
+    list=jobs.filter(j=>[
+      j.name,j.owner,j.from,j.to,j.ct,j.note,j.type,
+      ...(j.dayPlans||[]).map(p=>p.text||'')
+    ].join(' ').toLowerCase().includes(q));
+  }
   list.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
   $('lt').textContent=q?'ผลการค้นหา':mode==='day'?'งานวันที่ '+thDate(sel):'งานทั้งเดือน '+thMonth(cur);
   const act=list.filter(j=>j.st!=='ยกเลิก'),tot=act.reduce((a,j)=>a+Number(j.price||0),0);
@@ -463,20 +518,23 @@ function render(){
       ? `<span class="tag" style="background:${col};color:#fff">📅 ${days} วัน (${thShort(j.date)}–${thShort(getEndDate(j))})${curDayNum?` · วันที่ ${curDayNum}/${days}`:''}</span>`
       : '';
 
-    // สร้างกล่องแสดงแผนงานรายวัน (หากมีการกรอกไว้อย่างน้อย 1 วัน)
+    // แสดงกล่องแผนงานรายวันพร้อมราคาลงท้ายแต่ละวัน
     let plansHtml='';
-    const plans=Array.isArray(j.dayPlans)?j.dayPlans:[];
-    if(days>1 && plans.some(p=>p&&p.trim())){
+    const plans=normalizePlans(j.dayPlans);
+    if(days>1 && plans.some(p=>p.text||p.price)){
       let rows='';
       for(let i=0;i<Math.min(days,60);i++){
         const dStr=addDays(j.date,i);
-        const text=plans[i]?esc(plans[i]):'<span class="sum">—</span>';
+        const item=plans[i]||{ text:'', price:'' };
+        const text=item.text?esc(item.text):'<span class="sum">—</span>';
+        const priceHtml=item.price?`<span class="dp-p">${baht(item.price)} ฿</span>`:'';
         const isNow=(curDayNum===i+1);
         rows+=`<div class="dp-item${isNow?' now':''}">
-          วันที่ ${i+1} (${thShort(dStr)}): ${text}${isNow?'<span class="dp-badge">วันนี้</span>':''}
+          <span>วันที่ ${i+1} (${thShort(dStr)}): ${text}${isNow?'<span class="dp-badge">วันนี้</span>':''}</span>
+          ${priceHtml}
         </div>`;
       }
-      plansHtml=`<div class="dp-card"><div class="dp-card-title">📋 แผนงานรายวัน</div>${rows}</div>`;
+      plansHtml=`<div class="dp-card"><div class="dp-card-title">📋 แผนงานรายวัน & ราคา</div>${rows}</div>`;
     }
 
     const lk=links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
