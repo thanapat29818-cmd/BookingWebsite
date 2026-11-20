@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>สมุดจองงาน — รับส่ง / ทัวร์</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--mu:#6b7280;--bd:#e3e6ec;--pr:#0f766e;--prt:#fff;--ac:#ccfbf1;--wa:#16a34a;--fb:#1877f2;--ln:#06c755;--rd:#dc2626}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12161c;--card:#1b212b;--tx:#e8ebf0;--mu:#97a0ae;--bd:#2c3441;--pr:#2dd4bf;--prt:#06231f;--ac:#12332f}}
@@ -18,7 +18,7 @@ h1{font-size:20px;margin:0}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
 
-/* หัวปฏิทินและส่วนแบ่ง 2 เดือน (บน-ล่าง) */
+/* ปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไปจนจบสัปดาห์ */
 .cal-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;font-weight:700;font-size:17px}
 .cal-nav-g{display:flex;gap:6px;align-items:center}
 .cal-m-title{font-size:15px;font-weight:700;color:var(--pr);margin:10px 0 6px;display:flex;justify-content:space-between;align-items:center}
@@ -26,8 +26,6 @@ h1{font-size:20px;margin:0}
 .cal-sep{border:0;border-top:1px dashed var(--bd);margin:12px 0 6px}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
 .dow{font-size:12px;color:var(--mu);padding:3px 0}
-
-/* ช่องวันที่บนปฏิทิน */
 .day{
   min-height:60px;font-size:15px;font-weight:600;
   border:1px solid transparent;border-radius:10px;
@@ -44,30 +42,18 @@ h1{font-size:20px;margin:0}
 .day .dnum{line-height:1.2}
 .day .n{position:absolute;top:2px;right:3px;font-size:10px;font-weight:700;background:var(--ac);color:var(--tx);border-radius:8px;padding:0 5px}
 .day.sel .n{background:var(--prt);color:var(--pr)}
-
-/* แถบสีงานจองหลายวันบนปฏิทิน */
 .mbars{width:100%;display:flex;flex-direction:column;gap:2px;margin-top:3px;padding:0 1px}
-.mbar{
-  width:100%;height:7px;border-radius:4px;
-  font-size:0;line-height:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
-  box-shadow:0 0 0 1px rgba(255,255,255,.45);
-}
+.mbar{width:100%;height:7px;border-radius:4px;font-size:0;line-height:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-shadow:0 0 0 1px rgba(255,255,255,.45)}
 .day.sel .mbar{box-shadow:0 0 0 1px rgba(255,255,255,.85)}
 
-/* ปุ่มเลือกสีในฟอร์ม */
+/* จานสี & แผนงานรายวัน */
 .swatches{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:4px}
-.sw{
-  width:28px;height:28px;border-radius:50%;border:2px solid transparent;
-  cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;
-  font-size:11px;font-weight:700;transition:transform .12s;
-}
+.sw{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:transform .12s}
 .sw:hover{transform:scale(1.1)}
 .sw.on{border-color:var(--tx);box-shadow:0 0 0 2px var(--card) inset}
 .sw-auto{width:auto;padding:0 10px;border-radius:14px;background:var(--bg);border:1px solid var(--bd);color:var(--tx)}
 .sw-auto.on{border-color:var(--pr);background:var(--ac);box-shadow:none}
 .day-info{font-size:12px;color:var(--pr);font-weight:600;margin-top:3px}
-
-/* กล่องกรอกแผนงานรายวัน + ราคา ในฟอร์ม */
 .dp-box{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px;margin-top:2px}
 .dp-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
 .dp-row{display:grid;grid-template-columns:110px 1fr 105px;gap:6px;align-items:center}
@@ -75,8 +61,6 @@ h1{font-size:20px;margin:0}
 .dp-inp,.dp-price{background:var(--card);padding:6px 9px;font-size:14px}
 .dp-price{text-align:right}
 .dp-total{font-size:12.5px;font-weight:700;color:var(--pr);margin-top:8px;text-align:right}
-
-/* กล่องแสดงแผนงานรายวัน + ราคา บนการ์ดงาน */
 .dp-card{margin:8px 0 4px;padding:8px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;font-size:13.5px}
 .dp-card-title{font-size:12px;font-weight:700;color:var(--mu);margin-bottom:4px}
 .dp-item{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 6px;border-radius:6px;line-height:1.5}
@@ -114,10 +98,91 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 .lg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:10px}
 .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;border-radius:30px;padding:13px 20px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:block!important}
+
+/* =========================================================
+   สไตล์ระบบป้ายชูรับลูกค้า + คลังโลโก้หลายแบบ + Fullscreen + Print
+   ========================================================= */
+#signModal{width:min(780px,96vw);max-height:92vh;padding:16px;overflow:auto}
+.sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.sign-grid .f{grid-column:1/-1}
+.logo-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
+.logo-item{
+  position:relative;width:72px;height:56px;border-radius:10px;
+  border:2px solid var(--bd);background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;padding:4px;overflow:visible;
+}
+.logo-item.on{border-color:var(--pr);background:var(--ac);box-shadow:0 0 0 1px var(--pr)}
+.logo-item img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.logo-none{font-size:12px;font-weight:600;color:var(--mu);text-align:center;line-height:1.2}
+.logo-del{
+  position:absolute;top:-7px;right:-7px;width:20px;height:20px;
+  border-radius:50%;border:0;background:var(--rd);color:#fff;
+  font-size:12px;line-height:1;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-add-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:56px;padding:0 14px;border-radius:10px;
+  border:2px dashed var(--pr);color:var(--pr);background:var(--bg);
+  font-size:13px;font-weight:700;cursor:pointer;
+}
+.logo-add-btn:hover{background:var(--ac)}
+.sign-preview-wrap{margin-top:12px;border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:#e5e7eb}
+
+/* กล่องตัวป้าย */
+.sign-board{
+  width:100%;aspect-ratio:1.414/1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:5% 6%;gap:14px;
+  background:#ffffff;color:#0f172a;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact;
+}
+.sign-board.th-navy{background:#0f172a;color:#f8fafc}
+.sign-board.th-navy .sb-head{color:#fbbf24}
+.sign-board.th-navy .sb-flight{background:#1e293b;color:#fbbf24;border-color:#334155}
+.sign-board.th-teal{background:#0f766e;color:#ffffff}
+.sign-board.th-teal .sb-head{color:#ccfbf1}
+.sign-board.th-teal .sb-flight{background:rgba(255,255,255,.15);color:#ffffff;border-color:rgba(255,255,255,.35)}
+.sign-board.th-dark{background:#111111;color:#ffffff}
+.sign-board.th-dark .sb-head{color:#a3a3a3}
+.sign-board.th-dark .sb-flight{background:#262626;color:#ffffff;border-color:#404040}
+
+.sb-logo{max-width:65%;object-fit:contain;display:block}
+.sb-head{font-size:clamp(14px,2.5vw,26px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0f766e}
+.sb-name{font-weight:800;line-height:1.15;word-break:break-word;max-width:100%}
+.sb-flight{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:clamp(16px,2.6vw,30px);font-weight:700;
+  padding:6px 20px;border-radius:999px;
+  background:#f1f5f9;color:#0f172a;border:2px solid #cbd5e1;
+}
+.sb-sub{font-size:clamp(13px,1.8vw,20px);opacity:.82;max-width:90%}
+
+/* โหมดเต็มหน้าจอ */
+#signFs{display:none;position:fixed;inset:0;z-index:9999;background:#fff}
+#signFs.show{display:flex;align-items:center;justify-content:center}
+#signFs .sign-board{width:100vw;height:100vh;aspect-ratio:auto;padding:4vh 5vw}
+.fs-exit{
+  position:fixed;top:14px;right:14px;z-index:10000;
+  background:rgba(0,0,0,.45);color:#fff;border:0;border-radius:999px;
+  padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px);
+}
+.fs-exit:hover{background:rgba(0,0,0,.75)}
+
+/* โหมดสั่งพิมพ์ A4 แนวนอน */
+#printArea{display:none}
+@media print{
+  @page{size:A4 landscape;margin:0}
+  body > *:not(#printArea), dialog{display:none!important}
+  #printArea{display:block!important;position:fixed;inset:0;width:100vw;height:100vh;margin:0;padding:0}
+  #printArea .sign-board{width:100vw!important;height:100vh!important;aspect-ratio:auto!important;border:0!important;border-radius:0!important}
+}
+
 @media(max-width:860px){.wrap{padding-bottom:90px}}
 @media(max-width:560px){
   input,select,textarea{font-size:16px}
-  #fm{grid-template-columns:1fr}
+  #fm,.sign-grid{grid-template-columns:1fr}
   .dp-row{grid-template-columns:1fr 95px;gap:5px}
   .dp-lbl{grid-column:1/-1;margin-top:2px}
   .btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}
@@ -140,6 +205,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 <div class="wrap">
   <div class="head-bar">
     <h1>📒 สมุดจองงาน — รับส่ง / ทัวร์</h1>
+    <button class="btn g sm" id="openSignTopBtn">🪧 สร้างป้ายชู</button>
   </div>
   <div class="grid">
     <div>
@@ -179,22 +245,23 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           </div>
 
           <div><label>เวลา (24 ชม.)</label><input id="time" inputmode="numeric" maxlength="5" placeholder="14:30" autocomplete="off"></div>
+          <div><label>✈️ ไฟล์ทบิน (Flight)</label><input id="flight" placeholder="เช่น TG102 / FD3437" autocomplete="off"></div>
           <div><label>ประเภทงาน</label><select id="type"><option>รับ</option><option>ส่ง</option><option>ทัวร์</option><option>อื่นๆ</option></select></div>
           <div><label>สถานะ</label><select id="st"><option>รอยืนยัน</option><option>ยืนยันแล้ว</option><option>เสร็จแล้ว</option><option>ยกเลิก</option></select></div>
           <div><label>เจ้าของงาน</label><select id="owner"></select><input id="onew" placeholder="พิมพ์ชื่อเจ้าของใหม่" autocomplete="off" style="margin-top:6px;display:none"></div>
-          <div class="f"><label>ชื่อลูกค้า</label><input id="name" required placeholder="เช่น คุณสมชาย"></div>
+          <div><label>ช่องทางติดต่อ</label><select id="ch"><option>WhatsApp</option><option>Line</option><option>Facebook</option><option>Telegram</option><option>Instagram</option><option>โทร</option><option>อื่นๆ</option></select></div>
+          <div class="f"><label>ชื่อลูกค้า</label><input id="name" required placeholder="เช่น Mr. John Smith / คุณสมชาย"></div>
           <div class="f">
             <label>🎨 สีแถบงานบนปฏิทิน (แบ่งสีงานหลายวัน)</label>
             <input type="hidden" id="color" value="">
             <div class="swatches" id="swatches"></div>
           </div>
-          <div><label>ช่องทางติดต่อ</label><select id="ch"><option>WhatsApp</option><option>Line</option><option>Facebook</option><option>Telegram</option><option>Instagram</option><option>โทร</option><option>อื่นๆ</option></select></div>
-          <div><label>เบอร์ / ID / ลิงก์</label><input id="ct" placeholder="เช่น 0812345678"></div>
+          <div class="f"><label>เบอร์ / ID / ลิงก์</label><input id="ct" placeholder="เช่น 0812345678"></div>
           <div class="f"><label>รับจากที่ไหน</label><input id="from" placeholder="โรงแรม / สนามบิน / จุดนัด"></div>
           <div class="f"><label>ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์</label><input id="to" placeholder="เช่น ดอยอินทนนท์"></div>
           <div><label>จำนวนคน</label><input type="number" id="pax" min="0" placeholder="0"></div>
           <div><label>ราคารวมทั้งหมด (บาท)</label><input type="number" id="price" min="0" placeholder="0"></div>
-          <div class="f"><label>รายละเอียด / หมายเหตุรวม</label><textarea id="note" placeholder="เที่ยวบิน, ที่นั่งเด็ก, ป้ายชื่อ ฯลฯ"></textarea></div>
+          <div class="f"><label>รายละเอียด / หมายเหตุรวม</label><textarea id="note" placeholder="ที่นั่งเด็ก, ป้ายชื่อ, หมายเหตุ ฯลฯ"></textarea></div>
           <div class="f" style="display:flex;gap:8px"><button class="btn" style="flex:1" type="submit" id="sv">บันทึก</button><button class="btn g" type="button" id="cn" hidden>ยกเลิกแก้ไข</button></div>
         </form>
       </div>
@@ -212,12 +279,79 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <button class="btn g sm" id="sy">☁️ ซิงก์เลย</button>
         </div>
       </div>
-      <input id="q" placeholder="🔍 ค้นหาชื่อ / สถานที่ / แผนรายวัน / เบอร์" style="margin-bottom:10px">
+      <input id="q" placeholder="🔍 ค้นหาชื่อ / ไฟล์ทบิน / สถานที่ / แผนรายวัน / เบอร์" style="margin-bottom:10px">
       <div id="list"></div>
     </div>
   </div>
 </div>
 <button class="btn fab" id="fab">+ เพิ่มงาน</button>
+
+<!-- หน้าต่างสร้างป้ายชูรับลูกค้า (รองรับคลังโลโก้หลายแบบ) -->
+<dialog id="signModal">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <b>🪧 สร้างป้ายชูรับลูกค้า (Welcome Sign)</b>
+    <button class="btn g sm" id="signClose" type="button">ปิด</button>
+  </div>
+  <div class="sign-grid">
+    <div>
+      <label>ข้อความหัวป้าย</label>
+      <input id="sHead" value="WELCOME" placeholder="เช่น WELCOME / ยินดีต้อนรับ">
+    </div>
+    <div>
+      <label>ธีมสีป้าย</label>
+      <select id="sTheme">
+        <option value="">ขาวคลาสสิก (อ่านง่าย/ประหยัดหมึก)</option>
+        <option value="th-navy">กรมท่า–ทอง (หรูหรา)</option>
+        <option value="th-teal">เขียวอมฟ้า–ขาว</option>
+        <option value="th-dark">ดำ–ขาว (ชูกลางคืนชัด)</option>
+      </select>
+    </div>
+    <div class="f">
+      <label>ชื่อลูกค้าบนป้าย</label>
+      <input id="sName" placeholder="เช่น MR. JOHN SMITH">
+    </div>
+    <div>
+      <label>✈️ ไฟล์ทบิน (เว้นว่างได้)</label>
+      <input id="sFlight" placeholder="เช่น TG102">
+    </div>
+    <div>
+      <label>ข้อความล่างสุด (ไม่บังคับ)</label>
+      <input id="sSub" placeholder="เช่น ชื่อโรงแรม หรือชื่อบริษัททัวร์">
+    </div>
+    <div class="f">
+      <label>🖼️ เลือกโลโก้บนป้าย (เพิ่มเก็บไว้หลายแบบแล้วคลิกสลับได้ทันที)</label>
+      <input type="file" id="sLogoFile" accept="image/*" multiple hidden>
+      <div class="logo-bar" id="sLogoList"></div>
+    </div>
+    <div>
+      <label>ขนาดตัวอักษรชื่อลูกค้า (<span id="sNameSzLbl">64</span>px)</label>
+      <input type="range" id="sNameSz" min="28" max="120" value="64" style="padding:0">
+    </div>
+    <div>
+      <label>ขนาดความสูงโลโก้ (<span id="sLogoSzLbl">90</span>px)</label>
+      <input type="range" id="sLogoSz" min="40" max="200" value="90" style="padding:0">
+    </div>
+  </div>
+
+  <!-- ตัวอย่างป้ายแบบเรียลไทม์ -->
+  <div class="sign-preview-wrap">
+    <div id="signPreview"></div>
+  </div>
+
+  <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:flex-end">
+    <button type="button" class="btn" id="signFsBtn">🖥️ เปิดเต็มหน้าจอ (Fullscreen)</button>
+    <button type="button" class="btn g" id="signPrintBtn">🖨️ พิมพ์ / บันทึก PDF (A4)</button>
+  </div>
+</dialog>
+
+<!-- โหมดชูป้ายเต็มหน้าจอ -->
+<div id="signFs">
+  <button type="button" class="fs-exit" id="signFsExit">✕ ออกจากเต็มหน้าจอ</button>
+  <div id="signFsBody" style="width:100%;height:100%"></div>
+</div>
+
+<!-- พื้นที่สำหรับสั่งพิมพ์ A4 แนวนอน -->
+<div id="printArea"></div>
 
 <dialog id="cf"><p id="cm" style="font-size:16px;margin:4px 0 14px"></p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn g" id="cno">ยกเลิก</button><button class="btn" id="cyes" style="background:var(--rd);color:#fff">ยืนยัน</button></div></dialog>
 <div id="ov"></div>
@@ -237,7 +371,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 // =======================================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5kMUgdEdBwMcaN4UYsnMQbHRutZsB7UjK5IZGGRaHhUkDFQp5HW-bDdWbO9xpGdOTPg/exec';
 
-// ชุดสีสำหรับเลือกแบ่งสีงานจองหลายวัน (ปรับแก้หรือเพิ่มสีได้ที่นี่)
+// ชุดสีสำหรับเลือกแบ่งสีงานจองหลายวัน
 const COLOR_PALETTE = [
   { code: '',        label: 'สีตามประเภท' },
   { code: '#7c3aed', label: 'ม่วง' },
@@ -256,7 +390,7 @@ const $=id=>document.getElementById(id);
 const KEY='booking-planner-v1';
 
 // =======================================================
-// 2. ฟังก์ชันจัดการวันที่/เวลา (ป้องกัน GMT และคำนวณช่วงวัน)
+// 2. ฟังก์ชันจัดการวันที่/เวลา (ป้องกัน GMT)
 // =======================================================
 const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
@@ -267,7 +401,6 @@ function parseLocal(s){
   const [y,m,d]=s.split('-').map(Number);
   return new Date(y,m-1,d);
 }
-
 function cleanDate(v){
   const s=String(v||'').trim();
   if(!s)return '';
@@ -275,14 +408,10 @@ function cleanDate(v){
   const d=new Date(s);
   return isNaN(d.getTime())?'':iso(d);
 }
-
 function cleanTime(v){
   const s=String(v||'').trim();
   if(!s)return '';
-  if(/^\d{1,2}:\d{2}$/.test(s)){
-    const [h,m]=s.split(':');
-    return pad(h)+':'+pad(m);
-  }
+  if(/^\d{1,2}:\d{2}$/.test(s)){ const [h,m]=s.split(':'); return pad(h)+':'+pad(m); }
   if(s.includes('GMT')||s.includes('1899')){
     const d=new Date(s);
     if(!isNaN(d.getTime()))return pad(d.getHours())+':'+pad(d.getMinutes());
@@ -305,26 +434,22 @@ function addDays(startIso, offset){
 
 const getEndDate=j=>(j.endDate&&j.endDate>=j.date)?j.endDate:j.date;
 const coversDate=(j,d)=>Boolean(j.date)&&d>=j.date&&d<=getEndDate(j);
-
 const overlapsMonth=(j,y,m)=>{
   if(!j.date)return false;
   const mStart=y+'-'+pad(m+1)+'-01';
   const mEnd=y+'-'+pad(m+1)+'-'+pad(new Date(y,m+1,0).getDate());
   return j.date<=mEnd&&getEndDate(j)>=mStart;
 };
-
 function dayCount(j){
   const s=parseLocal(j.date), e=parseLocal(getEndDate(j));
   if(!s||!e||e<=s)return 1;
   return Math.round((e-s)/86400000)+1;
 }
-
 function dayNumber(j,d){
   const s=parseLocal(j.date), curD=parseLocal(d);
   if(!s||!curD)return 1;
   return Math.round((curD-s)/86400000)+1;
 }
-
 const jobColor=j=>j.color||TC[j.type]||'#64748b';
 
 function normalizePlans(arr){
@@ -350,7 +475,6 @@ function getCurrentDayPlanInputs(){
     price: (row.querySelector('.dp-price')?.value||'').trim()
   }));
 }
-
 function recalcDayPrices(syncMainPrice){
   const inputs=[...document.querySelectorAll('.dp-price')];
   let sum=0, hasAny=false;
@@ -361,7 +485,6 @@ function recalcDayPrices(syncMainPrice){
   $('dpTotal').textContent=hasAny?`รวมราคารายวัน: ${baht(sum)} บาท`:'';
   if(syncMainPrice && hasAny) $('price').value=sum;
 }
-
 function renderDayPlanInputs(presetPlans){
   const s=$('date').value, e=$('endDate').value;
   $('endDate').min=s||'';
@@ -377,7 +500,6 @@ function renderDayPlanInputs(presetPlans){
 
   const n=Math.round((eD-sD)/86400000)+1;
   $('dayInfo').textContent=`📅 งานจองยาว ${n} วัน (${thShort(s)} – ${thShort(e)})`;
-
   const prev = Array.isArray(presetPlans) ? normalizePlans(presetPlans) : getCurrentDayPlanInputs();
   const limit = Math.min(n, 60);
   const placeholders = [
@@ -426,7 +548,7 @@ function drawSwatches(selected){
 }
 
 // =======================================================
-// 4. ระบบจัดการข้อมูลและวาดปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไป
+// 4. ระบบจัดการข้อมูล + ปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไป
 // =======================================================
 let jobs=[];try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){jobs=[]}
 let trash=[];try{trash=JSON.parse(localStorage.getItem(KEY+'-trash')||'[]')}catch(e){trash=[]}
@@ -465,7 +587,6 @@ function links(j){
   return out;
 }
 
-// ฟังก์ชันสร้างปุ่มวันที่ 1 ช่องบนปฏิทิน (ใช้ร่วมกันทั้งเดือนหลักและต้นเดือนถัดไป)
 function buildDayCell(dateIso, labelText, isNextMonth){
   const dj=jobs.filter(j=>coversDate(j,dateIso)&&j.st!=='ยกเลิก');
   const n=dj.length;
@@ -485,11 +606,7 @@ function buildDayCell(dateIso, labelText, isNextMonth){
     ? `<span class="dots">${single.slice(0,4).map(j=>`<i style="background:${jobColor(j)}"></i>`).join('')}</span>`
     : '';
 
-  const cls='day'
-    +(isNextMonth?' next-m':'')
-    +(dateIso===iso(today)?' today':'')
-    +(dateIso===sel?' sel':'');
-
+  const cls='day'+(isNextMonth?' next-m':'')+(dateIso===iso(today)?' today':'')+(dateIso===sel?' sel':'');
   return `<button class="${cls}" data-d="${dateIso}">
     <span class="dnum">${labelText}</span>
     ${n?`<span class="n">${n}</span>`:''}
@@ -498,44 +615,34 @@ function buildDayCell(dateIso, labelText, isNextMonth){
   </button>`;
 }
 
-// ฟังก์ชันสร้างตาราง 1 เดือน (ถ้า includeTrailing=true จะเติมต้นเดือนถัดไปจนจบสัปดาห์)
 function buildMonthHtml(year, month, includeTrailing){
   const dObj=new Date(year, month, 1);
   const first=dObj.getDay();
   const dim=new Date(year, month+1, 0).getDate();
-  const dowHtml=['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<div class="dow">${d}</div>`).join('');
-
-  let cells=dowHtml;
+  let cells=['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<div class="dow">${d}</div>`).join('');
   for(let i=0;i<first;i++) cells+='<div></div>';
   for(let d=1;d<=dim;d++){
-    const s=year+'-'+pad(month+1)+'-'+pad(d);
-    cells+=buildDayCell(s, String(d), false);
+    cells+=buildDayCell(year+'-'+pad(month+1)+'-'+pad(d), String(d), false);
   }
 
   let titleExtra='';
   if(includeTrailing){
-    // คำนวณจำนวนวันที่เหลือจนจบสัปดาห์ (วันเสาร์) ของเดือนที่ 2
     const lastDow=new Date(year, month, dim).getDay();
-    const trailingCount = (lastDow===6) ? 7 : (6 - lastDow); // ถ้าจบวันเสาร์พอดี ให้แสดงสัปดาห์แรกของเดือนถัดไป 7 วัน
+    const trailingCount = (lastDow===6) ? 7 : (6 - lastDow);
     const nextMonthDate=new Date(year, month+1, 1);
     const ny=nextMonthDate.getFullYear(), nm=nextMonthDate.getMonth();
     const nmShort=nextMonthDate.toLocaleDateString('th-TH',{month:'short'});
     titleExtra=` <span class="sum" style="font-weight:400">+ ต้น ${nmShort}</span>`;
-
     for(let td=1; td<=trailingCount; td++){
-      const s=ny+'-'+pad(nm+1)+'-'+pad(td);
-      cells+=buildDayCell(s, `${td} ${nmShort}`, true);
+      cells+=buildDayCell(ny+'-'+pad(nm+1)+'-'+pad(td), `${td} ${nmShort}`, true);
     }
   }
-
-  return `<div class="cal-m-title"><span>${thMonth(dObj)}${titleExtra}</span></div>
-    <div class="cal">${cells}</div>`;
+  return `<div class="cal-m-title"><span>${thMonth(dObj)}${titleExtra}</span></div><div class="cal">${cells}</div>`;
 }
 
 function renderCal(){
   const m1=new Date(cur.getFullYear(), cur.getMonth(), 1);
   const m2=new Date(cur.getFullYear(), cur.getMonth()+1, 1);
-
   $('mt').textContent=`${thMonthShort(m1)} – ${thMonthShort(m2)}`;
   $('calWrap').innerHTML =
     buildMonthHtml(m1.getFullYear(), m1.getMonth(), false) +
@@ -543,10 +650,7 @@ function renderCal(){
     buildMonthHtml(m2.getFullYear(), m2.getMonth(), true);
 
   $('calWrap').querySelectorAll('.day').forEach(b=>b.onclick=()=>{
-    sel=b.dataset.d;
-    mode='day';
-    $('date').value=sel;
-    render();
+    sel=b.dataset.d; mode='day'; $('date').value=sel; render();
   });
 }
 
@@ -554,7 +658,6 @@ function render(){
   jobs.forEach(j=>{if(j.owner)addOwner(j.owner)});
   renderCal();
 
-  // ใช้เดือนของวันที่เลือกอยู่เป็นเกณฑ์เมื่อกดปุ่ม "ทั้งเดือน"
   const selObj=parseLocal(sel)||cur;
   const y=selObj.getFullYear(), m=selObj.getMonth();
   const q=$('q').value.trim().toLowerCase();
@@ -562,7 +665,7 @@ function render(){
   let list=jobs.filter(j=>mode==='day'?coversDate(j,sel):overlapsMonth(j,y,m));
   if(q){
     list=jobs.filter(j=>[
-      j.name,j.owner,j.from,j.to,j.ct,j.note,j.type,
+      j.name,j.flight,j.owner,j.from,j.to,j.ct,j.note,j.type,
       ...(j.dayPlans||[]).map(p=>p.text||'')
     ].join(' ').toLowerCase().includes(q));
   }
@@ -578,6 +681,7 @@ function render(){
     const spanBadge=days>1
       ? `<span class="tag" style="background:${col};color:#fff">📅 ${days} วัน (${thShort(j.date)}–${thShort(getEndDate(j))})${curDayNum?` · วันที่ ${curDayNum}/${days}`:''}</span>`
       : '';
+    const flightTag=j.flight?`<span class="tag">✈️ ${esc(j.flight)}</span>`:'';
 
     let plansHtml='';
     const plans=normalizePlans(j.dayPlans);
@@ -603,6 +707,7 @@ function render(){
       <div>
         <span class="tag" style="background:${TC[j.type]||'#64748b'};color:#fff">${esc(j.type)}</span>
         <span class="tag">${esc(j.st)}</span>
+        ${flightTag}
         ${spanBadge}
         ${(mode==='month'||q)&&days===1?`<span class="sum">${thDate(j.date)}</span>`:''}
       </div></div>
@@ -611,13 +716,24 @@ function render(){
       <div class="rt">${j.from?'🚏 รับ: '+esc(j.from)+'<br>':''}${j.to?'🏁 ไป: '+esc(j.to)+'<br>':''}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
       <div class="sum">ติดต่อ: ${esc(j.ch)} ${esc(j.ct)}</div>
       ${lk?`<div class="lk">${lk}</div>`:''}
-      <div class="acts"><button class="btn g sm" data-e="${j.id}">แก้ไข</button><button class="btn g sm" data-x="${j.id}" style="color:var(--rd)">ลบ</button></div></div>`}).join(''):'<div class="empty">ยังไม่มีงาน</div>';
+      <div class="acts">
+        <button class="btn g sm" data-s="${j.id}">🪧 ชูป้าย</button>
+        <button class="btn g sm" data-e="${j.id}">แก้ไข</button>
+        <button class="btn g sm" data-x="${j.id}" style="color:var(--rd)">ลบ</button>
+      </div></div>`}).join(''):'<div class="empty">ยังไม่มีงาน</div>';
 
+  $('list').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{
+    const j=jobs.find(x=>x.id===b.dataset.s);
+    if(j) openSignModal(j);
+  });
   $('list').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>edit(b.dataset.e));
   $('list').querySelectorAll('[data-x]').forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>x.id===b.dataset.x);if(j&&await ask('ลบงานนี้? (ดูย้อนหลังและกู้คืนได้ที่ถังขยะ)')){trash.unshift({...j,del:new Date().toISOString()});jobs=jobs.filter(x=>x.id!==j.id);save();render()}});
 }
 
-const F=['date','endDate','time','type','st','name','owner','ch','ct','from','to','pax','price','color','note'];
+// =======================================================
+// 5. ฟอร์มเพิ่ม/แก้ไขงาน
+// =======================================================
+const F=['date','endDate','time','flight','type','st','name','owner','ch','ct','from','to','pax','price','color','note'];
 function edit(id){
   const j=jobs.find(x=>x.id===id);if(!j)return;
   editId=id;
@@ -642,12 +758,8 @@ $('fm').onsubmit=e=>{
   $('time').onblur({target:$('time')});
   const o={};F.forEach(k=>o[k]=$(k).value.trim());
   if(o.owner==='__new')o.owner=$('onew').value.trim();
-  if(!o.endDate||o.endDate<=o.date){
-    o.endDate='';
-    o.dayPlans=[];
-  }else{
-    o.dayPlans=getCurrentDayPlanInputs();
-  }
+  if(!o.endDate||o.endDate<=o.date){ o.endDate=''; o.dayPlans=[]; }
+  else { o.dayPlans=getCurrentDayPlanInputs(); }
   addOwner(o.owner);window.lastOw=o.owner;
   if(editId){jobs=jobs.map(j=>j.id===editId?{...o,id:editId,upd:Date.now()}:j)}
   else jobs.push({...o,id:Date.now().toString(36),upd:Date.now()});
@@ -656,12 +768,9 @@ $('fm').onsubmit=e=>{
   if(innerWidth<=860)$('lt').scrollIntoView({behavior:'smooth'});
 };
 $('cn').onclick=()=>{reset();closeAd()};
-
-// เลื่อนปฏิทินทีละ 1 เดือน + ปุ่มกลับวันนี้
 $('pv').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);render()};
 $('nx').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);render()};
 $('tdBtn').onclick=()=>{cur=new Date(today.getFullYear(),today.getMonth(),1);sel=iso(today);mode='day';$('date').value=sel;render()};
-
 $('vd').onclick=()=>{mode='day';render()};$('vm').onclick=()=>{mode='month';render()};
 $('q').oninput=render;
 $('bk').onclick=()=>{$('bx').value=JSON.stringify(jobs);$('dg').showModal()};
@@ -681,7 +790,187 @@ function addOwner(n){if(n&&!owners.includes(n)){owners.push(n);owners.sort();try
 drawOwners();
 
 // =======================================================
-// 5. ระบบซิงก์ข้อมูลกับ Google Sheets อัตโนมัติ
+// 6. ระบบป้ายชูรับลูกค้า (Welcome Sign) + คลังโลโก้หลายแบบ
+// =======================================================
+const LOGO_STORE_KEY = KEY + '-logos';
+const LOGO_SEL_KEY = KEY + '-logo-sel';
+let logoList=[];
+try{logoList=JSON.parse(localStorage.getItem(LOGO_STORE_KEY)||'[]')}catch(e){logoList=[]}
+let selectedLogoId = localStorage.getItem(LOGO_SEL_KEY) || (logoList[0]?.id || '');
+
+function saveLogos(){
+  try{
+    localStorage.setItem(LOGO_STORE_KEY, JSON.stringify(logoList));
+    localStorage.setItem(LOGO_SEL_KEY, selectedLogoId);
+    return true;
+  }catch(e){
+    alert('พื้นที่เก็บโลโก้ในเครื่องเต็ม กรุณาลบโลโก้ที่ไม่ใช้ออกบางส่วนก่อนครับ');
+    return false;
+  }
+}
+
+// ย่อขนาดรูปโลโก้ก่อนบันทึก (ความกว้าง/สูงไม่เกิน 420px คงความโปร่งใส PNG)
+function resizeLogoFile(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onload=()=>{
+        const maxSide=420;
+        let w=img.width, h=img.height;
+        if(w>maxSide || h>maxSide){
+          const ratio=Math.min(maxSide/w, maxSide/h);
+          w=Math.round(w*ratio); h=Math.round(h*ratio);
+        }
+        const canvas=document.createElement('canvas');
+        canvas.width=w; canvas.height=h;
+        canvas.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(canvas.toDataURL('image/png'));
+      };
+      img.onerror=reject;
+      img.src=ev.target.result;
+    };
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// วาดแถบคลังโลโก้ให้คลิกเลือก/ลบ/เพิ่มได้ทันที
+function renderLogoBar(){
+  let html=`<div class="logo-item${!selectedLogoId?' on':''}" data-lid="">
+    <span class="logo-none">ไม่ใช้<br>โลโก้</span>
+  </div>`;
+
+  logoList.forEach(item=>{
+    const on = (selectedLogoId===item.id) ? ' on' : '';
+    html+=`<div class="logo-item${on}" data-lid="${item.id}" title="${esc(item.name)}">
+      <img src="${item.data}" alt="${esc(item.name)}">
+      <button type="button" class="logo-del" data-ldel="${item.id}" title="ลบโลโก้นี้">×</button>
+    </div>`;
+  });
+
+  html+=`<button type="button" class="logo-add-btn" id="logoAddBtn">＋ เพิ่มโลโก้</button>`;
+  $('sLogoList').innerHTML=html;
+
+  // คลิกเลือกโลโก้
+  $('sLogoList').querySelectorAll('.logo-item').forEach(el=>{
+    el.onclick=()=>{
+      selectedLogoId=el.dataset.lid||'';
+      saveLogos();
+      renderLogoBar();
+      renderSignBoard();
+    };
+  });
+
+  // คลิกปุ่ม × ลบโลโก้เฉพาะอัน
+  $('sLogoList').querySelectorAll('[data-ldel]').forEach(btn=>{
+    btn.onclick=e=>{
+      e.stopPropagation();
+      const id=btn.dataset.ldel;
+      logoList=logoList.filter(x=>x.id!==id);
+      if(selectedLogoId===id) selectedLogoId=logoList[0]?.id || '';
+      saveLogos();
+      renderLogoBar();
+      renderSignBoard();
+    };
+  });
+
+  // คลิกปุ่ม + เพิ่มโลโก้
+  $('logoAddBtn').onclick=()=>$('sLogoFile').click();
+}
+
+$('sLogoFile').onchange=async e=>{
+  const files=[...(e.target.files||[])];
+  if(!files.length)return;
+  for(const f of files){
+    try{
+      const dataUrl=await resizeLogoFile(f);
+      const id='lg_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+      logoList.push({ id, name: f.name, data: dataUrl });
+      selectedLogoId=id;
+    }catch(err){}
+  }
+  e.target.value='';
+  if(!saveLogos()){
+    logoList.pop();
+    selectedLogoId=logoList[0]?.id || '';
+  }
+  renderLogoBar();
+  renderSignBoard();
+};
+
+function getSignBoardHtml(){
+  const head=$('sHead').value.trim();
+  const name=$('sName').value.trim()||'ชื่อลูกค้า';
+  const flight=$('sFlight').value.trim();
+  const sub=$('sSub').value.trim();
+  const theme=$('sTheme').value;
+  const nameSz=Number($('sNameSz').value)||64;
+  const logoSz=Number($('sLogoSz').value)||90;
+  const activeLogo=logoList.find(x=>x.id===selectedLogoId);
+
+  return `<div class="sign-board ${theme}">
+    ${activeLogo ? `<img class="sb-logo" src="${activeLogo.data}" style="height:${logoSz}px" alt="logo">` : ''}
+    ${head ? `<div class="sb-head">${esc(head)}</div>` : ''}
+    <div class="sb-name" style="font-size:${nameSz}px">${esc(name)}</div>
+    ${flight ? `<div class="sb-flight">✈️ ${esc(flight)}</div>` : ''}
+    ${sub ? `<div class="sb-sub">${esc(sub)}</div>` : ''}
+  </div>`;
+}
+
+function renderSignBoard(){
+  $('sNameSzLbl').textContent=$('sNameSz').value;
+  $('sLogoSzLbl').textContent=$('sLogoSz').value;
+  $('signPreview').innerHTML=getSignBoardHtml();
+}
+
+function openSignModal(job){
+  if(job){
+    $('sName').value=job.name||'';
+    $('sFlight').value=job.flight||'';
+    $('sSub').value=job.to||'';
+  }else{
+    $('sName').value='';
+    $('sFlight').value='';
+    $('sSub').value='';
+  }
+  renderLogoBar();
+  renderSignBoard();
+  $('signModal').showModal();
+}
+
+['sHead','sTheme','sName','sFlight','sSub','sNameSz','sLogoSz'].forEach(id=>{
+  $(id).addEventListener('input', renderSignBoard);
+  $(id).addEventListener('change', renderSignBoard);
+});
+$('openSignTopBtn').onclick=()=>openSignModal(null);
+$('signClose').onclick=()=>$('signModal').close();
+
+// เปิดโหมดเต็มหน้าจอ (Fullscreen)
+$('signFsBtn').onclick=()=>{
+  $('signFsBody').innerHTML=getSignBoardHtml();
+  $('signFs').classList.add('show');
+  if(document.documentElement.requestFullscreen){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }
+};
+function exitSignFs(){
+  $('signFs').classList.remove('show');
+  if(document.fullscreenElement && document.exitFullscreen){
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+$('signFsExit').onclick=exitSignFs;
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('signFs').classList.contains('show')) exitSignFs(); });
+
+// สั่งพิมพ์ / บันทึก PDF (A4 แนวนอน)
+$('signPrintBtn').onclick=()=>{
+  $('printArea').innerHTML=getSignBoardHtml();
+  window.print();
+};
+
+// =======================================================
+// 7. ระบบซิงก์ข้อมูลกับ Google Sheets อัตโนมัติ
 // =======================================================
 let busy=false,again=false,stm;
 const setS=t=>{$('ss').textContent=t};
@@ -689,9 +978,6 @@ function sched(){clearTimeout(stm);stm=setTimeout(sync,1200)}
 
 async function callSheetApi(payload){
   const url=(SCRIPT_URL||'').trim();
-  if(!url.startsWith('https://script.google.com/macros/s/')||!url.endsWith('/exec')){
-    throw new Error('ยังไม่ได้ใส่ลิงก์ SCRIPT_URL (/exec) ให้ถูกต้องในไฟล์ index.html');
-  }
   const res=await fetch(url,{
     method:'POST',
     mode:'cors',
@@ -737,7 +1023,7 @@ const ask=msg=>new Promise(r=>{const d=$('cf');$('cm').textContent=msg;const don
 $('lg').innerHTML=Object.entries(TC).map(([k,c])=>`<span><i style="background:${c}"></i>${k}</span>`).join('');
 
 function renderTrash(){
-  $('tb').innerHTML=trash.some(x=>!x.purged)?trash.map((j,i)=>j.purged?'':`<div class="job" style="border-left:5px solid ${jobColor(j)}"><div class="t">${esc(j.name)} · ${thDate(j.date)}${dayCount(j)>1?' – '+thShort(getEndDate(j)):''} ${esc(j.time||'')}</div><div class="sum">${esc(j.type)}${j.from?' · '+esc(j.from):''}${j.to?' → '+esc(j.to):''}${j.price?' · '+baht(j.price)+' ฿':''}</div><div class="sum">ลบเมื่อ ${new Date(j.del).toLocaleString('th-TH',{hour12:false})}</div><div class="acts"><button class="btn sm" data-r="${i}">กู้คืน</button><button class="btn g sm" data-p="${i}" style="color:var(--rd)">ลบถาวร</button></div></div>`).join(''):'<div class="empty">ถังขยะว่าง</div>';
+  $('tb').innerHTML=trash.some(x=>!x.purged)?trash.map((j,i)=>j.purged?'':`<div class="job" style="border-left:5px solid ${jobColor(j)}"><div class="t">${esc(j.name)} · ${thDate(j.date)}${dayCount(j)>1?' – '+thShort(getEndDate(j)):''} ${esc(j.time||'')}</div><div class="sum">${esc(j.type)}${j.flight?' · ✈️ '+esc(j.flight):''}${j.from?' · '+esc(j.from):''}${j.to?' → '+esc(j.to):''}${j.price?' · '+baht(j.price)+' ฿':''}</div><div class="sum">ลบเมื่อ ${new Date(j.del).toLocaleString('th-TH',{hour12:false})}</div><div class="acts"><button class="btn sm" data-r="${i}">กู้คืน</button><button class="btn g sm" data-p="${i}" style="color:var(--rd)">ลบถาวร</button></div></div>`).join(''):'<div class="empty">ถังขยะว่าง</div>';
   $('tb').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const t=trash.splice(+b.dataset.r,1)[0];delete t.del;delete t.purged;t.upd=Date.now();jobs.push(t);save();renderTrash();render()});
   $('tb').querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{if(await ask('ลบถาวร? กู้คืนไม่ได้อีก')){trash[+b.dataset.p]={...trash[+b.dataset.p],purged:1,del:new Date().toISOString()};save();renderTrash()}});
 }
