@@ -245,7 +245,6 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 </head>
 <body>
 
-<!-- ช่องเลือกไฟล์โลโก้หลักสำรอง (ใช้ร่วมกันทุกหน้าต่าง) -->
 <input type="file" id="defLogoFile" accept="image/*" hidden>
 
 <div class="wrap">
@@ -364,11 +363,10 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
     <button class="btn g sm" id="ownerClose" type="button">ปิด</button>
   </div>
 
-  <!-- กล่องอัปโหลดโลโก้หลักสำรอง (ใช้แทนอัตโนมัติเมื่อไม่มีโลโก้เจ้าของงาน) -->
   <div class="def-logo-card">
     <div class="def-logo-prev" id="owDefLogoPrev"><span class="ow-prev-empty">ยังไม่มี<br>โลโก้หลัก</span></div>
     <div style="flex:1;min-width:200px">
-      <div style="font-weight:700;font-size:13.5px">⭐ โลโก้หลักสำรอง (ใช้บนป้ายชูเมื่อไม่มีโลโก้เจ้าของงาน)</div>
+      <div style="font-weight:700;font-size:13.5px">⭐ โลโก้หลักสำรอง (ใช้บนการ์ดงานและป้ายชูเมื่อไม่มีโลโก้เจ้าของงาน)</div>
       <div class="sum" style="font-size:12px;margin:2px 0 6px">บันทึกลง Google Sheets อัตโนมัติ ใช้ได้พร้อมกันทุกโทรศัพท์</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         <button type="button" class="btn sm" id="owDefUpBtn">📤 อัปโหลดโลโก้หลัก</button>
@@ -410,14 +408,14 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
   <div class="ow-list" id="ownerCards"></div>
 </dialog>
 
-<!-- หน้าต่างสร้างป้ายชูเดี่ยว -->
+<!-- หน้าต่างสร้างป้ายชูเดี่ยว (เว้นว่างข้อความหัวป้ายเป็นค่าเริ่มต้น) -->
 <dialog id="signModal">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <b>🪧 สร้างป้ายชูรับลูกค้า (Welcome Sign)</b>
     <button class="btn g sm" id="signClose" type="button">ปิด</button>
   </div>
   <div class="sign-grid">
-    <div><label>ข้อความหัวป้าย (เว้นว่างได้)</label><input id="sHead" value="WELCOME" placeholder="เช่น WELCOME / ยินดีต้อนรับ"></div>
+    <div><label>ข้อความหัวป้าย (เว้นว่างได้)</label><input id="sHead" value="" placeholder="เว้นว่างได้ (เช่น WELCOME)"></div>
     <div>
       <label>ธีมสีป้าย</label>
       <select id="sTheme">
@@ -450,7 +448,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
   </div>
 </dialog>
 
-<!-- หน้ารวมป้ายชู (Batch Signs — แยกโลโก้ตามเจ้าของงานแต่ละใบอัตโนมัติ) -->
+<!-- หน้ารวมป้ายชู (Batch Signs — ไม่มีคำว่า WELCOME ติดมาอัตโนมัติ) -->
 <dialog id="batchModal">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <b>📑 รวมป้ายชูทั้งหมด (เลือกเซฟ / ส่งต่อ LINE หลายป้าย)</b>
@@ -508,7 +506,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 // 1. ตั้งค่าหลัก (ใส่ลิงก์ Web App /exec ของคุณไว้เรียบร้อยแล้ว)
 // =======================================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5kMUgdEdBwMcaN4UYsnMQbHRutZsB7UjK5IZGGRaHhUkDFQp5HW-bDdWbO9xpGdOTPg/exec';
-const DEFAULT_LOGO_ID = '__default__'; // รหัสโลโก้หลักสำรองในแท็บ Logos
+const DEFAULT_LOGO_ID = '__default__';
 
 const COLOR_PALETTE = [
   { code: '',        label: 'สีตามประเภท' },
@@ -772,7 +770,7 @@ $('oLogoUpBtn').onclick=()=>$('oLogoFile').click();
 $('oLogoClrBtn').onclick=()=>updateOwnerLogoPreview('');
 $('owDefUpBtn').onclick=()=>$('defLogoFile').click();
 $('owDefClrBtn').onclick=async()=>{
-  if(!getDefaultLogo()) return;
+  if(!getExplicitDefaultLogo()) return;
   if(await ask('ลบโลโก้หลักสำรองออก?')){
     logoList=logoList.filter(x=>x.id!==DEFAULT_LOGO_ID);
     saveLogosLocal(); refreshAllLogoUIs();
@@ -936,6 +934,8 @@ function render(){
   const act=list.filter(j=>j.st!=='ยกเลิก'), tot=act.reduce((a,j)=>a+Number(j.price||0),0);
   $('sm').textContent=`${act.length} งาน · รวม ${baht(tot)} บาท`;
 
+  const defLogoObj = getDefaultLogo();
+
   $('list').innerHTML=list.length?list.map(j=>{
     const col=jobColor(j), days=dayCount(j), curDayNum=(mode==='day'&&!q)?dayNumber(j,sel):0;
     const spanBadge=days>1?`<span class="tag" style="background:${col};color:#fff">📅 ${days} วัน (${thShort(j.date)}–${thShort(getEndDate(j))})${curDayNum?` · วันที่ ${curDayNum}/${days}`:''}</span>`:'';
@@ -963,12 +963,17 @@ function render(){
     const lk=links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
     const allLinks=pinFrom+pinTo+lk;
 
+    // โซนโลโก้ฝั่งขวาของการ์ด: ถ้ามีเจ้าของงานใช้โลโก้เจ้าของงาน / ถ้าไม่มีเจ้าของงานใช้โลโก้หลักสำรอง
     let ownerSideHtml='';
     if(j.owner){
       const ow=findOwnerProfile(j.owner);
       ownerSideHtml=(ow && ow.logo)
         ? `<div class="job-side"><button type="button" class="owner-logo-box" data-ologo="${esc(j.owner)}" title="คลิกแก้ไขโลโก้/ข้อมูลของ ${esc(j.owner)}"><img src="${ow.logo}" alt="${esc(j.owner)}"></button><span class="owner-logo-cap">${esc(j.owner)}</span></div>`
         : `<div class="job-side"><button type="button" class="owner-logo-add" data-ologo="${esc(j.owner)}" title="เพิ่มโลโก้ให้ ${esc(j.owner)}"><span style="font-size:18px;line-height:1">🖼️</span><span>＋ โลโก้<br>${esc(j.owner)}</span></button></div>`;
+    }else{
+      ownerSideHtml=(defLogoObj && defLogoObj.data)
+        ? `<div class="job-side"><button type="button" class="owner-logo-box" data-updefcard="1" title="โลโก้หลัก (คลิกเพื่อเปลี่ยนโลโก้หลัก)"><img src="${defLogoObj.data}" alt="โลโก้หลัก"></button><span class="owner-logo-cap">⭐ โลโก้หลัก</span></div>`
+        : `<div class="job-side"><button type="button" class="owner-logo-add" data-updefcard="1" title="อัปโหลดโลโก้หลักสำรอง"><span style="font-size:18px;line-height:1">⭐</span><span>＋ โลโก้หลัก</span></button></div>`;
     }
 
     return `<div class="job${j.st==='เสร็จแล้ว'||j.st==='ยกเลิก'?' done':''}" style="border-left:6px solid ${col}">
@@ -992,6 +997,7 @@ function render(){
     </div>`}).join(''):'<div class="empty">ยังไม่มีงาน</div>';
 
   $('list').querySelectorAll('[data-ologo]').forEach(b=>b.onclick=()=>openOwnerModal(b.dataset.ologo));
+  $('list').querySelectorAll('[data-updefcard]').forEach(b=>b.onclick=()=>$('defLogoFile').click());
   $('list').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ const j=jobs.find(x=>x.id===b.dataset.s); if(j) openSignModal(j); });
   $('list').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>edit(b.dataset.e));
   $('list').querySelectorAll('[data-x]').forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>x.id===b.dataset.x);if(j&&await ask('ลบงานนี้? (ดูย้อนหลังและกู้คืนได้ที่ถังขยะ)')){trash.unshift({...j,del:new Date().toISOString()});jobs=jobs.filter(x=>x.id!==j.id);save();render()}});
@@ -1053,15 +1059,15 @@ $('adx').onclick=closeAd;$('ov').onclick=closeAd;
 const LOGO_STORE_KEY = KEY + '-logos';
 let logoList=[];try{logoList=JSON.parse(localStorage.getItem(LOGO_STORE_KEY)||'[]')}catch(e){logoList=[]}
 
-// โหมดเลือกโลโก้: '__auto__' = ดึงตามเจ้าของงาน (ถ้าไม่มีใช้โลโก้หลัก), '' = ไม่ใช้, หรือ id ของโลโก้
 let signLogoMode = '__auto__';
 let batchLogoMode = '__auto__';
 let currentSignJob = null;
 
-const getDefaultLogo = () => logoList.find(x => x.id === DEFAULT_LOGO_ID) || null;
+// คืนค่าโลโก้หลักที่ตั้งไว้โดยตรง หรือถ้ายังไม่ได้ตั้งแต่มีโลโก้ในคลังให้ใช้ใบแรกสำรองอัตโนมัติ
+const getExplicitDefaultLogo = () => logoList.find(x => x.id === DEFAULT_LOGO_ID) || null;
+const getDefaultLogo = () => getExplicitDefaultLogo() || logoList[0] || null;
 const getExtraLogos  = () => logoList.filter(x => x.id !== DEFAULT_LOGO_ID);
 
-// ฟังก์ชันหลัก: ตัดสินใจเลือกโลโก้ให้ป้ายแต่ละใบ (ตามเจ้าของงาน -> โลโก้หลักสำรอง -> หรือที่เลือกเอง)
 function resolveSignLogo(job, mode){
   if(mode === '') return { data:'', label:'ไม่ใช้โลโก้' };
   if(mode === '__auto__'){
@@ -1070,7 +1076,7 @@ function resolveSignLogo(job, mode){
       if(ow && ow.logo) return { data: ow.logo, label: `ดึงโลโก้ของเจ้าของงาน "${ow.name}" อัตโนมัติ` };
     }
     const def = getDefaultLogo();
-    if(def && def.data) return { data: def.data, label: 'ใช้ ⭐ โลโก้หลักสำรอง (งานนี้ยังไม่มีโลโก้เจ้าของงาน)' };
+    if(def && def.data) return { data: def.data, label: 'ใช้ ⭐ โลโก้หลักสำรองอัตโนมัติ (งานนี้ไม่มีโลโก้เจ้าของงาน)' };
     return { data:'', label:'ยังไม่มีโลโก้เจ้าของงาน และยังไม่ได้อัปโหลด ⭐ โลโก้หลักสำรอง' };
   }
   if(mode === DEFAULT_LOGO_ID){
@@ -1085,16 +1091,20 @@ function saveLogosLocal(){
   try{ localStorage.setItem(LOGO_STORE_KEY, JSON.stringify(logoList)); }catch(e){}
 }
 async function syncLogosToSheet(){
-  $('logoSyncStatus').textContent='(กำลังบันทึกลง Google Sheets...)';
-  if($('ownerModal').open) $('ownerSyncStatus').textContent='(กำลังบันทึกโลโก้หลักลง Sheets...)';
+  const msgSaving = '(กำลังบันทึกลง Google Sheets...)';
+  $('logoSyncStatus').textContent=msgSaving;
+  if($('ownerModal').open) $('ownerSyncStatus').textContent=msgSaving;
+  if($('batchModal').open) $('batchStatus').textContent='กำลังบันทึกโลโก้ลง Google Sheets...';
   try{
     const res=await callSheetApi({action:'saveLogos', logos:logoList});
     if(!res.ok) throw new Error(res.message||'บันทึกโลโก้ไม่สำเร็จ');
     $('logoSyncStatus').textContent='(✅ บันทึกขึ้น Sheets แล้ว)';
     if($('ownerModal').open) $('ownerSyncStatus').textContent='(✅ บันทึกโลโก้หลักขึ้น Sheets แล้ว)';
+    if($('batchModal').open) $('batchStatus').textContent='✅ บันทึกโลโก้ขึ้น Sheets แล้ว';
   }catch(err){
     $('logoSyncStatus').textContent='(⚠️ บันทึกไม่สำเร็จ: '+err.message+')';
     if($('ownerModal').open) $('ownerSyncStatus').textContent='(⚠️ บันทึกไม่สำเร็จ: '+err.message+')';
+    if($('batchModal').open) $('batchStatus').textContent='⚠️ บันทึกไม่สำเร็จ: '+err.message;
   }
 }
 function compressLogoForSheet(file){
@@ -1131,15 +1141,14 @@ function refreshAllLogoUIs(){
   renderOwnerSignLogoPicker();
   renderLogoBarTo('sLogoList', true);
   renderLogoBarTo('bLogoList', false);
+  render(); // อัปเดตโลโก้หลักบนการ์ดงานที่ไม่มีเจ้าของด้วย
   if($('signModal').open) renderSignBoard();
   if($('batchModal').open) renderBatchList();
 }
 
-// อัปโหลดโลโก้หลักสำรอง (เก็บในแท็บ Logos ด้วยรหัส __default__)
+// อัปโหลดโลโก้หลักสำรอง
 $('defLogoFile').onchange=async e=>{
   const f=e.target.files?.[0]; if(!f) return;
-  $('logoSyncStatus').textContent='(กำลังอัปโหลดโลโก้หลัก...)';
-  if($('ownerModal').open) $('ownerSyncStatus').textContent='(กำลังอัปโหลดโลโก้หลัก...)';
   try{
     const dataUrl=await compressLogoForSheet(f);
     logoList=logoList.filter(x=>x.id!==DEFAULT_LOGO_ID);
@@ -1153,16 +1162,15 @@ $('defLogoFile').onchange=async e=>{
 function renderLogoBarTo(containerId, isSingle){
   const el=$(containerId); if(!el) return;
   const activeMode = isSingle ? signLogoMode : batchLogoMode;
-  const defLogo = getDefaultLogo();
+  const defLogo = getExplicitDefaultLogo();
   const extras = getExtraLogos();
 
   let html=`<div class="logo-item${activeMode==='__auto__'?' on':''}" data-lid="__auto__" title="ดึงโลโก้ตามเจ้าของงานอัตโนมัติ ถ้าไม่มีใช้โลโก้หลักแทน">
     <span class="logo-none">✨ อัตโนมัติ<br><span style="font-size:10px;font-weight:400">ตามเจ้าของงาน</span></span>
   </div>`;
 
-  // ปุ่มโลโก้หลักสำรอง (ถ้ามีรูปแล้วโชว์รูป ถ้ายังไม่มีกดเพื่ออัปโหลดได้เลย)
   if(defLogo && defLogo.data){
-    html+=`<div class="logo-item${activeMode===DEFAULT_LOGO_ID?' on':''}" data-lid="${DEFAULT_LOGO_ID}" title="โลโก้หลักสำรอง (คลิกเพื่อบังคับใช้ หรืออัปโหลดเปลี่ยนใหม่ได้)">
+    html+=`<div class="logo-item${activeMode===DEFAULT_LOGO_ID?' on':''}" data-lid="${DEFAULT_LOGO_ID}" title="โลโก้หลักสำรอง">
       <img src="${defLogo.data}" alt="โลโก้หลัก">
       <span class="logo-tag">⭐ หลัก</span>
       ${isSingle?`<button type="button" class="logo-del" data-ldel="${DEFAULT_LOGO_ID}" title="ลบโลโก้หลัก">×</button>`:''}
@@ -1180,7 +1188,6 @@ function renderLogoBarTo(containerId, isSingle){
     </div>`;
   });
 
-  // ปุ่มอัปโหลดโลโก้หลักสำรอง (มีให้กดได้ทันทีทั้งหน้าป้ายเดี่ยวและหน้ารวมป้าย)
   html+=`<button type="button" class="logo-add-btn" data-updef="1">${defLogo?'⭐ เปลี่ยนโลโก้หลัก':'⭐ อัปโหลดโลโก้หลัก'}</button>`;
   if(isSingle) html+=`<button type="button" class="logo-add-btn" id="logoAddBtn">＋ โลโก้อื่น</button>`;
 
@@ -1267,7 +1274,7 @@ function renderSignBoard(){
 }
 function openSignModal(job){
   currentSignJob = job || null;
-  signLogoMode = '__auto__'; // เริ่มต้นโหมดดึงโลโก้ตามเจ้าของงานอัตโนมัติเสมอ
+  signLogoMode = '__auto__';
   $('sName').value=job?(job.name||''):'';
   $('sFlight').value=job?(job.flight||''):'';
   $('sTime').value=job?(job.time||''):'';
@@ -1296,7 +1303,6 @@ $('signFsExit').onclick=exitSignFs;
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('signFs').classList.contains('show')) exitSignFs(); });
 $('signPrintBtn').onclick=()=>{ $('printArea').innerHTML=createSignHtml(getSingleSignData()); window.print(); };
 
-// สร้างภาพ PNG ความละเอียดสูง (ใช้ data.logoData ของแต่ละป้าย)
 const SIGN_THEMES = {
   '':        { bg:'#ffffff', fg:'#0f172a', head:'#0f766e' },
   'th-navy': { bg:'#0f172a', fg:'#f8fafc', head:'#fbbf24' },
@@ -1377,7 +1383,7 @@ async function shareOrDownloadSigns(signDataList, forceDownload, statusEl){
 $('signDlBtn').onclick=()=>shareOrDownloadSigns([getSingleSignData()], true, null);
 $('signShareBtn').onclick=()=>shareOrDownloadSigns([getSingleSignData()], false, null);
 
-// หน้ารวมป้ายชู (Batch Signs)
+// หน้ารวมป้ายชู (Batch Signs — เว้นว่างหัวป้าย ไม่บังคับ WELCOME)
 let batchScope='day', batchChecked=new Set();
 function getBatchJobs(){
   const selObj=parseLocal(sel)||cur, y=selObj.getFullYear(), m=selObj.getMonth();
@@ -1387,7 +1393,8 @@ function getBatchJobs(){
 function jobToSignData(j){
   const resolved = resolveSignLogo(j, batchLogoMode);
   return {
-    head:$('sHead').value.trim()||'WELCOME', name:j.name||'ชื่อลูกค้า',
+    head:$('sHead').value.trim(), // เว้นว่างไว้ตามจริง ไม่เติม WELCOME อัตโนมัติ
+    name:j.name||'ชื่อลูกค้า',
     flight:j.flight||'', time:j.time||'', dateText:signDateFmt(j.date), sub:j.to||'',
     theme:$('bTheme').value, nameSz:64, logoSz:85, logoData: resolved.data
   };
