@@ -43,6 +43,18 @@ h1{font-size:20px;margin:0}
 .mbar{width:100%;height:7px;border-radius:4px;font-size:0;line-height:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-shadow:0 0 0 1px rgba(255,255,255,.45)}
 .day.sel .mbar{box-shadow:0 0 0 1px rgba(255,255,255,.85)}
 
+/* กล่องเลือกประเภทสถานที่ (Airport / Hotel / Home) + ช่องพิกัด Google Maps */
+.loc-box{background:var(--bg);border:1px solid var(--bd);border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:7px}
+.loc-pills{display:flex;gap:6px;flex-wrap:wrap}
+.loc-pill{
+  flex:1;min-width:84px;padding:6px 10px;border-radius:9px;border:1px solid var(--bd);
+  background:var(--card);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer;text-align:center;
+}
+.loc-pill.on{background:var(--pr);color:var(--prt);border-color:var(--pr)}
+.loc-row{display:flex;gap:6px;align-items:center}
+.loc-row input{flex:1;background:var(--card)}
+.loc-map-btn{white-space:nowrap;padding:8px 10px;font-size:12.5px}
+
 /* จานสี & แผนงานรายวัน */
 .swatches{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:4px}
 .sw{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:transform .12s}
@@ -82,11 +94,13 @@ textarea{min-height:56px;resize:vertical}
 .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
 .t{font-weight:700}
 .tag{display:inline-block;font-size:11px;border-radius:7px;padding:1px 7px;background:var(--ac);margin-right:4px;margin-top:2px}
+.loc-tag{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:0 6px;background:var(--bg);border:1px solid var(--bd);margin-right:4px}
 .pr{font-weight:700;color:var(--pr);white-space:nowrap}
-.rt{margin:6px 0;line-height:1.6}
+.rt{margin:6px 0;line-height:1.65}
 .lk{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
-.lk a{font-size:12.5px;text-decoration:none;color:#fff;border-radius:8px;padding:3px 10px;background:#64748b}
+.lk a{font-size:12.5px;text-decoration:none;color:#fff;border-radius:8px;padding:4px 10px;background:#64748b}
 .lk .wa{background:var(--wa)}.lk .fb{background:var(--fb)}.lk .ln{background:var(--ln)}
+.lk .mp-in{background:#0284c7}.lk .mp-out{background:#ea580c}
 .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .empty{text-align:center;color:var(--mu);padding:26px}
 dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);width:min(520px,92vw)}
@@ -96,83 +110,41 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;border-radius:30px;padding:13px 20px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:block!important}
 
-/* =========================================================
-   สไตล์ป้ายชูรับลูกค้า (โลโก้ชิดบน / ชื่อกลางหน้า / ไฟล์ทบินเล็กชิดล่าง)
-   ========================================================= */
+/* สไตล์ป้ายชูรับลูกค้า (Welcome Sign) */
 #signModal{width:min(780px,96vw);max-height:92vh;padding:16px;overflow:auto}
 .sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .sign-grid .f{grid-column:1/-1}
 .logo-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
-.logo-item{
-  position:relative;width:72px;height:56px;border-radius:10px;border:2px solid var(--bd);
-  background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:4px;
-}
+.logo-item{position:relative;width:72px;height:56px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:4px}
 .logo-item.on{border-color:var(--pr);background:var(--ac);box-shadow:0 0 0 1px var(--pr)}
 .logo-item img{max-width:100%;max-height:100%;object-fit:contain;display:block}
 .logo-none{font-size:12px;font-weight:600;color:var(--mu);text-align:center;line-height:1.2}
-.logo-del{
-  position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;border:0;
-  background:var(--rd);color:#fff;font-size:12px;line-height:1;cursor:pointer;padding:0;
-  display:flex;align-items:center;justify-content:center;
-}
-.logo-add-btn{
-  display:inline-flex;align-items:center;justify-content:center;height:56px;padding:0 14px;
-  border-radius:10px;border:2px dashed var(--pr);color:var(--pr);background:var(--bg);
-  font-size:13px;font-weight:700;cursor:pointer;
-}
+.logo-del{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;border:0;background:var(--rd);color:#fff;font-size:12px;line-height:1;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+.logo-add-btn{display:inline-flex;align-items:center;justify-content:center;height:56px;padding:0 14px;border-radius:10px;border:2px dashed var(--pr);color:var(--pr);background:var(--bg);font-size:13px;font-weight:700;cursor:pointer}
 .logo-add-btn:hover{background:var(--ac)}
 .sign-preview-wrap{margin-top:12px;border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:#e5e7eb}
-
-/* จัดวาง 3 โซนด้วย Grid (1fr auto 1fr) ให้ชื่อลูกค้าอยู่กึ่งกลางหน้ากระดาษเสมอ */
-.sign-board{
-  width:100%;aspect-ratio:1.414/1;
-  display:grid;
-  grid-template-rows:1fr auto 1fr;
-  align-items:center;
-  justify-items:center;
-  text-align:center;
-  padding:3.5% 5%;
-  background:#ffffff;color:#0f172a;
-  -webkit-print-color-adjust:exact;print-color-adjust:exact;
-}
+.sign-board{width:100%;aspect-ratio:1.414/1;display:grid;grid-template-rows:1fr auto 1fr;align-items:center;justify-items:center;text-align:center;padding:3.5% 5%;background:#ffffff;color:#0f172a;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sb-top{align-self:start;justify-self:center;display:flex;justify-content:center;width:100%}
 .sb-mid{align-self:center;justify-self:center;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
 .sb-bot{align-self:end;justify-self:center;display:flex;justify-content:center;width:100%}
-
 .sb-logo{max-width:65%;object-fit:contain;display:block}
 .sb-head{font-size:clamp(13px,2vw,22px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0f766e}
 .sb-name{font-weight:800;line-height:1.15;word-break:break-word;max-width:100%}
-.sb-sub{font-size:clamp(12px,1.6vw,18px);opacity:.78;max-width:90%}
-/* ไฟล์ทบินตัวเล็กชิดขอบล่างตรงกลาง */
-.sb-flight{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:clamp(12px,1.5vw,18px);font-weight:600;letter-spacing:.5px;
-  padding:4px 14px;border-radius:999px;
-  background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;
-}
-
+.sb-meta{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 12px;font-size:clamp(12px,1.5vw,18px);font-weight:600;letter-spacing:.3px;padding:5px 16px;border-radius:999px;max-width:95%;background:#f1f5f9;color:#334155;border:1px solid #cbd5e1}
+.sb-sep{opacity:.4;font-weight:400}
 .sign-board.th-navy{background:#0f172a;color:#f8fafc}
 .sign-board.th-navy .sb-head{color:#fbbf24}
-.sign-board.th-navy .sb-flight{background:#1e293b;color:#fbbf24;border-color:#334155}
+.sign-board.th-navy .sb-meta{background:#1e293b;color:#fbbf24;border-color:#334155}
 .sign-board.th-teal{background:#0f766e;color:#ffffff}
 .sign-board.th-teal .sb-head{color:#ccfbf1}
-.sign-board.th-teal .sb-flight{background:rgba(255,255,255,.15);color:#ffffff;border-color:rgba(255,255,255,.35)}
+.sign-board.th-teal .sb-meta{background:rgba(255,255,255,.15);color:#ffffff;border-color:rgba(255,255,255,.35)}
 .sign-board.th-dark{background:#111111;color:#ffffff}
 .sign-board.th-dark .sb-head{color:#a3a3a3}
-.sign-board.th-dark .sb-flight{background:#262626;color:#e5e5e5;border-color:#404040}
-
-/* โหมดเต็มหน้าจอ */
+.sign-board.th-dark .sb-meta{background:#262626;color:#e5e5e5;border-color:#404040}
 #signFs{display:none;position:fixed;inset:0;z-index:9999;background:#fff}
 #signFs.show{display:flex;align-items:center;justify-content:center}
 #signFs .sign-board{width:100vw;height:100vh;aspect-ratio:auto;padding:3vh 5vw}
-.fs-exit{
-  position:fixed;top:14px;right:14px;z-index:10000;
-  background:rgba(0,0,0,.45);color:#fff;border:0;border-radius:999px;
-  padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px);
-}
-.fs-exit:hover{background:rgba(0,0,0,.75)}
-
-/* โหมดสั่งพิมพ์ A4 แนวนอน */
+.fs-exit{position:fixed;top:14px;right:14px;z-index:10000;background:rgba(0,0,0,.45);color:#fff;border:0;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px)}
 #printArea{display:none}
 @media print{
   @page{size:A4 landscape;margin:0}
@@ -198,7 +170,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 #ov{display:none}
 #ov.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40}
 .addpop{display:none}
-.addpop.show{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;width:min(600px,94vw);max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.addpop.show{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;width:min(620px,95vw);max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -211,7 +183,6 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
   </div>
   <div class="grid">
     <div>
-      <!-- ปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไปจนจบสัปดาห์ -->
       <div class="card">
         <div class="cal-h">
           <button class="nav" id="pv" title="ย้อนกลับ 1 เดือน">‹</button>
@@ -246,8 +217,45 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <div class="f"><label>ชื่อลูกค้า</label><input id="name" required placeholder="เช่น Mr. John Smith / คุณสมชาย"></div>
           <div class="f"><label>🎨 สีแถบงานบนปฏิทิน (แบ่งสีงานหลายวัน)</label><input type="hidden" id="color" value=""><div class="swatches" id="swatches"></div></div>
           <div class="f"><label>เบอร์ / ID / ลิงก์</label><input id="ct" placeholder="เช่น 0812345678"></div>
-          <div class="f"><label>รับจากที่ไหน</label><input id="from" placeholder="โรงแรม / สนามบิน / จุดนัด"></div>
-          <div class="f"><label>ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์</label><input id="to" placeholder="เช่น ดอยอินทนนท์"></div>
+
+          <!-- กล่องรับจากที่ไหน: เลือก Airport / Hotel / Home + ชื่อสถานที่ + พิกัดรับ -->
+          <div class="f loc-box">
+            <label style="color:var(--pr);font-weight:700;margin:0">🚏 รับจากที่ไหน</label>
+            <input type="hidden" id="fromType" value="">
+            <div class="loc-pills" id="fromPills">
+              <button type="button" class="loc-pill" data-v="Airport">✈️ Airport</button>
+              <button type="button" class="loc-pill" data-v="Hotel">🏨 Hotel</button>
+              <button type="button" class="loc-pill" data-v="Home">🏠 Home</button>
+            </div>
+            <div class="loc-row">
+              <input id="from" placeholder="ชื่อสถานที่รับ (เช่น โรงแรม / บ้าน / สนามบิน)">
+              <button type="button" class="btn g loc-map-btn" id="fromFindMap" title="เปิดค้นหาชื่อนี้ใน Google Maps">🗺️ ดูใน Maps</button>
+            </div>
+            <div class="loc-row">
+              <input id="fromMap" placeholder="📍 ลิงก์พิกัดรับ Google Maps (เว้นว่างได้ ระบบลิงก์จากชื่อให้)">
+              <button type="button" class="btn g loc-map-btn" id="fromOpenPin">📍 พิกัดรับ</button>
+            </div>
+          </div>
+
+          <!-- กล่องไปส่งที่: เลือก Airport / Hotel / Home + ชื่อสถานที่ + พิกัดส่ง -->
+          <div class="f loc-box">
+            <label style="color:var(--pr);font-weight:700;margin:0">🏁 ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์</label>
+            <input type="hidden" id="toType" value="">
+            <div class="loc-pills" id="toPills">
+              <button type="button" class="loc-pill" data-v="Airport">✈️ Airport</button>
+              <button type="button" class="loc-pill" data-v="Hotel">🏨 Hotel</button>
+              <button type="button" class="loc-pill" data-v="Home">🏠 Home</button>
+            </div>
+            <div class="loc-row">
+              <input id="to" placeholder="ชื่อสถานที่ส่ง / โรงแรม / ที่เที่ยว (เช่น ดอยอินทนนท์)">
+              <button type="button" class="btn g loc-map-btn" id="toFindMap" title="เปิดค้นหาชื่อนี้ใน Google Maps">🗺️ ดูใน Maps</button>
+            </div>
+            <div class="loc-row">
+              <input id="toMap" placeholder="🏁 ลิงก์พิกัดส่ง Google Maps (เว้นว่างได้ ระบบลิงก์จากชื่อให้)">
+              <button type="button" class="btn g loc-map-btn" id="toOpenPin">🏁 พิกัดส่ง</button>
+            </div>
+          </div>
+
           <div><label>จำนวนคน</label><input type="number" id="pax" min="0" placeholder="0"></div>
           <div><label>ราคารวมทั้งหมด (บาท)</label><input type="number" id="price" min="0" placeholder="0"></div>
           <div class="f"><label>รายละเอียด / หมายเหตุรวม</label><textarea id="note" placeholder="ที่นั่งเด็ก, ป้ายชื่อ, หมายเหตุ ฯลฯ"></textarea></div>
@@ -275,17 +283,14 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 </div>
 <button class="btn fab" id="fab">+ เพิ่มงาน</button>
 
-<!-- หน้าต่างสร้างป้ายชูรับลูกค้า (คลังโลโก้ซิงก์ผ่าน Google Sheets) -->
+<!-- หน้าต่างสร้างป้ายชูรับลูกค้า -->
 <dialog id="signModal">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <b>🪧 สร้างป้ายชูรับลูกค้า (Welcome Sign)</b>
     <button class="btn g sm" id="signClose" type="button">ปิด</button>
   </div>
   <div class="sign-grid">
-    <div>
-      <label>ข้อความหัวป้าย (เว้นว่างได้)</label>
-      <input id="sHead" value="WELCOME" placeholder="เช่น WELCOME / ยินดีต้อนรับ">
-    </div>
+    <div><label>ข้อความหัวป้าย (เว้นว่างได้)</label><input id="sHead" value="WELCOME" placeholder="เช่น WELCOME / ยินดีต้อนรับ"></div>
     <div>
       <label>ธีมสีป้าย</label>
       <select id="sTheme">
@@ -295,37 +300,18 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
         <option value="th-dark">ดำ–ขาว (ชูกลางคืนชัด)</option>
       </select>
     </div>
-    <div class="f">
-      <label>ชื่อลูกค้า (แสดงตรงกลางหน้ากระดาษ)</label>
-      <input id="sName" placeholder="เช่น MR. JOHN SMITH">
-    </div>
-    <div>
-      <label>✈️ ไฟล์ทบิน (ตัวเล็กชิดขอบล่างตรงกลาง)</label>
-      <input id="sFlight" placeholder="เช่น TG102">
-    </div>
-    <div>
-      <label>ข้อความเสริมใต้ชื่อ (ไม่บังคับ)</label>
-      <input id="sSub" placeholder="เช่น ชื่อโรงแรม หรือข้อความเพิ่มเติม">
-    </div>
+    <div class="f"><label>ชื่อลูกค้า (แสดงตรงกลางหน้ากระดาษ)</label><input id="sName" placeholder="เช่น MR. JOHN SMITH"></div>
+    <div><label>✈️ ไฟล์ทบิน (ขอบล่าง บรรทัดเดียวกับปลายทาง)</label><input id="sFlight" placeholder="เช่น TG102"></div>
+    <div><label>📍 ข้อความเสริม / ไปส่งที่ (ดึงจากงานอัตโนมัติ)</label><input id="sSub" placeholder="เช่น ชื่อโรงแรม / สถานที่ท่องเที่ยว"></div>
     <div class="f">
       <label>🖼️ คลังโลโก้ (ชิดขอบบนตรงกลาง · บันทึกลง Google Sheets ใช้ได้ทุกเครื่อง) <span id="logoSyncStatus" style="color:var(--pr);font-weight:600"></span></label>
       <input type="file" id="sLogoFile" accept="image/*" multiple hidden>
       <div class="logo-bar" id="sLogoList"></div>
     </div>
-    <div>
-      <label>ขนาดชื่อลูกค้า (<span id="sNameSzLbl">64</span>px)</label>
-      <input type="range" id="sNameSz" min="28" max="120" value="64" style="padding:0">
-    </div>
-    <div>
-      <label>ขนาดความสูงโลโก้ (<span id="sLogoSzLbl">85</span>px)</label>
-      <input type="range" id="sLogoSz" min="40" max="180" value="85" style="padding:0">
-    </div>
+    <div><label>ขนาดชื่อลูกค้า (<span id="sNameSzLbl">64</span>px)</label><input type="range" id="sNameSz" min="28" max="120" value="64" style="padding:0"></div>
+    <div><label>ขนาดความสูงโลโก้ (<span id="sLogoSzLbl">85</span>px)</label><input type="range" id="sLogoSz" min="40" max="180" value="85" style="padding:0"></div>
   </div>
-
-  <div class="sign-preview-wrap">
-    <div id="signPreview"></div>
-  </div>
-
+  <div class="sign-preview-wrap"><div id="signPreview"></div></div>
   <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:flex-end">
     <button type="button" class="btn" id="signFsBtn">🖥️ เปิดเต็มหน้าจอ (Fullscreen)</button>
     <button type="button" class="btn g" id="signPrintBtn">🖨️ พิมพ์ / บันทึก PDF (A4)</button>
@@ -368,16 +354,88 @@ const COLOR_PALETTE = [
   { code: '#475569', label: 'เทาเข้ม' }
 ];
 const TC = { 'รับ':'#16a34a', 'ส่ง':'#dc2626', 'ทัวร์':'#0ea5e9', 'อื่นๆ':'#64748b' };
+const LOC_ICON = { 'Airport':'✈️ Airport', 'Hotel':'🏨 Hotel', 'Home':'🏠 Home' };
 
 const $=id=>document.getElementById(id);
 const KEY='booking-planner-v1';
 
 // =======================================================
-// 2. ฟังก์ชันจัดการวันที่/เวลา (ป้องกัน GMT)
+// 2. ฟังก์ชันจัดการวันที่/เวลา & ลิงก์ Google Maps อัตโนมัติ
 // =======================================================
 const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+// สร้างลิงก์ Google Maps: ถ้ามีลิงก์พิกัดจริงใช้ลิงก์นั้น ถ้าไม่มีสร้างลิงก์ค้นหาจากชื่อสถานที่ให้เลย
+function resolveMapUrl(mapLink, placeName){
+  const m=(mapLink||'').trim();
+  if(/^https?:\/\//i.test(m)) return m;
+  const q=(placeName||'').trim();
+  if(q) return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
+  return '';
+}
+
+// ถ้าวางลิงก์ Google Maps แบบเต็มที่มี /place/ชื่อสถานที่/ ระบบจะดึงชื่อมาใส่ให้อัตโนมัติหากช่องชื่อยังว่าง
+function extractNameFromMapUrl(url){
+  const m=String(url||'').match(/\/maps\/place\/([^/@?]+)/i);
+  if(!m) return '';
+  try{ return decodeURIComponent(m[1].replace(/\+/g,' ')).trim(); }catch(e){ return ''; }
+}
+
+// ผูกปุ่มเลือก Airport / Hotel / Home และปุ่มเปิด Maps ให้ทั้งฝั่งรับและฝั่งส่ง
+function setupLocPicker(prefix){
+  const typeEl=$(prefix+'Type');
+  const nameEl=$(prefix);
+  const mapEl=$(prefix+'Map');
+  const pillsEl=$(prefix+'Pills');
+
+  const updateUI=()=>{
+    const val=typeEl.value;
+    pillsEl.querySelectorAll('.loc-pill').forEach(btn=>btn.classList.toggle('on', btn.dataset.v===val));
+    if(val==='Airport') nameEl.placeholder='ชื่อสนามบิน (เช่น สนามบินเชียงใหม่ / CNX)';
+    else if(val==='Hotel') nameEl.placeholder='ชื่อโรงแรม (ลิงก์ไป Google Maps ให้อัตโนมัติ)';
+    else if(val==='Home') nameEl.placeholder='ชื่อหมู่บ้าน / ที่อยู่บ้าน (ลิงก์ไป Google Maps ให้อัตโนมัติ)';
+    else nameEl.placeholder=prefix==='from'?'ชื่อสถานที่รับ (เช่น โรงแรม / บ้าน / สนามบิน)':'ชื่อสถานที่ส่ง / โรงแรม / ที่เที่ยว';
+  };
+
+  pillsEl.querySelectorAll('.loc-pill').forEach(btn=>{
+    btn.onclick=()=>{
+      const next=(typeEl.value===btn.dataset.v)?'':btn.dataset.v;
+      typeEl.value=next;
+      if(next==='Airport' && !nameEl.value.trim()) nameEl.value='Airport';
+      else if(next!=='Airport' && nameEl.value.trim()==='Airport') nameEl.value='';
+      updateUI();
+      if(next==='Hotel'||next==='Home') nameEl.focus();
+    };
+  });
+
+  // ดึงชื่อสถานที่อัตโนมัติเมื่อวางลิงก์ Google Maps แบบเต็ม
+  mapEl.addEventListener('change',()=>{
+    if(!nameEl.value.trim()){
+      const extracted=extractNameFromMapUrl(mapEl.value);
+      if(extracted) nameEl.value=extracted;
+    }
+  });
+
+  // ปุ่มค้นหาชื่อสถานที่ใน Google Maps
+  $(prefix+'FindMap').onclick=()=>{
+    const q=nameEl.value.trim();
+    if(!q){ alert('กรุณาพิมพ์ชื่อสถานที่ก่อนกดดูใน Maps ครับ'); nameEl.focus(); return; }
+    window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener');
+  };
+
+  // ปุ่มเปิดพิกัดรับ/พิกัดส่ง
+  $(prefix+'OpenPin').onclick=()=>{
+    const url=resolveMapUrl(mapEl.value, nameEl.value);
+    if(!url){ alert('กรุณาวางลิงก์ Google Maps หรือพิมพ์ชื่อสถานที่ก่อนครับ'); return; }
+    window.open(url,'_blank','noopener');
+  };
+
+  return updateUI;
+}
+
+const syncFromUI = setupLocPicker('from');
+const syncToUI   = setupLocPicker('to');
 
 function parseLocal(s){
   if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
@@ -590,7 +648,7 @@ function render(){
   const selObj=parseLocal(sel)||cur, y=selObj.getFullYear(), m=selObj.getMonth();
   const q=$('q').value.trim().toLowerCase();
   let list=jobs.filter(j=>mode==='day'?coversDate(j,sel):overlapsMonth(j,y,m));
-  if(q) list=jobs.filter(j=>[j.name,j.flight,j.owner,j.from,j.to,j.ct,j.note,j.type,...(j.dayPlans||[]).map(p=>p.text||'')].join(' ').toLowerCase().includes(q));
+  if(q) list=jobs.filter(j=>[j.name,j.flight,j.owner,j.from,j.fromType,j.to,j.toType,j.ct,j.note,j.type,...(j.dayPlans||[]).map(p=>p.text||'')].join(' ').toLowerCase().includes(q));
   list.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
   $('lt').textContent=q?'ผลการค้นหา':mode==='day'?'งานวันที่ '+thDate(sel):'งานทั้งเดือน '+thMonth(new Date(y,m,1));
   const act=list.filter(j=>j.st!=='ยกเลิก'), tot=act.reduce((a,j)=>a+Number(j.price||0),0);
@@ -613,15 +671,29 @@ function render(){
       }
       plansHtml=`<div class="dp-card"><div class="dp-card-title">📋 แผนงานรายวัน & ราคา</div>${rows}</div>`;
     }
-    const lk=links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
+
+    // แสดงป้ายประเภทสถานที่ (Airport / Hotel / Home) คู่กับชื่อสถานที่
+    const fromBadge = j.fromType ? `<span class="loc-tag">${LOC_ICON[j.fromType]||esc(j.fromType)}</span>` : '';
+    const toBadge   = j.toType   ? `<span class="loc-tag">${LOC_ICON[j.toType]||esc(j.toType)}</span>` : '';
+    const fromLine  = (j.from||j.fromType) ? `🚏 รับ: ${fromBadge}${esc(j.from||'')}<br>` : '';
+    const toLine    = (j.to||j.toType)     ? `🏁 ไป: ${toBadge}${esc(j.to||'')}<br>` : '';
+
+    // สร้างปุ่มลิงก์ติดต่อ + ปุ่มพิกัดรับ + ปุ่มพิกัดส่ง (ลิงก์จากหมุดจริง หรือค้นหาจากชื่อสถานที่ให้อัตโนมัติ)
+    const fromUrl = resolveMapUrl(j.fromMap, j.from);
+    const toUrl   = resolveMapUrl(j.toMap, j.to);
+    const pinFrom = fromUrl ? `<a class="mp-in" href="${esc(fromUrl)}" target="_blank" rel="noopener">📍 พิกัดรับ</a>` : '';
+    const pinTo   = toUrl   ? `<a class="mp-out" href="${esc(toUrl)}" target="_blank" rel="noopener">🏁 พิกัดส่ง</a>` : '';
+    const lk      = links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
+    const allLinks = pinFrom + pinTo + lk;
+
     return `<div class="job${j.st==='เสร็จแล้ว'||j.st==='ยกเลิก'?' done':''}" style="border-left:6px solid ${col}">
       <div class="top"><div><div class="t">${esc(j.time||'--:--')} · ${esc(j.name)}</div>
       <div><span class="tag" style="background:${TC[j.type]||'#64748b'};color:#fff">${esc(j.type)}</span><span class="tag">${esc(j.st)}</span>${flightTag}${spanBadge}${(mode==='month'||q)&&days===1?`<span class="sum">${thDate(j.date)}</span>`:''}</div></div>
       <div class="pr">${j.price?baht(j.price)+' ฿':''}</div></div>
       ${plansHtml}
-      <div class="rt">${j.from?'🚏 รับ: '+esc(j.from)+'<br>':''}${j.to?'🏁 ไป: '+esc(j.to)+'<br>':''}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
+      <div class="rt">${fromLine}${toLine}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
       <div class="sum">ติดต่อ: ${esc(j.ch)} ${esc(j.ct)}</div>
-      ${lk?`<div class="lk">${lk}</div>`:''}
+      ${allLinks?`<div class="lk">${allLinks}</div>`:''}
       <div class="acts">
         <button class="btn g sm" data-s="${j.id}">🪧 ชูป้าย</button>
         <button class="btn g sm" data-e="${j.id}">แก้ไข</button>
@@ -636,10 +708,11 @@ function render(){
 // =======================================================
 // 5. ฟอร์มเพิ่ม/แก้ไขงาน
 // =======================================================
-const F=['date','endDate','time','flight','type','st','name','owner','ch','ct','from','to','pax','price','color','note'];
+const F=['date','endDate','time','flight','type','st','name','owner','ch','ct','fromType','from','fromMap','toType','to','toMap','pax','price','color','note'];
 function edit(id){
   const j=jobs.find(x=>x.id===id);if(!j)return;
   editId=id; F.forEach(k=>$(k).value=j[k]??''); setT(j.time);
+  syncFromUI(); syncToUI();
   drawSwatches(j.color||''); renderDayPlanInputs(j.dayPlans||[]);
   $('ft').textContent='แก้ไขงาน';$('sv').textContent='อัปเดต';$('cn').hidden=false;
   $('ad').classList.add('show');$('ov').classList.add('show');
@@ -647,6 +720,7 @@ function edit(id){
 function reset(){
   const lo=window.lastOw||''; editId=null;$('fm').reset();
   $('owner').value=lo;$('onew').style.display='none';$('date').value=sel;$('endDate').value='';
+  $('fromType').value=''; $('toType').value=''; syncFromUI(); syncToUI();
   drawSwatches(''); renderDayPlanInputs([]);
   $('ft').textContent='เพิ่มงานใหม่';$('sv').textContent='บันทึก';$('cn').hidden=true;
 }
@@ -693,13 +767,8 @@ let logoList=[];try{logoList=JSON.parse(localStorage.getItem(LOGO_STORE_KEY)||'[
 let selectedLogoId = localStorage.getItem(LOGO_SEL_KEY) || (logoList[0]?.id || '');
 
 function saveLogosLocal(){
-  try{
-    localStorage.setItem(LOGO_STORE_KEY, JSON.stringify(logoList));
-    localStorage.setItem(LOGO_SEL_KEY, selectedLogoId);
-  }catch(e){}
+  try{ localStorage.setItem(LOGO_STORE_KEY, JSON.stringify(logoList)); localStorage.setItem(LOGO_SEL_KEY, selectedLogoId); }catch(e){}
 }
-
-// ส่งคลังโลโก้ไปบันทึกลงแท็บ Logos ใน Google Sheets ทันที
 async function syncLogosToSheet(){
   $('logoSyncStatus').textContent='(กำลังบันทึกลง Google Sheets...)';
   try{
@@ -710,8 +779,6 @@ async function syncLogosToSheet(){
     $('logoSyncStatus').textContent='(⚠️ บันทึกไม่สำเร็จ: '+err.message+')';
   }
 }
-
-// ย่อและบีบอัดโลโก้ให้ต่ำกว่า 45,000 ตัวอักษร เพื่อเก็บลงช่อง Google Sheets ได้ 100%
 function compressLogoForSheet(file){
   return new Promise((resolve,reject)=>{
     const reader=new FileReader();
@@ -719,45 +786,37 @@ function compressLogoForSheet(file){
       const img=new Image();
       img.onload=()=>{
         const MAX_CHARS=45000;
-        let maxSide=320;
         const makeDataUrl=(side, mime, quality)=>{
           let w=img.width, h=img.height;
           if(w>side||h>side){ const r=Math.min(side/w, side/h); w=Math.round(w*r); h=Math.round(h*r); }
-          const cv=document.createElement('canvas');
-          cv.width=w; cv.height=h;
+          const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
           const ctx=cv.getContext('2d');
           if(mime==='image/jpeg'){ ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,w,h); }
           ctx.drawImage(img,0,0,w,h);
           return cv.toDataURL(mime, quality);
         };
-        // ลอง PNG ก่อนเพื่อคงพื้นใส ถ้าใหญ่เกินค่อยบีบเป็น WebP / JPEG และลดขนาด
-        let out=makeDataUrl(maxSide,'image/png');
-        if(out.length>MAX_CHARS) out=makeDataUrl(maxSide,'image/webp',0.8);
+        let out=makeDataUrl(320,'image/png');
+        if(out.length>MAX_CHARS) out=makeDataUrl(320,'image/webp',0.8);
         if(out.length>MAX_CHARS) out=makeDataUrl(240,'image/webp',0.72);
         if(out.length>MAX_CHARS) out=makeDataUrl(220,'image/jpeg',0.72);
         if(out.length>MAX_CHARS) out=makeDataUrl(180,'image/jpeg',0.6);
         resolve(out);
       };
-      img.onerror=reject;
-      img.src=ev.target.result;
+      img.onerror=reject; img.src=ev.target.result;
     };
-    reader.onerror=reject;
-    reader.readAsDataURL(file);
+    reader.onerror=reject; reader.readAsDataURL(file);
   });
 }
-
 function renderLogoBar(){
   let html=`<div class="logo-item${!selectedLogoId?' on':''}" data-lid=""><span class="logo-none">ไม่ใช้<br>โลโก้</span></div>`;
   logoList.forEach(item=>{
-    const on=(selectedLogoId===item.id)?' on':'';
-    html+=`<div class="logo-item${on}" data-lid="${item.id}" title="${esc(item.name)}">
+    html+=`<div class="logo-item${selectedLogoId===item.id?' on':''}" data-lid="${item.id}" title="${esc(item.name)}">
       <img src="${item.data}" alt="${esc(item.name)}">
       <button type="button" class="logo-del" data-ldel="${item.id}" title="ลบโลโก้นี้">×</button>
     </div>`;
   });
   html+=`<button type="button" class="logo-add-btn" id="logoAddBtn">＋ เพิ่มโลโก้</button>`;
   $('sLogoList').innerHTML=html;
-
   $('sLogoList').querySelectorAll('.logo-item').forEach(el=>{
     el.onclick=()=>{ selectedLogoId=el.dataset.lid||''; saveLogosLocal(); renderLogoBar(); renderSignBoard(); };
   });
@@ -773,7 +832,6 @@ function renderLogoBar(){
   });
   $('logoAddBtn').onclick=()=>$('sLogoFile').click();
 }
-
 $('sLogoFile').onchange=async e=>{
   const files=[...(e.target.files||[])];
   if(!files.length)return;
@@ -790,59 +848,40 @@ $('sLogoFile').onchange=async e=>{
   saveLogosLocal(); renderLogoBar(); renderSignBoard();
   await syncLogosToSheet();
 };
-
-// สร้าง HTML ตัวป้าย: โลโก้ชิดขอบบนตรงกลาง / ชื่อลูกค้าตรงกลาง / ไฟล์ทบินตัวเล็กชิดขอบล่างตรงกลาง
 function getSignBoardHtml(){
-  const head=$('sHead').value.trim();
-  const name=$('sName').value.trim()||'ชื่อลูกค้า';
-  const flight=$('sFlight').value.trim();
-  const sub=$('sSub').value.trim();
-  const theme=$('sTheme').value;
-  const nameSz=Number($('sNameSz').value)||64;
-  const logoSz=Number($('sLogoSz').value)||85;
+  const head=$('sHead').value.trim(), name=$('sName').value.trim()||'ชื่อลูกค้า';
+  const flight=$('sFlight').value.trim(), sub=$('sSub').value.trim(), theme=$('sTheme').value;
+  const nameSz=Number($('sNameSz').value)||64, logoSz=Number($('sLogoSz').value)||85;
   const activeLogo=logoList.find(x=>x.id===selectedLogoId);
-
+  const botParts=[];
+  if(flight) botParts.push(`<span>✈️ Flight: ${esc(flight)}</span>`);
+  if(sub) botParts.push(`<span>📍 ${esc(sub)}</span>`);
+  const botHtml=botParts.length?`<div class="sb-meta">${botParts.join('<span class="sb-sep">|</span>')}</div>`:'';
   return `<div class="sign-board ${theme}">
-    <div class="sb-top">
-      ${activeLogo ? `<img class="sb-logo" src="${activeLogo.data}" style="height:${logoSz}px" alt="logo">` : ''}
-    </div>
-    <div class="sb-mid">
-      ${head ? `<div class="sb-head">${esc(head)}</div>` : ''}
-      <div class="sb-name" style="font-size:${nameSz}px">${esc(name)}</div>
-      ${sub ? `<div class="sb-sub">${esc(sub)}</div>` : ''}
-    </div>
-    <div class="sb-bot">
-      ${flight ? `<div class="sb-flight">✈️ Flight: ${esc(flight)}</div>` : ''}
-    </div>
+    <div class="sb-top">${activeLogo?`<img class="sb-logo" src="${activeLogo.data}" style="height:${logoSz}px" alt="logo">`:''}</div>
+    <div class="sb-mid">${head?`<div class="sb-head">${esc(head)}</div>`:''}<div class="sb-name" style="font-size:${nameSz}px">${esc(name)}</div></div>
+    <div class="sb-bot">${botHtml}</div>
   </div>`;
 }
-
 function renderSignBoard(){
   $('sNameSzLbl').textContent=$('sNameSz').value;
   $('sLogoSzLbl').textContent=$('sLogoSz').value;
   $('signPreview').innerHTML=getSignBoardHtml();
 }
-
 function openSignModal(job){
-  if(job){
-    $('sName').value=job.name||'';
-    $('sFlight').value=job.flight||'';
-    $('sSub').value='';
-  }else{
-    $('sName').value=''; $('sFlight').value=''; $('sSub').value='';
-  }
+  $('sName').value=job?(job.name||''):'';
+  $('sFlight').value=job?(job.flight||''):'';
+  $('sSub').value=job?(job.to||''):'';
   $('logoSyncStatus').textContent='';
   renderLogoBar(); renderSignBoard();
   $('signModal').showModal();
 }
-
 ['sHead','sTheme','sName','sFlight','sSub','sNameSz','sLogoSz'].forEach(id=>{
   $(id).addEventListener('input', renderSignBoard);
   $(id).addEventListener('change', renderSignBoard);
 });
 $('openSignTopBtn').onclick=()=>openSignModal(null);
 $('signClose').onclick=()=>$('signModal').close();
-
 $('signFsBtn').onclick=()=>{
   $('signFsBody').innerHTML=getSignBoardHtml();
   $('signFs').classList.add('show');
@@ -881,17 +920,12 @@ async function sync(){
   try{
     const res=await callSheetApi({action:'get'});
     if(!res.ok)throw new Error(res.message||'ซิงก์ไม่สำเร็จ');
-
-    // อัปเดตคลังโลโก้จากแท็บ Logos บน Google Sheets
     if(Array.isArray(res.logos)){
       logoList=res.logos;
-      if(selectedLogoId && !logoList.some(x=>x.id===selectedLogoId)){
-        selectedLogoId=logoList[0]?.id||'';
-      }
+      if(selectedLogoId && !logoList.some(x=>x.id===selectedLogoId)) selectedLogoId=logoList[0]?.id||'';
       saveLogosLocal();
       if($('signModal').open){ renderLogoBar(); renderSignBoard(); }
     }
-
     const rem=res.data||[];
     const ts=x=>x.del?Math.max(+x.upd||0,Date.parse(x.del)||0):(+x.upd||0),m=new Map();
     [...jobs,...trash,...rem].forEach(x=>{if(!x.id)return;const o=m.get(x.id);if(!o||ts(x)>ts(o))m.set(x.id,x)});
