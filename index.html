@@ -13,6 +13,7 @@
 body{margin:0;background:var(--bg);color:var(--tx);font-family:'Noto Sans Thai',system-ui,sans-serif;font-size:15px}
 .wrap{max-width:1280px;margin:0 auto;padding:14px}
 .head-bar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin:4px 0 12px}
+.head-acts{display:flex;gap:6px;flex-wrap:wrap}
 h1{font-size:20px;margin:0}
 .grid{display:grid;grid-template-columns:340px 1fr;gap:14px;align-items:start}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
@@ -43,13 +44,10 @@ h1{font-size:20px;margin:0}
 .mbar{width:100%;height:7px;border-radius:4px;font-size:0;line-height:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-shadow:0 0 0 1px rgba(255,255,255,.45)}
 .day.sel .mbar{box-shadow:0 0 0 1px rgba(255,255,255,.85)}
 
-/* กล่องเลือกประเภทสถานที่ (Airport / Hotel / Home) + ช่องพิกัด Google Maps */
+/* กล่องเลือกประเภทสถานที่ + พิกัด Google Maps */
 .loc-box{background:var(--bg);border:1px solid var(--bd);border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:7px}
 .loc-pills{display:flex;gap:6px;flex-wrap:wrap}
-.loc-pill{
-  flex:1;min-width:84px;padding:6px 10px;border-radius:9px;border:1px solid var(--bd);
-  background:var(--card);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer;text-align:center;
-}
+.loc-pill{flex:1;min-width:84px;padding:6px 10px;border-radius:9px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer;text-align:center}
 .loc-pill.on{background:var(--pr);color:var(--prt);border-color:var(--pr)}
 .loc-row{display:flex;gap:6px;align-items:center}
 .loc-row input{flex:1;background:var(--card)}
@@ -80,6 +78,7 @@ h1{font-size:20px;margin:0}
 button,input,select,textarea{font:inherit;color:var(--tx)}
 .btn{background:var(--pr);color:var(--prt);border:0;border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
 .btn.g{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
+.btn.ln-btn{background:var(--ln);color:#fff}
 .btn.sm{padding:4px 9px;font-size:13px}
 .nav{background:var(--bg);border:1px solid var(--bd);border-radius:8px;font-size:20px;padding:3px 14px;cursor:pointer}
 #fm{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
@@ -89,6 +88,8 @@ input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--bd)
 textarea{min-height:56px;resize:vertical}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:10px}
 .sum{font-size:13px;color:var(--mu)}
+
+/* การ์ดงาน + โซนโลโก้เจ้าของงานฝั่งขวา */
 .job{border:1px solid var(--bd);border-radius:12px;padding:11px;margin-bottom:9px;background:var(--card)}
 .job.done{opacity:.6}
 .top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
@@ -96,7 +97,50 @@ textarea{min-height:56px;resize:vertical}
 .tag{display:inline-block;font-size:11px;border-radius:7px;padding:1px 7px;background:var(--ac);margin-right:4px;margin-top:2px}
 .loc-tag{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:0 6px;background:var(--bg);border:1px solid var(--bd);margin-right:4px}
 .pr{font-weight:700;color:var(--pr);white-space:nowrap}
-.rt{margin:6px 0;line-height:1.65}
+.job-body{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:4px}
+.job-info{flex:1;min-width:0}
+.job-side{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.owner-logo-box{
+  width:104px;height:104px;border-radius:12px;border:1px solid var(--bd);
+  background:#fff;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .12s;
+}
+.owner-logo-box:hover{transform:scale(1.03);border-color:var(--pr)}
+.owner-logo-box img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.owner-logo-add{
+  width:92px;height:76px;border-radius:12px;border:2px dashed var(--bd);
+  background:var(--bg);color:var(--mu);font-size:12px;font-weight:600;
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+  text-align:center;padding:6px;
+}
+.owner-logo-add:hover{border-color:var(--pr);color:var(--pr);background:var(--ac)}
+.owner-logo-cap{font-size:11px;color:var(--mu);max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
+
+/* หน้าจัดการเจ้าของงาน (Owner Manager Modal) */
+#ownerModal{width:min(760px,96vw);max-height:92vh;padding:16px;overflow:auto}
+.ow-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:10px 0 14px}
+.ow-form .f{grid-column:1/-1}
+.ow-form input,.ow-form textarea{background:var(--card)}
+.ow-logo-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ow-prev{
+  width:76px;height:76px;border-radius:10px;border:1px solid var(--bd);
+  background:#fff;display:flex;align-items:center;justify-content:center;padding:4px;flex-shrink:0;
+}
+.ow-prev img{max-width:100%;max-height:100%;object-fit:contain}
+.ow-prev-empty{font-size:11px;color:#94a3b8;text-align:center}
+.ow-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.ow-card{display:flex;gap:10px;align-items:center;border:1px solid var(--bd);border-radius:12px;padding:10px;background:var(--bg)}
+.ow-card-img{width:58px;height:58px;border-radius:10px;border:1px solid var(--bd);background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ow-card-img img{max-width:100%;max-height:100%;object-fit:contain}
+.ow-card-meta{flex:1;min-width:0}
+.ow-card-name{font-weight:700;font-size:15px}
+.ow-card-sub{font-size:12.5px;color:var(--mu);white-space:pre-line;word-break:break-word}
+.ow-pick-strip{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.ow-pick-thumb{width:44px;height:36px;border-radius:7px;border:1px solid var(--bd);background:#fff;padding:2px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.ow-pick-thumb:hover{border-color:var(--pr)}
+.ow-pick-thumb img{max-width:100%;max-height:100%;object-fit:contain}
+
+.rt{margin:4px 0 6px;line-height:1.65}
 .lk{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .lk a{font-size:12.5px;text-decoration:none;color:#fff;border-radius:8px;padding:4px 10px;background:#64748b}
 .lk .wa{background:var(--wa)}.lk .fb{background:var(--fb)}.lk .ln{background:var(--ln)}
@@ -110,55 +154,66 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 .lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;border-radius:30px;padding:13px 20px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:block!important}
 
-/* สไตล์ป้ายชูรับลูกค้า (Welcome Sign) */
-#signModal{width:min(780px,96vw);max-height:92vh;padding:16px;overflow:auto}
+/* ป้ายชูรับลูกค้า & หน้ารวมป้ายชู */
+#signModal,#batchModal{width:min(820px,96vw);max-height:92vh;padding:16px;overflow:auto}
 .sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
 .sign-grid .f{grid-column:1/-1}
 .logo-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
-.logo-item{position:relative;width:72px;height:56px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:4px}
+.logo-item{position:relative;width:70px;height:54px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:4px}
 .logo-item.on{border-color:var(--pr);background:var(--ac);box-shadow:0 0 0 1px var(--pr)}
 .logo-item img{max-width:100%;max-height:100%;object-fit:contain;display:block}
-.logo-none{font-size:12px;font-weight:600;color:var(--mu);text-align:center;line-height:1.2}
+.logo-none{font-size:11.5px;font-weight:600;color:var(--mu);text-align:center;line-height:1.2}
 .logo-del{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;border:0;background:var(--rd);color:#fff;font-size:12px;line-height:1;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
-.logo-add-btn{display:inline-flex;align-items:center;justify-content:center;height:56px;padding:0 14px;border-radius:10px;border:2px dashed var(--pr);color:var(--pr);background:var(--bg);font-size:13px;font-weight:700;cursor:pointer}
+.logo-add-btn{display:inline-flex;align-items:center;justify-content:center;height:54px;padding:0 12px;border-radius:10px;border:2px dashed var(--pr);color:var(--pr);background:var(--bg);font-size:13px;font-weight:700;cursor:pointer}
 .logo-add-btn:hover{background:var(--ac)}
 .sign-preview-wrap{margin-top:12px;border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:#e5e7eb}
 .sign-board{width:100%;aspect-ratio:1.414/1;display:grid;grid-template-rows:1fr auto 1fr;align-items:center;justify-items:center;text-align:center;padding:3.5% 5%;background:#ffffff;color:#0f172a;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sb-top{align-self:start;justify-self:center;display:flex;justify-content:center;width:100%}
-.sb-mid{align-self:center;justify-self:center;display:flex;flex-direction:column;align-items:center;gap:10px;width:100%}
-.sb-bot{align-self:end;justify-self:center;display:flex;justify-content:center;width:100%}
+.sb-mid{align-self:center;justify-self:center;display:flex;flex-direction:column;align-items:center;gap:8px;width:100%}
+.sb-bot{align-self:end;justify-self:center;width:100%;text-align:center}
 .sb-logo{max-width:65%;object-fit:contain;display:block}
 .sb-head{font-size:clamp(13px,2vw,22px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0f766e}
 .sb-name{font-weight:800;line-height:1.15;word-break:break-word;max-width:100%}
-.sb-meta{display:inline-flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px 12px;font-size:clamp(12px,1.5vw,18px);font-weight:600;letter-spacing:.3px;padding:5px 16px;border-radius:999px;max-width:95%;background:#f1f5f9;color:#334155;border:1px solid #cbd5e1}
-.sb-sep{opacity:.4;font-weight:400}
-.sign-board.th-navy{background:#0f172a;color:#f8fafc}
-.sign-board.th-navy .sb-head{color:#fbbf24}
-.sign-board.th-navy .sb-meta{background:#1e293b;color:#fbbf24;border-color:#334155}
-.sign-board.th-teal{background:#0f766e;color:#ffffff}
-.sign-board.th-teal .sb-head{color:#ccfbf1}
-.sign-board.th-teal .sb-meta{background:rgba(255,255,255,.15);color:#ffffff;border-color:rgba(255,255,255,.35)}
-.sign-board.th-dark{background:#111111;color:#ffffff}
-.sign-board.th-dark .sb-head{color:#a3a3a3}
-.sign-board.th-dark .sb-meta{background:#262626;color:#e5e5e5;border-color:#404040}
+.sb-bot-text{font-size:clamp(12px,1.65vw,20px);font-weight:600;line-height:1.45;text-align:center;color:inherit}
+.sb-bot-text div{margin:1px 0}
+.sign-board.th-navy{background:#0f172a;color:#f8fafc}.sign-board.th-navy .sb-head{color:#fbbf24}
+.sign-board.th-teal{background:#0f766e;color:#ffffff}.sign-board.th-teal .sb-head{color:#ccfbf1}
+.sign-board.th-dark{background:#111111;color:#ffffff}.sign-board.th-dark .sb-head{color:#a3a3a3}
+
+.batch-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:10px 0;padding:10px;background:var(--bg);border:1px solid var(--bd);border-radius:10px}
+.batch-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;max-height:46vh;overflow:auto;padding:2px}
+.batch-card{border:2px solid var(--bd);border-radius:10px;overflow:hidden;background:var(--card);cursor:pointer;transition:border-color .15s}
+.batch-card.checked{border-color:var(--pr);box-shadow:0 0 0 1px var(--pr)}
+.batch-card-head{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--bg);border-bottom:1px solid var(--bd);font-size:13px;font-weight:600}
+.batch-card-head input[type="checkbox"]{width:18px;height:18px;margin:0;accent-color:var(--pr)}
+.batch-mini{pointer-events:none}
+.batch-mini .sign-board{padding:4% 5%}.batch-mini .sb-logo{height:28px!important}
+.batch-mini .sb-head{font-size:9px!important;letter-spacing:1.5px}.batch-mini .sb-name{font-size:18px!important}
+.batch-mini .sb-bot-text{font-size:9px!important;line-height:1.35}
+.batch-status{font-size:13px;color:var(--pr);font-weight:600;min-height:20px;margin-top:8px}
+
 #signFs{display:none;position:fixed;inset:0;z-index:9999;background:#fff}
 #signFs.show{display:flex;align-items:center;justify-content:center}
 #signFs .sign-board{width:100vw;height:100vh;aspect-ratio:auto;padding:3vh 5vw}
 .fs-exit{position:fixed;top:14px;right:14px;z-index:10000;background:rgba(0,0,0,.45);color:#fff;border:0;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px)}
+
 #printArea{display:none}
 @media print{
   @page{size:A4 landscape;margin:0}
   body > *:not(#printArea), dialog{display:none!important}
-  #printArea{display:block!important;position:fixed;inset:0;width:100vw;height:100vh;margin:0;padding:0}
-  #printArea .sign-board{width:100vw!important;height:100vh!important;aspect-ratio:auto!important;border:0!important;border-radius:0!important;padding:12mm 16mm!important}
+  #printArea{display:block!important;width:100%;margin:0;padding:0}
+  #printArea .sign-board{width:100vw!important;height:100vh!important;aspect-ratio:auto!important;border:0!important;border-radius:0!important;padding:12mm 16mm!important;page-break-after:always;break-after:page}
+  #printArea .sign-board:last-child{page-break-after:auto;break-after:auto}
 }
 
 @media(max-width:860px){.wrap{padding-bottom:90px}}
 @media(max-width:560px){
   input,select,textarea{font-size:16px}
-  #fm,.sign-grid{grid-template-columns:1fr}
+  #fm,.sign-grid,.ow-form{grid-template-columns:1fr}
   .dp-row{grid-template-columns:1fr 95px;gap:5px}
   .dp-lbl{grid-column:1/-1;margin-top:2px}
+  .owner-logo-box{width:76px;height:76px}
+  .owner-logo-add{width:76px;height:66px;font-size:11px}
   .btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}
   .lk a{padding:8px 12px;font-size:14px}.day .n{font-size:9px;padding:0 4px}.dow{font-size:11px}.wrap{padding:10px}
 }
@@ -179,7 +234,11 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 <div class="wrap">
   <div class="head-bar">
     <h1>📒 สมุดจองงาน — รับส่ง / ทัวร์</h1>
-    <button class="btn g sm" id="openSignTopBtn">🪧 สร้างป้ายชู</button>
+    <div class="head-acts">
+      <button class="btn g sm" id="openOwnersBtn">👤 เจ้าของงาน</button>
+      <button class="btn g sm" id="openBatchBtn">📑 รวมป้ายชู</button>
+      <button class="btn g sm" id="openSignTopBtn">🪧 สร้างป้ายชู</button>
+    </div>
   </div>
   <div class="grid">
     <div>
@@ -218,7 +277,6 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <div class="f"><label>🎨 สีแถบงานบนปฏิทิน (แบ่งสีงานหลายวัน)</label><input type="hidden" id="color" value=""><div class="swatches" id="swatches"></div></div>
           <div class="f"><label>เบอร์ / ID / ลิงก์</label><input id="ct" placeholder="เช่น 0812345678"></div>
 
-          <!-- กล่องรับจากที่ไหน: เลือก Airport / Hotel / Home + ชื่อสถานที่ + พิกัดรับ -->
           <div class="f loc-box">
             <label style="color:var(--pr);font-weight:700;margin:0">🚏 รับจากที่ไหน</label>
             <input type="hidden" id="fromType" value="">
@@ -229,7 +287,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
             </div>
             <div class="loc-row">
               <input id="from" placeholder="ชื่อสถานที่รับ (เช่น โรงแรม / บ้าน / สนามบิน)">
-              <button type="button" class="btn g loc-map-btn" id="fromFindMap" title="เปิดค้นหาชื่อนี้ใน Google Maps">🗺️ ดูใน Maps</button>
+              <button type="button" class="btn g loc-map-btn" id="fromFindMap">🗺️ ดูใน Maps</button>
             </div>
             <div class="loc-row">
               <input id="fromMap" placeholder="📍 ลิงก์พิกัดรับ Google Maps (เว้นว่างได้ ระบบลิงก์จากชื่อให้)">
@@ -237,7 +295,6 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
             </div>
           </div>
 
-          <!-- กล่องไปส่งที่: เลือก Airport / Hotel / Home + ชื่อสถานที่ + พิกัดส่ง -->
           <div class="f loc-box">
             <label style="color:var(--pr);font-weight:700;margin:0">🏁 ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์</label>
             <input type="hidden" id="toType" value="">
@@ -248,7 +305,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
             </div>
             <div class="loc-row">
               <input id="to" placeholder="ชื่อสถานที่ส่ง / โรงแรม / ที่เที่ยว (เช่น ดอยอินทนนท์)">
-              <button type="button" class="btn g loc-map-btn" id="toFindMap" title="เปิดค้นหาชื่อนี้ใน Google Maps">🗺️ ดูใน Maps</button>
+              <button type="button" class="btn g loc-map-btn" id="toFindMap">🗺️ ดูใน Maps</button>
             </div>
             <div class="loc-row">
               <input id="toMap" placeholder="🏁 ลิงก์พิกัดส่ง Google Maps (เว้นว่างได้ ระบบลิงก์จากชื่อให้)">
@@ -276,14 +333,63 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <button class="btn g sm" id="sy">☁️ ซิงก์เลย</button>
         </div>
       </div>
-      <input id="q" placeholder="🔍 ค้นหาชื่อ / ไฟล์ทบิน / สถานที่ / แผนรายวัน / เบอร์" style="margin-bottom:10px">
+      <input id="q" placeholder="🔍 ค้นหาชื่อ / เจ้าของงาน / ไฟล์ทบิน / สถานที่ / เบอร์" style="margin-bottom:10px">
       <div id="list"></div>
     </div>
   </div>
 </div>
 <button class="btn fab" id="fab">+ เพิ่มงาน</button>
 
-<!-- หน้าต่างสร้างป้ายชูรับลูกค้า -->
+<!-- หน้าแยกจัดการเจ้าของงาน (เพิ่ม/แก้ไขรายละเอียด + โลโก้เจ้าของงาน ซิงก์ลง Sheets) -->
+<dialog id="ownerModal">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <b>👤 จัดการเจ้าของงาน & โลโก้ <span id="ownerSyncStatus" style="font-size:12px;color:var(--pr);font-weight:600"></span></b>
+    <button class="btn g sm" id="ownerClose" type="button">ปิด</button>
+  </div>
+
+  <form id="ownerForm" class="ow-form">
+    <input type="hidden" id="oEditId" value="">
+    <input type="hidden" id="oLogoData" value="">
+    <div>
+      <label>ชื่อเจ้าของงาน / เอเจนซี่ *</label>
+      <input id="oName" required placeholder="เช่น P.Nui / Bright Lanna Tours">
+    </div>
+    <div>
+      <label>เบอร์โทร / Line / ช่องทางติดต่อ</label>
+      <input id="oContact" placeholder="เช่น 081-234-5678 หรือ Line ID">
+    </div>
+    <div class="f">
+      <label>รายละเอียดเพิ่มเติมของเจ้าของงาน (หมายเหตุ / เรตราคา / บัญชี)</label>
+      <textarea id="oNote" placeholder="เช่น เงื่อนไขการจ่ายเงิน, หมายเหตุรับงาน ฯลฯ"></textarea>
+    </div>
+    <div class="f">
+      <label>🖼️ โลโก้เจ้าของงาน (แสดงฝั่งขวาของการ์ดงานทุกใบ)</label>
+      <div class="ow-logo-row">
+        <div class="ow-prev" id="oLogoPreview"><span class="ow-prev-empty">ยังไม่มี<br>โลโก้</span></div>
+        <div style="flex:1;min-width:180px">
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            <input type="file" id="oLogoFile" accept="image/*" hidden>
+            <button type="button" class="btn g sm" id="oLogoUpBtn">📤 อัปโหลดรูปโลโก้</button>
+            <button type="button" class="btn g sm" id="oLogoClrBtn" style="color:var(--rd)">ลบโลโก้</button>
+          </div>
+          <div id="oSignLogoPickWrap" style="margin-top:6px" hidden>
+            <div style="font-size:11.5px;color:var(--mu)">หรือเลือกจากคลังโลโก้ป้ายชูที่มีอยู่แล้ว:</div>
+            <div class="ow-pick-strip" id="oSignLogoPick"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="f" style="display:flex;gap:8px">
+      <button type="submit" class="btn" id="oSaveBtn" style="flex:1">💾 บันทึกเจ้าของงาน</button>
+      <button type="button" class="btn g" id="oCancelBtn" hidden>ยกเลิกแก้ไข</button>
+    </div>
+  </form>
+
+  <div style="font-size:13px;font-weight:700;color:var(--mu);margin-bottom:8px">รายชื่อเจ้าของงานทั้งหมด</div>
+  <div class="ow-list" id="ownerCards"></div>
+</dialog>
+
+<!-- หน้าต่างสร้างป้ายชูเดี่ยว -->
 <dialog id="signModal">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <b>🪧 สร้างป้ายชูรับลูกค้า (Welcome Sign)</b>
@@ -301,10 +407,12 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
       </select>
     </div>
     <div class="f"><label>ชื่อลูกค้า (แสดงตรงกลางหน้ากระดาษ)</label><input id="sName" placeholder="เช่น MR. JOHN SMITH"></div>
-    <div><label>✈️ ไฟล์ทบิน (ขอบล่าง บรรทัดเดียวกับปลายทาง)</label><input id="sFlight" placeholder="เช่น TG102"></div>
-    <div><label>📍 ข้อความเสริม / ไปส่งที่ (ดึงจากงานอัตโนมัติ)</label><input id="sSub" placeholder="เช่น ชื่อโรงแรม / สถานที่ท่องเที่ยว"></div>
+    <div><label>Flight (หมายเลขไฟล์ทบิน)</label><input id="sFlight" placeholder="เช่น TG102"></div>
+    <div><label>AT (เวลา)</label><input id="sTime" placeholder="เช่น 14:30"></div>
+    <div><label>วัน, เดือน, ปี</label><input id="sDate" placeholder="เช่น 20 Nov 2026"></div>
+    <div><label>Drop off at (ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์)</label><input id="sSub" placeholder="เช่น Shangri-La Hotel"></div>
     <div class="f">
-      <label>🖼️ คลังโลโก้ (ชิดขอบบนตรงกลาง · บันทึกลง Google Sheets ใช้ได้ทุกเครื่อง) <span id="logoSyncStatus" style="color:var(--pr);font-weight:600"></span></label>
+      <label>🖼️ คลังโลโก้ (ชิดขอบบนตรงกลาง · ซิงก์ผ่าน Sheets) <span id="logoSyncStatus" style="color:var(--pr);font-weight:600"></span></label>
       <input type="file" id="sLogoFile" accept="image/*" multiple hidden>
       <div class="logo-bar" id="sLogoList"></div>
     </div>
@@ -313,8 +421,45 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
   </div>
   <div class="sign-preview-wrap"><div id="signPreview"></div></div>
   <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:flex-end">
-    <button type="button" class="btn" id="signFsBtn">🖥️ เปิดเต็มหน้าจอ (Fullscreen)</button>
-    <button type="button" class="btn g" id="signPrintBtn">🖨️ พิมพ์ / บันทึก PDF (A4)</button>
+    <button type="button" class="btn ln-btn" id="signShareBtn">📤 ส่งต่อ LINE / แชร์รูป</button>
+    <button type="button" class="btn g" id="signDlBtn">💾 เซฟรูป PNG</button>
+    <button type="button" class="btn" id="signFsBtn">🖥️ เต็มหน้าจอ</button>
+    <button type="button" class="btn g" id="signPrintBtn">🖨️ พิมพ์ / PDF</button>
+  </div>
+</dialog>
+
+<!-- หน้ารวมป้ายชู (Batch Signs) -->
+<dialog id="batchModal">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <b>📑 รวมป้ายชูทั้งหมด (เลือกเซฟ / ส่งต่อ LINE หลายป้าย)</b>
+    <button class="btn g sm" id="batchClose" type="button">ปิด</button>
+  </div>
+  <div class="batch-toolbar">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <button type="button" class="btn sm" id="bModeDay">งานวันที่เลือก</button>
+      <button type="button" class="btn g sm" id="bModeMonth">งานทั้งเดือน</button>
+      <button type="button" class="btn g sm" id="bToggleAll">เลือกทั้งหมด</button>
+    </div>
+    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+      <select id="bTheme" style="width:auto;padding:5px 8px;font-size:13px">
+        <option value="">ธีมขาวคลาสสิก</option>
+        <option value="th-navy">ธีมกรมท่า–ทอง</option>
+        <option value="th-teal">ธีมเขียวอมฟ้า</option>
+        <option value="th-dark">ธีมดำ–ขาว</option>
+      </select>
+      <span class="sum" id="bCountLbl">เลือก 0 ป้าย</span>
+    </div>
+  </div>
+  <div style="margin-bottom:8px">
+    <label>🖼️ โลโก้ที่จะใช้กับป้ายชุดนี้ (คลิกสลับได้)</label>
+    <div class="logo-bar" id="bLogoList"></div>
+  </div>
+  <div class="batch-list" id="batchList"></div>
+  <div class="batch-status" id="batchStatus"></div>
+  <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:flex-end">
+    <button type="button" class="btn ln-btn" id="bShareBtn">📤 ส่งต่อ LINE / แชร์รูปที่เลือก</button>
+    <button type="button" class="btn" id="bDlBtn">💾 ดาวน์โหลดรูป PNG ที่เลือก</button>
+    <button type="button" class="btn g" id="bPrintBtn">🖨️ พิมพ์ / เซฟ PDF รวมหลายหน้า</button>
   </div>
 </dialog>
 
@@ -366,29 +511,19 @@ const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
-// สร้างลิงก์ Google Maps: ถ้ามีลิงก์พิกัดจริงใช้ลิงก์นั้น ถ้าไม่มีสร้างลิงก์ค้นหาจากชื่อสถานที่ให้เลย
 function resolveMapUrl(mapLink, placeName){
   const m=(mapLink||'').trim();
   if(/^https?:\/\//i.test(m)) return m;
   const q=(placeName||'').trim();
-  if(q) return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q);
-  return '';
+  return q ? 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q) : '';
 }
-
-// ถ้าวางลิงก์ Google Maps แบบเต็มที่มี /place/ชื่อสถานที่/ ระบบจะดึงชื่อมาใส่ให้อัตโนมัติหากช่องชื่อยังว่าง
 function extractNameFromMapUrl(url){
   const m=String(url||'').match(/\/maps\/place\/([^/@?]+)/i);
   if(!m) return '';
   try{ return decodeURIComponent(m[1].replace(/\+/g,' ')).trim(); }catch(e){ return ''; }
 }
-
-// ผูกปุ่มเลือก Airport / Hotel / Home และปุ่มเปิด Maps ให้ทั้งฝั่งรับและฝั่งส่ง
 function setupLocPicker(prefix){
-  const typeEl=$(prefix+'Type');
-  const nameEl=$(prefix);
-  const mapEl=$(prefix+'Map');
-  const pillsEl=$(prefix+'Pills');
-
+  const typeEl=$(prefix+'Type'), nameEl=$(prefix), mapEl=$(prefix+'Map'), pillsEl=$(prefix+'Pills');
   const updateUI=()=>{
     const val=typeEl.value;
     pillsEl.querySelectorAll('.loc-pill').forEach(btn=>btn.classList.toggle('on', btn.dataset.v===val));
@@ -397,7 +532,6 @@ function setupLocPicker(prefix){
     else if(val==='Home') nameEl.placeholder='ชื่อหมู่บ้าน / ที่อยู่บ้าน (ลิงก์ไป Google Maps ให้อัตโนมัติ)';
     else nameEl.placeholder=prefix==='from'?'ชื่อสถานที่รับ (เช่น โรงแรม / บ้าน / สนามบิน)':'ชื่อสถานที่ส่ง / โรงแรม / ที่เที่ยว';
   };
-
   pillsEl.querySelectorAll('.loc-pill').forEach(btn=>{
     btn.onclick=()=>{
       const next=(typeEl.value===btn.dataset.v)?'':btn.dataset.v;
@@ -408,32 +542,24 @@ function setupLocPicker(prefix){
       if(next==='Hotel'||next==='Home') nameEl.focus();
     };
   });
-
-  // ดึงชื่อสถานที่อัตโนมัติเมื่อวางลิงก์ Google Maps แบบเต็ม
   mapEl.addEventListener('change',()=>{
     if(!nameEl.value.trim()){
-      const extracted=extractNameFromMapUrl(mapEl.value);
-      if(extracted) nameEl.value=extracted;
+      const ex=extractNameFromMapUrl(mapEl.value);
+      if(ex) nameEl.value=ex;
     }
   });
-
-  // ปุ่มค้นหาชื่อสถานที่ใน Google Maps
   $(prefix+'FindMap').onclick=()=>{
     const q=nameEl.value.trim();
     if(!q){ alert('กรุณาพิมพ์ชื่อสถานที่ก่อนกดดูใน Maps ครับ'); nameEl.focus(); return; }
     window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener');
   };
-
-  // ปุ่มเปิดพิกัดรับ/พิกัดส่ง
   $(prefix+'OpenPin').onclick=()=>{
     const url=resolveMapUrl(mapEl.value, nameEl.value);
     if(!url){ alert('กรุณาวางลิงก์ Google Maps หรือพิมพ์ชื่อสถานที่ก่อนครับ'); return; }
     window.open(url,'_blank','noopener');
   };
-
   return updateUI;
 }
-
 const syncFromUI = setupLocPicker('from');
 const syncToUI   = setupLocPicker('to');
 
@@ -464,21 +590,18 @@ const thMonth=d=>d.toLocaleDateString('th-TH',{month:'long',year:'numeric'});
 const thMonthShort=d=>d.toLocaleDateString('th-TH',{month:'short',year:'2-digit'});
 const thDate=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'short',year:'numeric'}):s};
 const thShort=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{day:'numeric',month:'short'}):s};
+const signDateFmt=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):(s||'')};
 const baht=n=>Number(n||0).toLocaleString('th-TH');
 
 function addDays(startIso, offset){
-  const d=parseLocal(startIso);
-  if(!d)return '';
-  d.setDate(d.getDate()+offset);
-  return iso(d);
+  const d=parseLocal(startIso); if(!d)return '';
+  d.setDate(d.getDate()+offset); return iso(d);
 }
-
 const getEndDate=j=>(j.endDate&&j.endDate>=j.date)?j.endDate:j.date;
 const coversDate=(j,d)=>Boolean(j.date)&&d>=j.date&&d<=getEndDate(j);
 const overlapsMonth=(j,y,m)=>{
   if(!j.date)return false;
-  const mStart=y+'-'+pad(m+1)+'-01';
-  const mEnd=y+'-'+pad(m+1)+'-'+pad(new Date(y,m+1,0).getDate());
+  const mStart=y+'-'+pad(m+1)+'-01', mEnd=y+'-'+pad(m+1)+'-'+pad(new Date(y,m+1,0).getDate());
   return j.date<=mEnd&&getEndDate(j)>=mStart;
 };
 function dayCount(j){
@@ -492,20 +615,225 @@ function dayNumber(j,d){
   return Math.round((curD-s)/86400000)+1;
 }
 const jobColor=j=>j.color||TC[j.type]||'#64748b';
-
 function normalizePlans(arr){
   if(!Array.isArray(arr))return [];
   return arr.map(item=>{
     if(typeof item==='string')return { text: item.trim(), price: '' };
-    if(item && typeof item==='object'){
-      return { text: String(item.text||'').trim(), price: item.price!=null ? String(item.price).trim() : '' };
-    }
+    if(item && typeof item==='object') return { text: String(item.text||'').trim(), price: item.price!=null ? String(item.price).trim() : '' };
     return { text: '', price: '' };
   });
 }
 
 // =======================================================
-// 3. ระบบแผนงานรายวัน + ราคารายวันในฟอร์ม
+// 3. ระบบเจ้าของงาน (Owner Profiles + โลโก้ ซิงก์ผ่าน Google Sheets)
+// =======================================================
+const OWNER_PROFILES_KEY = KEY + '-owner-profiles';
+let ownerProfiles=[];
+try{ ownerProfiles=JSON.parse(localStorage.getItem(OWNER_PROFILES_KEY)||'[]'); }catch(e){ ownerProfiles=[]; }
+
+// นำเข้ารายชื่อเจ้าของเดิมจาก localStorage เก่า (ถ้ามี)
+try{
+  const oldNames=JSON.parse(localStorage.getItem(KEY+'-owners')||'[]');
+  oldNames.forEach(n=>{
+    const clean=String(n||'').trim();
+    if(clean && !ownerProfiles.some(o=>o.name.toLowerCase()===clean.toLowerCase())){
+      ownerProfiles.push({ id:'ow_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), name:clean, contact:'', note:'', logo:'' });
+    }
+  });
+}catch(e){}
+
+function findOwnerProfile(name){
+  const clean=String(name||'').trim().toLowerCase();
+  if(!clean) return null;
+  return ownerProfiles.find(o=>o.name.trim().toLowerCase()===clean)||null;
+}
+
+function saveOwnerProfilesLocal(){
+  ownerProfiles.sort((a,b)=>a.name.localeCompare(b.name,'th'));
+  try{ localStorage.setItem(OWNER_PROFILES_KEY, JSON.stringify(ownerProfiles)); }catch(e){}
+}
+
+async function syncOwnersToSheet(){
+  $('ownerSyncStatus').textContent='(กำลังบันทึกลง Google Sheets...)';
+  try{
+    const res=await callSheetApi({action:'saveOwners', owners:ownerProfiles});
+    if(!res.ok) throw new Error(res.message||'บันทึกเจ้าของงานไม่สำเร็จ');
+    $('ownerSyncStatus').textContent='(✅ บันทึกขึ้น Sheets แล้ว)';
+  }catch(err){
+    $('ownerSyncStatus').textContent='(⚠️ บันทึกไม่สำเร็จ: '+err.message+')';
+  }
+}
+
+function drawOwners(){
+  const v=$('owner').value;
+  const sorted=[...ownerProfiles].sort((a,b)=>a.name.localeCompare(b.name,'th'));
+  $('owner').innerHTML='<option value="">— ไม่ระบุ —</option>'
+    +sorted.map(o=>`<option value="${esc(o.name)}">${esc(o.name)}</option>`).join('')
+    +'<option value="__new">＋ เพิ่มเจ้าของใหม่</option>';
+  $('owner').value=v;
+}
+
+function ensureOwnerExists(name){
+  const clean=String(name||'').trim();
+  if(!clean) return;
+  if(!findOwnerProfile(clean)){
+    ownerProfiles.push({ id:'ow_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), name:clean, contact:'', note:'', logo:'' });
+    saveOwnerProfilesLocal();
+    drawOwners();
+  }
+}
+
+$('owner').onchange=()=>{$('onew').style.display=$('owner').value==='__new'?'block':'none'};
+
+function updateOwnerLogoPreview(dataUrl){
+  $('oLogoData').value=dataUrl||'';
+  $('oLogoPreview').innerHTML=dataUrl
+    ? `<img src="${dataUrl}" alt="owner logo">`
+    : `<span class="ow-prev-empty">ยังไม่มี<br>โลโก้</span>`;
+}
+
+function resetOwnerForm(){
+  $('oEditId').value='';
+  $('oName').value='';
+  $('oContact').value='';
+  $('oNote').value='';
+  updateOwnerLogoPreview('');
+  $('oSaveBtn').textContent='💾 บันทึกเจ้าของงาน';
+  $('oCancelBtn').hidden=true;
+}
+
+function loadOwnerIntoForm(profile){
+  $('oEditId').value=profile.id;
+  $('oName').value=profile.name||'';
+  $('oContact').value=profile.contact||'';
+  $('oNote').value=profile.note||'';
+  updateOwnerLogoPreview(profile.logo||'');
+  $('oSaveBtn').textContent='💾 อัปเดตข้อมูลเจ้าของงาน';
+  $('oCancelBtn').hidden=false;
+  $('ownerModal').scrollTop=0;
+}
+
+function renderOwnerSignLogoPicker(){
+  if(!logoList.length){ $('oSignLogoPickWrap').hidden=true; return; }
+  $('oSignLogoPickWrap').hidden=false;
+  $('oSignLogoPick').innerHTML=logoList.map(l=>`<button type="button" class="ow-pick-thumb" data-opl="${l.id}" title="ใช้โลโก้ ${esc(l.name)}"><img src="${l.data}" alt=""></button>`).join('');
+  $('oSignLogoPick').querySelectorAll('[data-opl]').forEach(btn=>{
+    btn.onclick=()=>{
+      const found=logoList.find(x=>x.id===btn.dataset.opl);
+      if(found) updateOwnerLogoPreview(found.data);
+    };
+  });
+}
+
+function renderOwnerCards(){
+  const sorted=[...ownerProfiles].sort((a,b)=>a.name.localeCompare(b.name,'th'));
+  if(!sorted.length){
+    $('ownerCards').innerHTML='<div class="empty" style="grid-column:1/-1">ยังไม่มีข้อมูลเจ้าของงาน</div>';
+    return;
+  }
+  $('ownerCards').innerHTML=sorted.map(o=>`<div class="ow-card">
+    <div class="ow-card-img">${o.logo?`<img src="${o.logo}" alt="${esc(o.name)}">`:`<span class="ow-prev-empty">ไม่มี<br>โลโก้</span>`}</div>
+    <div class="ow-card-meta">
+      <div class="ow-card-name">${esc(o.name)}</div>
+      ${o.contact?`<div class="ow-card-sub">📞 ${esc(o.contact)}</div>`:''}
+      ${o.note?`<div class="ow-card-sub">📝 ${esc(o.note)}</div>`:''}
+      <div class="acts" style="margin-top:6px">
+        <button type="button" class="btn g sm" data-owe="${o.id}">แก้ไข / ใส่โลโก้</button>
+        <button type="button" class="btn g sm" data-owx="${o.id}" style="color:var(--rd)">ลบ</button>
+      </div>
+    </div>
+  </div>`).join('');
+
+  $('ownerCards').querySelectorAll('[data-owe]').forEach(b=>{
+    b.onclick=()=>{
+      const p=ownerProfiles.find(x=>x.id===b.dataset.owe);
+      if(p) loadOwnerIntoForm(p);
+    };
+  });
+  $('ownerCards').querySelectorAll('[data-owx]').forEach(b=>{
+    b.onclick=async()=>{
+      const p=ownerProfiles.find(x=>x.id===b.dataset.owx);
+      if(p && await ask(`ลบเจ้าของงาน "${p.name}"? (งานเดิมในปฏิทินจะยังอยู่ครบ)`)){
+        ownerProfiles=ownerProfiles.filter(x=>x.id!==p.id);
+        saveOwnerProfilesLocal(); drawOwners(); renderOwnerCards(); render();
+        if($('oEditId').value===p.id) resetOwnerForm();
+        await syncOwnersToSheet();
+      }
+    };
+  });
+}
+
+function openOwnerModal(preselectName){
+  $('ownerSyncStatus').textContent='';
+  resetOwnerForm();
+  renderOwnerSignLogoPicker();
+  renderOwnerCards();
+  if(preselectName){
+    ensureOwnerExists(preselectName);
+    const p=findOwnerProfile(preselectName);
+    if(p){ renderOwnerCards(); loadOwnerIntoForm(p); }
+  }
+  $('ownerModal').showModal();
+}
+
+$('openOwnersBtn').onclick=()=>openOwnerModal(null);
+$('ownerClose').onclick=()=>$('ownerModal').close();
+$('oCancelBtn').onclick=resetOwnerForm;
+$('oLogoUpBtn').onclick=()=>$('oLogoFile').click();
+$('oLogoClrBtn').onclick=()=>updateOwnerLogoPreview('');
+
+$('oLogoFile').onchange=async e=>{
+  const f=e.target.files?.[0];
+  if(!f) return;
+  $('ownerSyncStatus').textContent='(กำลังย่อขนาดรูปโลโก้...)';
+  try{
+    const dataUrl=await compressLogoForSheet(f);
+    updateOwnerLogoPreview(dataUrl);
+    $('ownerSyncStatus').textContent='(พร้อมบันทึกแล้ว กดปุ่มบันทึกด้านล่างได้เลย)';
+  }catch(err){
+    $('ownerSyncStatus').textContent='(⚠️ อ่านไฟล์รูปไม่สำเร็จ)';
+  }
+  e.target.value='';
+};
+
+$('ownerForm').onsubmit=async e=>{
+  e.preventDefault();
+  const id=$('oEditId').value.trim();
+  const name=$('oName').value.trim();
+  if(!name) return;
+  const contact=$('oContact').value.trim();
+  const note=$('oNote').value.trim();
+  const logo=$('oLogoData').value.trim();
+
+  if(id){
+    const existing=ownerProfiles.find(x=>x.id===id);
+    const oldName=existing?existing.name:'';
+    ownerProfiles=ownerProfiles.map(x=>x.id===id?{id,name,contact,note,logo}:x);
+    // ถ้ามีการเปลี่ยนชื่อเจ้าของงาน ให้อัปเดตชื่อในรายการงานเดิมให้ตรงกันด้วย
+    if(oldName && oldName!==name){
+      jobs.forEach(j=>{ if(j.owner===oldName){ j.owner=name; j.upd=Date.now(); } });
+      save();
+    }
+  }else{
+    const dup=findOwnerProfile(name);
+    if(dup){
+      dup.contact=contact||dup.contact;
+      dup.note=note||dup.note;
+      dup.logo=logo||dup.logo;
+    }else{
+      ownerProfiles.push({ id:'ow_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), name, contact, note, logo });
+    }
+  }
+  saveOwnerProfilesLocal();
+  drawOwners();
+  renderOwnerCards();
+  render();
+  resetOwnerForm();
+  await syncOwnersToSheet();
+};
+
+// =======================================================
+// 4. ระบบแผนงานรายวัน + ราคารายวันในฟอร์มงาน
 // =======================================================
 function getCurrentDayPlanInputs(){
   return [...document.querySelectorAll('.dp-row')].map(row=>({
@@ -565,7 +893,7 @@ function drawSwatches(selected){
 }
 
 // =======================================================
-// 4. ระบบตารางงาน + ปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไป
+// 5. ระบบตารางงาน + ปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไป
 // =======================================================
 let jobs=[];try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){jobs=[]}
 let trash=[];try{trash=JSON.parse(localStorage.getItem(KEY+'-trash')||'[]')}catch(e){trash=[]}
@@ -643,8 +971,10 @@ function renderCal(){
 }
 
 function render(){
-  jobs.forEach(j=>{if(j.owner)addOwner(j.owner)});
+  jobs.forEach(j=>{ if(j.owner) ensureOwnerExists(j.owner); });
+  drawOwners();
   renderCal();
+
   const selObj=parseLocal(sel)||cur, y=selObj.getFullYear(), m=selObj.getMonth();
   const q=$('q').value.trim().toLowerCase();
   let list=jobs.filter(j=>mode==='day'?coversDate(j,sel):overlapsMonth(j,y,m));
@@ -672,41 +1002,65 @@ function render(){
       plansHtml=`<div class="dp-card"><div class="dp-card-title">📋 แผนงานรายวัน & ราคา</div>${rows}</div>`;
     }
 
-    // แสดงป้ายประเภทสถานที่ (Airport / Hotel / Home) คู่กับชื่อสถานที่
     const fromBadge = j.fromType ? `<span class="loc-tag">${LOC_ICON[j.fromType]||esc(j.fromType)}</span>` : '';
     const toBadge   = j.toType   ? `<span class="loc-tag">${LOC_ICON[j.toType]||esc(j.toType)}</span>` : '';
     const fromLine  = (j.from||j.fromType) ? `🚏 รับ: ${fromBadge}${esc(j.from||'')}<br>` : '';
     const toLine    = (j.to||j.toType)     ? `🏁 ไป: ${toBadge}${esc(j.to||'')}<br>` : '';
-
-    // สร้างปุ่มลิงก์ติดต่อ + ปุ่มพิกัดรับ + ปุ่มพิกัดส่ง (ลิงก์จากหมุดจริง หรือค้นหาจากชื่อสถานที่ให้อัตโนมัติ)
-    const fromUrl = resolveMapUrl(j.fromMap, j.from);
-    const toUrl   = resolveMapUrl(j.toMap, j.to);
+    const fromUrl = resolveMapUrl(j.fromMap, j.from), toUrl = resolveMapUrl(j.toMap, j.to);
     const pinFrom = fromUrl ? `<a class="mp-in" href="${esc(fromUrl)}" target="_blank" rel="noopener">📍 พิกัดรับ</a>` : '';
     const pinTo   = toUrl   ? `<a class="mp-out" href="${esc(toUrl)}" target="_blank" rel="noopener">🏁 พิกัดส่ง</a>` : '';
     const lk      = links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
     const allLinks = pinFrom + pinTo + lk;
+
+    // โซนโลโก้เจ้าของงานฝั่งขวาของการ์ด
+    let ownerSideHtml='';
+    if(j.owner){
+      const ow=findOwnerProfile(j.owner);
+      if(ow && ow.logo){
+        ownerSideHtml=`<div class="job-side">
+          <button type="button" class="owner-logo-box" data-ologo="${esc(j.owner)}" title="คลิกเพื่อแก้ไขข้อมูล/โลโก้ของ ${esc(j.owner)}">
+            <img src="${ow.logo}" alt="${esc(j.owner)}">
+          </button>
+          <span class="owner-logo-cap">${esc(j.owner)}</span>
+        </div>`;
+      }else{
+        ownerSideHtml=`<div class="job-side">
+          <button type="button" class="owner-logo-add" data-ologo="${esc(j.owner)}" title="เพิ่มโลโก้ให้ ${esc(j.owner)}">
+            <span style="font-size:18px;line-height:1">🖼️</span>
+            <span>＋ โลโก้<br>${esc(j.owner)}</span>
+          </button>
+        </div>`;
+      }
+    }
 
     return `<div class="job${j.st==='เสร็จแล้ว'||j.st==='ยกเลิก'?' done':''}" style="border-left:6px solid ${col}">
       <div class="top"><div><div class="t">${esc(j.time||'--:--')} · ${esc(j.name)}</div>
       <div><span class="tag" style="background:${TC[j.type]||'#64748b'};color:#fff">${esc(j.type)}</span><span class="tag">${esc(j.st)}</span>${flightTag}${spanBadge}${(mode==='month'||q)&&days===1?`<span class="sum">${thDate(j.date)}</span>`:''}</div></div>
       <div class="pr">${j.price?baht(j.price)+' ฿':''}</div></div>
       ${plansHtml}
-      <div class="rt">${fromLine}${toLine}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
-      <div class="sum">ติดต่อ: ${esc(j.ch)} ${esc(j.ct)}</div>
-      ${allLinks?`<div class="lk">${allLinks}</div>`:''}
-      <div class="acts">
-        <button class="btn g sm" data-s="${j.id}">🪧 ชูป้าย</button>
-        <button class="btn g sm" data-e="${j.id}">แก้ไข</button>
-        <button class="btn g sm" data-x="${j.id}" style="color:var(--rd)">ลบ</button>
-      </div></div>`}).join(''):'<div class="empty">ยังไม่มีงาน</div>';
+      <div class="job-body">
+        <div class="job-info">
+          <div class="rt">${fromLine}${toLine}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
+          <div class="sum">ติดต่อ: ${esc(j.ch)} ${esc(j.ct)}</div>
+          ${allLinks?`<div class="lk">${allLinks}</div>`:''}
+          <div class="acts">
+            <button class="btn g sm" data-s="${j.id}">🪧 ชูป้าย</button>
+            <button class="btn g sm" data-e="${j.id}">แก้ไข</button>
+            <button class="btn g sm" data-x="${j.id}" style="color:var(--rd)">ลบ</button>
+          </div>
+        </div>
+        ${ownerSideHtml}
+      </div>
+    </div>`}).join(''):'<div class="empty">ยังไม่มีงาน</div>';
 
+  $('list').querySelectorAll('[data-ologo]').forEach(b=>b.onclick=()=>openOwnerModal(b.dataset.ologo));
   $('list').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ const j=jobs.find(x=>x.id===b.dataset.s); if(j) openSignModal(j); });
   $('list').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>edit(b.dataset.e));
   $('list').querySelectorAll('[data-x]').forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>x.id===b.dataset.x);if(j&&await ask('ลบงานนี้? (ดูย้อนหลังและกู้คืนได้ที่ถังขยะ)')){trash.unshift({...j,del:new Date().toISOString()});jobs=jobs.filter(x=>x.id!==j.id);save();render()}});
 }
 
 // =======================================================
-// 5. ฟอร์มเพิ่ม/แก้ไขงาน
+// 6. ฟอร์มเพิ่ม/แก้ไขงาน
 // =======================================================
 const F=['date','endDate','time','flight','type','st','name','owner','ch','ct','fromType','from','fromMap','toType','to','toMap','pax','price','color','note'];
 function edit(id){
@@ -727,9 +1081,15 @@ function reset(){
 $('fm').onsubmit=e=>{
   e.preventDefault(); $('time').onblur({target:$('time')});
   const o={};F.forEach(k=>o[k]=$(k).value.trim());
-  if(o.owner==='__new')o.owner=$('onew').value.trim();
+  let isNewOwner=false;
+  if(o.owner==='__new'){
+    o.owner=$('onew').value.trim();
+    if(o.owner && !findOwnerProfile(o.owner)) isNewOwner=true;
+  }
   if(!o.endDate||o.endDate<=o.date){ o.endDate=''; o.dayPlans=[]; } else { o.dayPlans=getCurrentDayPlanInputs(); }
-  addOwner(o.owner);window.lastOw=o.owner;
+  ensureOwnerExists(o.owner);
+  if(isNewOwner) syncOwnersToSheet();
+  window.lastOw=o.owner;
   if(editId){jobs=jobs.map(j=>j.id===editId?{...o,id:editId,upd:Date.now()}:j)}
   else jobs.push({...o,id:Date.now().toString(36),upd:Date.now()});
   save();sel=o.date;cur=new Date(sel.slice(0,4),sel.slice(5,7)-1,1);mode='day';
@@ -752,14 +1112,9 @@ $('time').onblur=e=>{const d=e.target.value.replace(/\D/g,'');if(!d)return;let h
 function closeAd(){$('ad').classList.remove('show');$('ov').classList.remove('show')}
 $('fab').onclick=()=>{reset();$('ad').classList.add('show');$('ov').classList.add('show')};
 $('adx').onclick=closeAd;$('ov').onclick=closeAd;
-let owners=[];try{owners=JSON.parse(localStorage.getItem(KEY+'-owners')||'[]')}catch(e){owners=[]}
-function drawOwners(){const v=$('owner').value;$('owner').innerHTML='<option value="">— ไม่ระบุ —</option>'+owners.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join('')+'<option value="__new">＋ เพิ่มเจ้าของใหม่</option>';$('owner').value=v}
-$('owner').onchange=()=>{$('onew').style.display=$('owner').value==='__new'?'block':'none'};
-function addOwner(n){if(n&&!owners.includes(n)){owners.push(n);owners.sort();try{localStorage.setItem(KEY+'-owners',JSON.stringify(owners))}catch(e){}drawOwners()}}
-drawOwners();
 
 // =======================================================
-// 6. ระบบป้ายชูรับลูกค้า + คลังโลโก้ซิงก์ผ่าน Google Sheets
+// 7. ระบบป้ายชูรับลูกค้า (เดี่ยว + รวมหลายป้าย + สร้างภาพ PNG + แชร์ LINE)
 // =======================================================
 const LOGO_STORE_KEY = KEY + '-logos';
 const LOGO_SEL_KEY = KEY + '-logo-sel';
@@ -807,31 +1162,44 @@ function compressLogoForSheet(file){
     reader.onerror=reject; reader.readAsDataURL(file);
   });
 }
-function renderLogoBar(){
+
+function renderLogoBarTo(containerId, allowAddDel){
+  const el=$(containerId); if(!el)return;
   let html=`<div class="logo-item${!selectedLogoId?' on':''}" data-lid=""><span class="logo-none">ไม่ใช้<br>โลโก้</span></div>`;
   logoList.forEach(item=>{
     html+=`<div class="logo-item${selectedLogoId===item.id?' on':''}" data-lid="${item.id}" title="${esc(item.name)}">
       <img src="${item.data}" alt="${esc(item.name)}">
-      <button type="button" class="logo-del" data-ldel="${item.id}" title="ลบโลโก้นี้">×</button>
+      ${allowAddDel?`<button type="button" class="logo-del" data-ldel="${item.id}" title="ลบโลโก้นี้">×</button>`:''}
     </div>`;
   });
-  html+=`<button type="button" class="logo-add-btn" id="logoAddBtn">＋ เพิ่มโลโก้</button>`;
-  $('sLogoList').innerHTML=html;
-  $('sLogoList').querySelectorAll('.logo-item').forEach(el=>{
-    el.onclick=()=>{ selectedLogoId=el.dataset.lid||''; saveLogosLocal(); renderLogoBar(); renderSignBoard(); };
-  });
-  $('sLogoList').querySelectorAll('[data-ldel]').forEach(btn=>{
-    btn.onclick=async e=>{
-      e.stopPropagation();
-      const id=btn.dataset.ldel;
-      logoList=logoList.filter(x=>x.id!==id);
-      if(selectedLogoId===id) selectedLogoId=logoList[0]?.id||'';
-      saveLogosLocal(); renderLogoBar(); renderSignBoard();
-      await syncLogosToSheet();
+  if(allowAddDel) html+=`<button type="button" class="logo-add-btn" id="logoAddBtn">＋ เพิ่มโลโก้</button>`;
+  el.innerHTML=html;
+
+  el.querySelectorAll('.logo-item').forEach(box=>{
+    box.onclick=()=>{
+      selectedLogoId=box.dataset.lid||'';
+      saveLogosLocal();
+      renderLogoBarTo('sLogoList', true); renderLogoBarTo('bLogoList', false);
+      renderSignBoard();
+      if($('batchModal').open) renderBatchList();
     };
   });
-  $('logoAddBtn').onclick=()=>$('sLogoFile').click();
+  if(allowAddDel){
+    el.querySelectorAll('[data-ldel]').forEach(btn=>{
+      btn.onclick=async e=>{
+        e.stopPropagation();
+        const id=btn.dataset.ldel;
+        logoList=logoList.filter(x=>x.id!==id);
+        if(selectedLogoId===id) selectedLogoId=logoList[0]?.id||'';
+        saveLogosLocal(); renderLogoBarTo('sLogoList', true); renderLogoBarTo('bLogoList', false); renderSignBoard();
+        await syncLogosToSheet();
+      };
+    });
+    const addBtn=$('logoAddBtn');
+    if(addBtn) addBtn.onclick=()=>$('sLogoFile').click();
+  }
 }
+
 $('sLogoFile').onchange=async e=>{
   const files=[...(e.target.files||[])];
   if(!files.length)return;
@@ -845,45 +1213,63 @@ $('sLogoFile').onchange=async e=>{
     }catch(err){}
   }
   e.target.value='';
-  saveLogosLocal(); renderLogoBar(); renderSignBoard();
+  saveLogosLocal(); renderLogoBarTo('sLogoList', true); renderLogoBarTo('bLogoList', false); renderSignBoard();
   await syncLogosToSheet();
 };
-function getSignBoardHtml(){
-  const head=$('sHead').value.trim(), name=$('sName').value.trim()||'ชื่อลูกค้า';
-  const flight=$('sFlight').value.trim(), sub=$('sSub').value.trim(), theme=$('sTheme').value;
-  const nameSz=Number($('sNameSz').value)||64, logoSz=Number($('sLogoSz').value)||85;
-  const activeLogo=logoList.find(x=>x.id===selectedLogoId);
-  const botParts=[];
-  if(flight) botParts.push(`<span>✈️ Flight: ${esc(flight)}</span>`);
-  if(sub) botParts.push(`<span>📍 ${esc(sub)}</span>`);
-  const botHtml=botParts.length?`<div class="sb-meta">${botParts.join('<span class="sb-sep">|</span>')}</div>`:'';
-  return `<div class="sign-board ${theme}">
-    <div class="sb-top">${activeLogo?`<img class="sb-logo" src="${activeLogo.data}" style="height:${logoSz}px" alt="logo">`:''}</div>
-    <div class="sb-mid">${head?`<div class="sb-head">${esc(head)}</div>`:''}<div class="sb-name" style="font-size:${nameSz}px">${esc(name)}</div></div>
+
+function buildBottomLines(data){
+  const lines=[];
+  const f=(data.flight||'').trim(), t=(data.time||'').trim();
+  if(f && t) lines.push(`Flight: ${f}   AT: ${t}`);
+  else if(f) lines.push(`Flight: ${f}`);
+  else if(t) lines.push(`AT: ${t}`);
+  if((data.dateText||'').trim()) lines.push(data.dateText.trim());
+  if((data.sub||'').trim()) lines.push(`Drop off at ${data.sub.trim()}`);
+  return lines;
+}
+
+function createSignHtml(data){
+  const activeLogo = logoList.find(x=>x.id===selectedLogoId);
+  const botLines = buildBottomLines(data);
+  const botHtml = botLines.length ? `<div class="sb-bot-text">${botLines.map(l=>`<div>${esc(l)}</div>`).join('')}</div>` : '';
+  return `<div class="sign-board ${data.theme||''}">
+    <div class="sb-top">${activeLogo?`<img class="sb-logo" src="${activeLogo.data}" style="height:${data.logoSz||85}px" alt="logo">`:''}</div>
+    <div class="sb-mid">${data.head?`<div class="sb-head">${esc(data.head)}</div>`:''}<div class="sb-name" style="font-size:${data.nameSz||64}px">${esc(data.name||'ชื่อลูกค้า')}</div></div>
     <div class="sb-bot">${botHtml}</div>
   </div>`;
+}
+
+function getSingleSignData(){
+  return {
+    head:$('sHead').value.trim(), name:$('sName').value.trim()||'ชื่อลูกค้า',
+    flight:$('sFlight').value.trim(), time:$('sTime').value.trim(),
+    dateText:$('sDate').value.trim(), sub:$('sSub').value.trim(),
+    theme:$('sTheme').value, nameSz:Number($('sNameSz').value)||64, logoSz:Number($('sLogoSz').value)||85
+  };
 }
 function renderSignBoard(){
   $('sNameSzLbl').textContent=$('sNameSz').value;
   $('sLogoSzLbl').textContent=$('sLogoSz').value;
-  $('signPreview').innerHTML=getSignBoardHtml();
+  $('signPreview').innerHTML=createSignHtml(getSingleSignData());
 }
 function openSignModal(job){
   $('sName').value=job?(job.name||''):'';
   $('sFlight').value=job?(job.flight||''):'';
+  $('sTime').value=job?(job.time||''):'';
+  $('sDate').value=job?signDateFmt(job.date):signDateFmt(sel);
   $('sSub').value=job?(job.to||''):'';
   $('logoSyncStatus').textContent='';
-  renderLogoBar(); renderSignBoard();
+  renderLogoBarTo('sLogoList', true); renderSignBoard();
   $('signModal').showModal();
 }
-['sHead','sTheme','sName','sFlight','sSub','sNameSz','sLogoSz'].forEach(id=>{
+['sHead','sTheme','sName','sFlight','sTime','sDate','sSub','sNameSz','sLogoSz'].forEach(id=>{
   $(id).addEventListener('input', renderSignBoard);
   $(id).addEventListener('change', renderSignBoard);
 });
 $('openSignTopBtn').onclick=()=>openSignModal(null);
 $('signClose').onclick=()=>$('signModal').close();
 $('signFsBtn').onclick=()=>{
-  $('signFsBody').innerHTML=getSignBoardHtml();
+  $('signFsBody').innerHTML=createSignHtml(getSingleSignData());
   $('signFs').classList.add('show');
   if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{});
 };
@@ -893,10 +1279,134 @@ function exitSignFs(){
 }
 $('signFsExit').onclick=exitSignFs;
 document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('signFs').classList.contains('show')) exitSignFs(); });
-$('signPrintBtn').onclick=()=>{ $('printArea').innerHTML=getSignBoardHtml(); window.print(); };
+$('signPrintBtn').onclick=()=>{ $('printArea').innerHTML=createSignHtml(getSingleSignData()); window.print(); };
+
+const SIGN_THEMES = {
+  '':        { bg:'#ffffff', fg:'#0f172a', head:'#0f766e' },
+  'th-navy': { bg:'#0f172a', fg:'#f8fafc', head:'#fbbf24' },
+  'th-teal': { bg:'#0f766e', fg:'#ffffff', head:'#ccfbf1' },
+  'th-dark': { bg:'#111111', fg:'#ffffff', head:'#a3a3a3' }
+};
+function loadImgAsync(src){
+  return new Promise(resolve=>{
+    if(!src) return resolve(null);
+    const img=new Image(); img.onload=()=>resolve(img); img.onerror=()=>resolve(null); img.src=src;
+  });
+}
+function wrapCanvasText(ctx, text, maxW){
+  const words=String(text||'').split(/\s+/), lines=[]; let curLine='';
+  words.forEach(w=>{
+    const test=curLine?(curLine+' '+w):w;
+    if(ctx.measureText(test).width>maxW && curLine){ lines.push(curLine); curLine=w; } else curLine=test;
+  });
+  if(curLine) lines.push(curLine);
+  return lines.length?lines:[''];
+}
+async function renderSignToBlob(data){
+  const W=1600, H=1131, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const ctx=cv.getContext('2d'), pal=SIGN_THEMES[data.theme||'']||SIGN_THEMES[''];
+  const fontFam='"Noto Sans Thai", system-ui, sans-serif';
+  ctx.fillStyle=pal.bg; ctx.fillRect(0,0,W,H); ctx.textAlign='center';
+
+  const activeLogo=logoList.find(x=>x.id===selectedLogoId);
+  if(activeLogo && activeLogo.data){
+    const img=await loadImgAsync(activeLogo.data);
+    if(img){
+      const ratio=img.width/img.height;
+      let drawH=Math.min(Math.round((data.logoSz||85)*2.1), 260), drawW=drawH*ratio;
+      if(drawW>W*0.65){ drawW=W*0.65; drawH=drawW/ratio; }
+      ctx.drawImage(img, (W-drawW)/2, 55, drawW, drawH);
+    }
+  }
+  const namePx=Math.round((data.nameSz||64)*2.0);
+  ctx.font=`800 ${namePx}px ${fontFam}`;
+  const nameLines=wrapCanvasText(ctx, data.name||'ชื่อลูกค้า', W*0.86), lineH=namePx*1.18, totalNameH=nameLines.length*lineH, midY=H/2;
+  ctx.textBaseline='middle';
+  if(data.head){ ctx.fillStyle=pal.head; ctx.font=`700 40px ${fontFam}`; ctx.fillText(data.head.toUpperCase(), W/2, midY - totalNameH/2 - 48); }
+  ctx.fillStyle=pal.fg; ctx.font=`800 ${namePx}px ${fontFam}`;
+  const startY=midY - ((nameLines.length-1)*lineH)/2;
+  nameLines.forEach((line,idx)=>ctx.fillText(line, W/2, startY + idx*lineH));
+
+  const botLines=buildBottomLines(data);
+  if(botLines.length){
+    ctx.fillStyle=pal.fg; ctx.font=`600 34px ${fontFam}`; ctx.textBaseline='bottom';
+    botLines.forEach((line, idx)=>ctx.fillText(line, W/2, (H - 55) - (botLines.length - 1 - idx)*48, W*0.9));
+  }
+  return new Promise(res=>cv.toBlob(b=>res(b),'image/png'));
+}
+function downloadBlob(blob, filename){
+  const url=URL.createObjectURL(blob), a=document.createElement('a');
+  a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 4000);
+}
+async function shareOrDownloadSigns(signDataList, forceDownload, statusEl){
+  if(!signDataList.length){ alert('กรุณาเลือกอย่างน้อย 1 ป้ายครับ'); return; }
+  if(statusEl) statusEl.textContent=`กำลังสร้างรูปภาพ ${signDataList.length} ป้าย...`;
+  const files=[];
+  for(let i=0;i<signDataList.length;i++){
+    const d=signDataList[i], blob=await renderSignToBlob(d);
+    const safeName=(d.name||'guest').replace(/[^\wก-๙-]+/g,'_').slice(0,30);
+    files.push(new File([blob], `Sign_${i+1}_${safeName}.png`, { type:'image/png' }));
+  }
+  if(!forceDownload && navigator.share && navigator.canShare && navigator.canShare({ files })){
+    try{
+      if(statusEl) statusEl.textContent='กำลังเปิดเมนูแชร์ไปยัง LINE / Messenger...';
+      await navigator.share({ files, title:`ป้ายชูรับลูกค้า (${files.length} ป้าย)` });
+      if(statusEl) statusEl.textContent='✅ แชร์เรียบร้อยแล้ว';
+      return;
+    }catch(err){ if(err && err.name==='AbortError'){ if(statusEl) statusEl.textContent=''; return; } }
+  }
+  files.forEach((file, idx)=>setTimeout(()=>downloadBlob(file, file.name), idx*260));
+  if(statusEl) statusEl.textContent=forceDownload?`✅ ดาวน์โหลดรูป PNG จำนวน ${files.length} ป้ายเรียบร้อย`:`✅ บันทึกรูปลงเครื่อง ${files.length} ป้ายแล้ว (ส่งรูปที่โหลดเข้า LINE ได้เลย)`;
+}
+$('signDlBtn').onclick=()=>shareOrDownloadSigns([getSingleSignData()], true, null);
+$('signShareBtn').onclick=()=>shareOrDownloadSigns([getSingleSignData()], false, null);
+
+let batchScope='day', batchChecked=new Set();
+function getBatchJobs(){
+  const selObj=parseLocal(sel)||cur, y=selObj.getFullYear(), m=selObj.getMonth();
+  return jobs.filter(j=>j.st!=='ยกเลิก' && (batchScope==='day'?coversDate(j,sel):overlapsMonth(j,y,m)))
+    .sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
+}
+function jobToSignData(j){
+  return { head:$('sHead').value.trim()||'WELCOME', name:j.name||'ชื่อลูกค้า', flight:j.flight||'', time:j.time||'', dateText:signDateFmt(j.date), sub:j.to||'', theme:$('bTheme').value, nameSz:64, logoSz:85 };
+}
+function renderBatchList(){
+  const list=getBatchJobs();
+  $('bModeDay').className=batchScope==='day'?'btn sm':'btn g sm';
+  $('bModeMonth').className=batchScope==='month'?'btn sm':'btn g sm';
+  if(!list.length){ $('batchList').innerHTML='<div class="empty" style="grid-column:1/-1">ไม่มีงานในช่วงเวลาที่เลือก</div>'; $('bCountLbl').textContent='เลือก 0 ป้าย'; return; }
+  $('batchList').innerHTML=list.map(j=>{
+    const on=batchChecked.has(j.id);
+    return `<div class="batch-card${on?' checked':''}" data-bid="${j.id}">
+      <div class="batch-card-head"><input type="checkbox" ${on?'checked':''}><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(j.time||'--:--')} · ${esc(j.name)}</span></div>
+      <div class="batch-mini">${createSignHtml(jobToSignData(j))}</div>
+    </div>`;
+  }).join('');
+  $('batchList').querySelectorAll('.batch-card').forEach(card=>{
+    card.onclick=()=>{ const id=card.dataset.bid; if(batchChecked.has(id)) batchChecked.delete(id); else batchChecked.add(id); renderBatchList(); };
+  });
+  const selCount=list.filter(j=>batchChecked.has(j.id)).length;
+  $('bCountLbl').textContent=`เลือก ${selCount} / ${list.length} ป้าย`;
+  $('bToggleAll').textContent=(selCount===list.length && list.length>0)?'ยกเลิกเลือกทั้งหมด':'เลือกทั้งหมด';
+}
+$('openBatchBtn').onclick=()=>{
+  batchScope='day'; batchChecked=new Set(getBatchJobs().map(j=>j.id));
+  $('bTheme').value=$('sTheme').value; $('batchStatus').textContent='';
+  renderLogoBarTo('bLogoList', false); renderBatchList(); $('batchModal').showModal();
+};
+$('batchClose').onclick=()=>$('batchModal').close();
+$('bModeDay').onclick=()=>{ batchScope='day'; batchChecked=new Set(getBatchJobs().map(j=>j.id)); renderBatchList(); };
+$('bModeMonth').onclick=()=>{ batchScope='month'; batchChecked=new Set(getBatchJobs().map(j=>j.id)); renderBatchList(); };
+$('bTheme').onchange=renderBatchList;
+$('bToggleAll').onclick=()=>{ const list=getBatchJobs(); if(list.every(j=>batchChecked.has(j.id))) batchChecked.clear(); else list.forEach(j=>batchChecked.add(j.id)); renderBatchList(); };
+const getSelectedBatchSignData=()=>getBatchJobs().filter(j=>batchChecked.has(j.id)).map(jobToSignData);
+$('bShareBtn').onclick=()=>shareOrDownloadSigns(getSelectedBatchSignData(), false, $('batchStatus'));
+$('bDlBtn').onclick=()=>shareOrDownloadSigns(getSelectedBatchSignData(), true, $('batchStatus'));
+$('bPrintBtn').onclick=()=>{ const items=getSelectedBatchSignData(); if(!items.length){ alert('กรุณาเลือกอย่างน้อย 1 ป้ายครับ'); return; } $('printArea').innerHTML=items.map(createSignHtml).join(''); window.print(); };
 
 // =======================================================
-// 7. ระบบซิงก์ข้อมูลงาน + คลังโลโก้กับ Google Sheets อัตโนมัติ
+// 8. ระบบซิงก์ข้อมูลงาน + โลโก้ + เจ้าของงาน กับ Google Sheets อัตโนมัติ
 // =======================================================
 let busy=false,again=false,stm;
 const setS=t=>{$('ss').textContent=t};
@@ -920,12 +1430,29 @@ async function sync(){
   try{
     const res=await callSheetApi({action:'get'});
     if(!res.ok)throw new Error(res.message||'ซิงก์ไม่สำเร็จ');
+
     if(Array.isArray(res.logos)){
       logoList=res.logos;
       if(selectedLogoId && !logoList.some(x=>x.id===selectedLogoId)) selectedLogoId=logoList[0]?.id||'';
       saveLogosLocal();
-      if($('signModal').open){ renderLogoBar(); renderSignBoard(); }
+      if($('signModal').open){ renderLogoBarTo('sLogoList',true); renderSignBoard(); }
+      if($('batchModal').open){ renderLogoBarTo('bLogoList',false); renderBatchList(); }
     }
+
+    // อัปเดตข้อมูลและโลโก้เจ้าของงานจากแท็บ Owners บน Google Sheets
+    if(Array.isArray(res.owners)){
+      const mapO=new Map();
+      res.owners.forEach(o=>{ if(o.name) mapO.set(o.name.trim().toLowerCase(), o); });
+      ownerProfiles.forEach(local=>{
+        const k=local.name.trim().toLowerCase();
+        if(!mapO.has(k)) mapO.set(k, local);
+      });
+      ownerProfiles=[...mapO.values()];
+      saveOwnerProfilesLocal();
+      drawOwners();
+      if($('ownerModal').open){ renderOwnerSignLogoPicker(); renderOwnerCards(); }
+    }
+
     const rem=res.data||[];
     const ts=x=>x.del?Math.max(+x.upd||0,Date.parse(x.del)||0):(+x.upd||0),m=new Map();
     [...jobs,...trash,...rem].forEach(x=>{if(!x.id)return;const o=m.get(x.id);if(!o||ts(x)>ts(o))m.set(x.id,x)});
