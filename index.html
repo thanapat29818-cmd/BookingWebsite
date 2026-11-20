@@ -19,7 +19,6 @@ h1{font-size:20px;margin:0}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
 .card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
 
-/* ปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไปจนจบสัปดาห์ */
 .cal-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;font-weight:700;font-size:17px}
 .cal-nav-g{display:flex;gap:6px;align-items:center}
 .cal-m-title{font-size:15px;font-weight:700;color:var(--pr);margin:10px 0 6px;display:flex;justify-content:space-between;align-items:center}
@@ -27,15 +26,9 @@ h1{font-size:20px;margin:0}
 .cal-sep{border:0;border-top:1px dashed var(--bd);margin:12px 0 6px}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
 .dow{font-size:12px;color:var(--mu);padding:3px 0}
-.day{
-  min-height:60px;font-size:15px;font-weight:600;border:1px solid transparent;border-radius:10px;
-  background:none;color:var(--tx);font-family:inherit;cursor:pointer;position:relative;
-  padding:4px 2px 13px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden;
-}
-.day:hover{background:var(--bg)}
-.day.today{border-color:var(--pr)}
-.day.next-m{background:var(--bg);color:var(--mu);border-color:var(--bd)}
-.day.next-m .dnum{font-size:12px;font-weight:600}
+.day{min-height:60px;font-size:15px;font-weight:600;border:1px solid transparent;border-radius:10px;background:none;color:var(--tx);font-family:inherit;cursor:pointer;position:relative;padding:4px 2px 13px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;overflow:hidden}
+.day:hover{background:var(--bg)}.day.today{border-color:var(--pr)}
+.day.next-m{background:var(--bg);color:var(--mu);border-color:var(--bd)}.day.next-m .dnum{font-size:12px}
 .day.sel{background:var(--pr);color:var(--prt);border-color:var(--pr)}
 .day .dnum{line-height:1.2}
 .day .n{position:absolute;top:2px;right:3px;font-size:10px;font-weight:700;background:var(--ac);color:var(--tx);border-radius:8px;padding:0 5px}
@@ -44,140 +37,104 @@ h1{font-size:20px;margin:0}
 .mbar{width:100%;height:7px;border-radius:4px;font-size:0;line-height:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;box-shadow:0 0 0 1px rgba(255,255,255,.45)}
 .day.sel .mbar{box-shadow:0 0 0 1px rgba(255,255,255,.85)}
 
-/* กล่องเลือกประเภทสถานที่ + พิกัด Google Maps */
-.loc-box{background:var(--bg);border:1px solid var(--bd);border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:7px}
+.loc-box,.att-box{background:var(--bg);border:1px solid var(--bd);border-radius:11px;padding:10px;display:flex;flex-direction:column;gap:7px}
 .loc-pills{display:flex;gap:6px;flex-wrap:wrap}
 .loc-pill{flex:1;min-width:84px;padding:6px 10px;border-radius:9px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font-size:13px;font-weight:600;cursor:pointer;text-align:center}
 .loc-pill.on{background:var(--pr);color:var(--prt);border-color:var(--pr)}
-.loc-row{display:flex;gap:6px;align-items:center}
-.loc-row input{flex:1;background:var(--card)}
-.loc-map-btn{white-space:nowrap;padding:8px 10px;font-size:12.5px}
+.loc-row{display:flex;gap:6px;align-items:center}.loc-row input{flex:1;background:var(--card)}.loc-map-btn{white-space:nowrap;padding:8px 10px;font-size:12.5px}
 
-/* จานสี & แผนงานรายวัน */
+/* แกลเลอรีรูปแนบในฟอร์มและหน้าต่างรายละเอียด */
+.att-grid{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.att-thumb{position:relative;width:78px;height:78px;border-radius:10px;border:1px solid var(--bd);background:var(--card);overflow:visible}
+.att-thumb img{width:100%;height:100%;object-fit:cover;border-radius:9px;display:block;cursor:pointer}
+.att-del{position:absolute;top:-7px;right:-7px;width:21px;height:21px;border-radius:50%;border:0;background:var(--rd);color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+#detailModal{width:min(760px,96vw);max-height:92vh;padding:16px;overflow:auto}
+.dt-text{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:12px;white-space:pre-wrap;word-break:break-word;line-height:1.65;font-size:14.5px;max-height:42vh;overflow:auto;margin-top:6px}
+.dt-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:8px}
+.dt-img-card{border:1px solid var(--bd);border-radius:10px;overflow:hidden;background:var(--bg);text-decoration:none;color:var(--tx);display:flex;flex-direction:column}
+.dt-img-card img{width:100%;height:150px;object-fit:cover;display:block;background:#000}
+.dt-img-cap{font-size:11.5px;color:var(--mu);padding:5px 7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.btn.has-dt{border-color:var(--pr);background:var(--ac);color:var(--tx)}
+
 .swatches{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:4px}
-.sw{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;transition:transform .12s}
-.sw:hover{transform:scale(1.1)}
+.sw{width:28px;height:28px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
 .sw.on{border-color:var(--tx);box-shadow:0 0 0 2px var(--card) inset}
-.sw-auto{width:auto;padding:0 10px;border-radius:14px;background:var(--bg);border:1px solid var(--bd);color:var(--tx)}
-.sw-auto.on{border-color:var(--pr);background:var(--ac);box-shadow:none}
+.sw-auto{width:auto;padding:0 10px;border-radius:14px;background:var(--bg);border:1px solid var(--bd);color:var(--tx)}.sw-auto.on{border-color:var(--pr);background:var(--ac);box-shadow:none}
 .day-info{font-size:12px;color:var(--pr);font-weight:600;margin-top:3px}
 .dp-box{background:var(--bg);border:1px solid var(--bd);border-radius:10px;padding:10px;margin-top:2px}
 .dp-list{display:flex;flex-direction:column;gap:8px;margin-top:6px}
 .dp-row{display:grid;grid-template-columns:110px 1fr 105px;gap:6px;align-items:center}
-.dp-lbl{font-size:12.5px;font-weight:600;color:var(--tx);white-space:nowrap}
-.dp-inp,.dp-price{background:var(--card);padding:6px 9px;font-size:14px}
-.dp-price{text-align:right}
+.dp-lbl{font-size:12.5px;font-weight:600;white-space:nowrap}
+.dp-inp,.dp-price{background:var(--card);padding:6px 9px;font-size:14px}.dp-price{text-align:right}
 .dp-total{font-size:12.5px;font-weight:700;color:var(--pr);margin-top:8px;text-align:right}
 .dp-card{margin:8px 0 4px;padding:8px 10px;background:var(--bg);border:1px solid var(--bd);border-radius:10px;font-size:13.5px}
 .dp-card-title{font-size:12px;font-weight:700;color:var(--mu);margin-bottom:4px}
 .dp-item{display:flex;justify-content:space-between;align-items:baseline;gap:8px;padding:3px 6px;border-radius:6px;line-height:1.5}
-.dp-item.now{background:var(--ac);font-weight:700;color:var(--tx)}
-.dp-badge{font-size:11px;background:var(--pr);color:var(--prt);padding:1px 6px;border-radius:6px;margin-left:4px}
-.dp-p{font-weight:700;color:var(--pr);white-space:nowrap}
+.dp-item.now{background:var(--ac);font-weight:700}.dp-badge{font-size:11px;background:var(--pr);color:var(--prt);padding:1px 6px;border-radius:6px;margin-left:4px}.dp-p{font-weight:700;color:var(--pr);white-space:nowrap}
 
 button,input,select,textarea{font:inherit;color:var(--tx)}
 .btn{background:var(--pr);color:var(--prt);border:0;border-radius:10px;padding:9px 14px;font-weight:600;cursor:pointer}
 .btn.g{background:var(--bg);color:var(--tx);border:1px solid var(--bd)}
-.btn.ln-btn{background:var(--ln);color:#fff}
-.btn.sm{padding:4px 9px;font-size:13px}
+.btn.ln-btn{background:var(--ln);color:#fff}.btn.sm{padding:4px 9px;font-size:13px}
 .nav{background:var(--bg);border:1px solid var(--bd);border-radius:8px;font-size:20px;padding:3px 14px;cursor:pointer}
-#fm{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-#fm .f{grid-column:1/-1}
+#fm{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}#fm .f{grid-column:1/-1}
 label{font-size:12px;color:var(--mu);display:block;margin-bottom:2px}
 input,select,textarea{width:100%;background:var(--bg);border:1px solid var(--bd);border-radius:9px;padding:8px}
 textarea{min-height:56px;resize:vertical}
 .row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:space-between;margin-bottom:10px}
 .sum{font-size:13px;color:var(--mu)}
 
-/* การ์ดงาน + โซนโลโก้เจ้าของงานฝั่งขวา */
-.job{border:1px solid var(--bd);border-radius:12px;padding:11px;margin-bottom:9px;background:var(--card)}
-.job.done{opacity:.6}
-.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}
-.t{font-weight:700}
+.job{border:1px solid var(--bd);border-radius:12px;padding:11px;margin-bottom:9px;background:var(--card)}.job.done{opacity:.6}
+.top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start}.t{font-weight:700}
 .tag{display:inline-block;font-size:11px;border-radius:7px;padding:1px 7px;background:var(--ac);margin-right:4px;margin-top:2px}
 .loc-tag{display:inline-block;font-size:11px;font-weight:700;border-radius:6px;padding:0 6px;background:var(--bg);border:1px solid var(--bd);margin-right:4px}
 .pr{font-weight:700;color:var(--pr);white-space:nowrap}
 .job-body{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:4px}
-.job-info{flex:1;min-width:0}
-.job-side{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-.owner-logo-box{
-  width:104px;height:104px;border-radius:12px;border:1px solid var(--bd);
-  background:#fff;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);transition:transform .12s;
-}
-.owner-logo-box:hover{transform:scale(1.03);border-color:var(--pr)}
+.job-info{flex:1;min-width:0}.job-side{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.owner-logo-box{width:104px;height:104px;border-radius:12px;border:1px solid var(--bd);background:#fff;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .owner-logo-box img{max-width:100%;max-height:100%;object-fit:contain;display:block}
-.owner-logo-add{
-  width:92px;height:76px;border-radius:12px;border:2px dashed var(--bd);
-  background:var(--bg);color:var(--mu);font-size:12px;font-weight:600;
-  cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
-  text-align:center;padding:6px;
-}
-.owner-logo-add:hover{border-color:var(--pr);color:var(--pr);background:var(--ac)}
+.owner-logo-add{width:92px;height:76px;border-radius:12px;border:2px dashed var(--bd);background:var(--bg);color:var(--mu);font-size:12px;font-weight:600;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;padding:6px}
 .owner-logo-cap{font-size:11px;color:var(--mu);max-width:104px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:center}
 
-/* กล่องโลโก้หลักสำรอง & หน้าจัดการเจ้าของงาน */
-.def-logo-card{
-  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
-  background:var(--ac);border:1px solid var(--pr);border-radius:12px;
-  padding:10px 12px;margin:10px 0 12px;
-}
-.def-logo-prev{
-  width:72px;height:58px;border-radius:10px;border:1px solid var(--bd);
-  background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
+.def-logo-card{display:flex;gap:12px;align-items:center;flex-wrap:wrap;background:var(--ac);border:1px solid var(--pr);border-radius:12px;padding:10px 12px;margin:10px 0 12px}
+.def-logo-prev{width:72px;height:58px;border-radius:10px;border:1px solid var(--bd);background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .def-logo-prev img{max-width:100%;max-height:100%;object-fit:contain}
 #ownerModal{width:min(760px,96vw);max-height:92vh;padding:16px;overflow:auto}
 .ow-form{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--bg);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:10px 0 14px}
-.ow-form .f{grid-column:1/-1}
-.ow-form input,.ow-form textarea{background:var(--card)}
+.ow-form .f{grid-column:1/-1}.ow-form input,.ow-form textarea{background:var(--card)}
 .ow-logo-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .ow-prev{width:76px;height:76px;border-radius:10px;border:1px solid var(--bd);background:#fff;display:flex;align-items:center;justify-content:center;padding:4px;flex-shrink:0}
-.ow-prev img{max-width:100%;max-height:100%;object-fit:contain}
+.ow-prev img,.ow-card-img img,.ow-pick-thumb img{max-width:100%;max-height:100%;object-fit:contain}
 .ow-prev-empty{font-size:11px;color:#94a3b8;text-align:center;line-height:1.2}
 .ow-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
 .ow-card{display:flex;gap:10px;align-items:center;border:1px solid var(--bd);border-radius:12px;padding:10px;background:var(--bg)}
 .ow-card-img{width:58px;height:58px;border-radius:10px;border:1px solid var(--bd);background:#fff;padding:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ow-card-img img{max-width:100%;max-height:100%;object-fit:contain}
-.ow-card-meta{flex:1;min-width:0}
-.ow-card-name{font-weight:700;font-size:15px}
-.ow-card-sub{font-size:12.5px;color:var(--mu);white-space:pre-line;word-break:break-word}
+.ow-card-meta{flex:1;min-width:0}.ow-card-name{font-weight:700;font-size:15px}.ow-card-sub{font-size:12.5px;color:var(--mu);white-space:pre-line;word-break:break-word}
 .ow-pick-strip{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .ow-pick-thumb{width:44px;height:36px;border-radius:7px;border:1px solid var(--bd);background:#fff;padding:2px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-.ow-pick-thumb:hover{border-color:var(--pr)}
-.ow-pick-thumb img{max-width:100%;max-height:100%;object-fit:contain}
 
 .rt{margin:4px 0 6px;line-height:1.65}
 .lk{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .lk a{font-size:12.5px;text-decoration:none;color:#fff;border-radius:8px;padding:4px 10px;background:#64748b}
-.lk .wa{background:var(--wa)}.lk .fb{background:var(--fb)}.lk .ln{background:var(--ln)}
-.lk .mp-in{background:#0284c7}.lk .mp-out{background:#ea580c}
+.lk .wa{background:var(--wa)}.lk .fb{background:var(--fb)}.lk .ln{background:var(--ln)}.lk .mp-in{background:#0284c7}.lk .mp-out{background:#ea580c}
 .acts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .empty{text-align:center;color:var(--mu);padding:26px}
 dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);width:min(520px,92vw)}
 .dots{position:absolute;bottom:4px;left:0;right:0;display:flex;justify-content:center;gap:2px}
 .dots i{width:7px;height:7px;border-radius:50%;display:block;box-shadow:0 0 0 1px rgba(255,255,255,.7)}
-.lg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:10px}
-.lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+.lg{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--mu);margin-top:10px}.lg i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;border-radius:30px;padding:13px 20px;box-shadow:0 4px 14px rgba(0,0,0,.3);display:block!important}
 
-/* ป้ายชูรับลูกค้า & หน้ารวมป้ายชู */
 #signModal,#batchModal{width:min(820px,96vw);max-height:92vh;padding:16px;overflow:auto}
-.sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.sign-grid .f{grid-column:1/-1}
+.sign-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.sign-grid .f{grid-column:1/-1}
 .logo-bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:6px}
-.logo-item{
-  position:relative;min-width:72px;height:54px;border-radius:10px;border:2px solid var(--bd);
-  background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;
-  cursor:pointer;padding:4px 7px;
-}
+.logo-item{position:relative;min-width:72px;height:54px;border-radius:10px;border:2px solid var(--bd);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:4px 7px}
 .logo-item.on{border-color:var(--pr);background:var(--ac);box-shadow:0 0 0 1px var(--pr)}
 .logo-item img{max-width:60px;max-height:36px;object-fit:contain;display:block}
 .logo-none{font-size:11.5px;font-weight:700;color:var(--tx);text-align:center;line-height:1.2}
 .logo-tag{font-size:9.5px;font-weight:700;color:var(--pr);line-height:1.1;margin-top:2px}
-.logo-del{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;border:0;background:var(--rd);color:#fff;font-size:12px;line-height:1;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center}
+.logo-del{position:absolute;top:-7px;right:-7px;width:20px;height:20px;border-radius:50%;border:0;background:var(--rd);color:#fff;font-size:12px;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .logo-add-btn{display:inline-flex;align-items:center;justify-content:center;height:54px;padding:0 12px;border-radius:10px;border:2px dashed var(--pr);color:var(--pr);background:var(--bg);font-size:12.5px;font-weight:700;cursor:pointer}
-.logo-add-btn:hover{background:var(--ac)}
 .sign-logo-hint{font-size:12px;color:var(--pr);font-weight:600;margin-top:5px}
 .sign-preview-wrap{margin-top:12px;border:1px solid var(--bd);border-radius:12px;overflow:hidden;background:#e5e7eb}
 
@@ -188,28 +145,24 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 .sb-logo{max-width:65%;object-fit:contain;display:block}
 .sb-head{font-size:clamp(13px,2vw,22px);font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#0f766e}
 .sb-name{font-weight:800;line-height:1.15;word-break:break-word;max-width:100%}
-.sb-bot-text{font-size:clamp(12px,1.65vw,20px);font-weight:600;line-height:1.45;text-align:center;color:inherit}
-.sb-bot-text div{margin:1px 0}
+.sb-bot-text{font-size:clamp(12px,1.65vw,20px);font-weight:600;line-height:1.45;text-align:center;color:inherit}.sb-bot-text div{margin:1px 0}
 .sign-board.th-navy{background:#0f172a;color:#f8fafc}.sign-board.th-navy .sb-head{color:#fbbf24}
 .sign-board.th-teal{background:#0f766e;color:#ffffff}.sign-board.th-teal .sb-head{color:#ccfbf1}
 .sign-board.th-dark{background:#111111;color:#ffffff}.sign-board.th-dark .sb-head{color:#a3a3a3}
 
 .batch-toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin:10px 0;padding:10px;background:var(--bg);border:1px solid var(--bd);border-radius:10px}
 .batch-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;max-height:46vh;overflow:auto;padding:2px}
-.batch-card{border:2px solid var(--bd);border-radius:10px;overflow:hidden;background:var(--card);cursor:pointer;transition:border-color .15s}
+.batch-card{border:2px solid var(--bd);border-radius:10px;overflow:hidden;background:var(--card);cursor:pointer}
 .batch-card.checked{border-color:var(--pr);box-shadow:0 0 0 1px var(--pr)}
 .batch-card-head{display:flex;align-items:center;gap:8px;padding:7px 9px;background:var(--bg);border-bottom:1px solid var(--bd);font-size:13px;font-weight:600}
 .batch-card-head input[type="checkbox"]{width:18px;height:18px;margin:0;accent-color:var(--pr)}
-.batch-mini{pointer-events:none}
-.batch-mini .sign-board{padding:4% 5%}.batch-mini .sb-logo{height:28px!important}
-.batch-mini .sb-head{font-size:9px!important;letter-spacing:1.5px}.batch-mini .sb-name{font-size:18px!important}
-.batch-mini .sb-bot-text{font-size:9px!important;line-height:1.35}
+.batch-mini{pointer-events:none}.batch-mini .sign-board{padding:4% 5%}.batch-mini .sb-logo{height:28px!important}
+.batch-mini .sb-head{font-size:9px!important;letter-spacing:1.5px}.batch-mini .sb-name{font-size:18px!important}.batch-mini .sb-bot-text{font-size:9px!important;line-height:1.35}
 .batch-status{font-size:13px;color:var(--pr);font-weight:600;min-height:20px;margin-top:8px}
 
-#signFs{display:none;position:fixed;inset:0;z-index:9999;background:#fff}
-#signFs.show{display:flex;align-items:center;justify-content:center}
+#signFs{display:none;position:fixed;inset:0;z-index:9999;background:#fff}#signFs.show{display:flex;align-items:center;justify-content:center}
 #signFs .sign-board{width:100vw;height:100vh;aspect-ratio:auto;padding:3vh 5vw}
-.fs-exit{position:fixed;top:14px;right:14px;z-index:10000;background:rgba(0,0,0,.45);color:#fff;border:0;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;backdrop-filter:blur(4px)}
+.fs-exit{position:fixed;top:14px;right:14px;z-index:10000;background:rgba(0,0,0,.45);color:#fff;border:0;border-radius:999px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer}
 
 #printArea{display:none}
 @media print{
@@ -222,24 +175,17 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
 
 @media(max-width:860px){.wrap{padding-bottom:90px}}
 @media(max-width:560px){
-  input,select,textarea{font-size:16px}
-  #fm,.sign-grid,.ow-form{grid-template-columns:1fr}
-  .dp-row{grid-template-columns:1fr 95px;gap:5px}
-  .dp-lbl{grid-column:1/-1;margin-top:2px}
-  .owner-logo-box{width:76px;height:76px}
-  .owner-logo-add{width:76px;height:66px;font-size:11px}
-  .btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}
-  .lk a{padding:8px 12px;font-size:14px}.day .n{font-size:9px;padding:0 4px}.dow{font-size:11px}.wrap{padding:10px}
+  input,select,textarea{font-size:16px}#fm,.sign-grid,.ow-form{grid-template-columns:1fr}
+  .dp-row{grid-template-columns:1fr 95px;gap:5px}.dp-lbl{grid-column:1/-1;margin-top:2px}
+  .owner-logo-box{width:76px;height:76px}.owner-logo-add{width:76px;height:66px;font-size:11px}
+  .btn,.nav{min-height:42px}.btn.sm{min-height:38px;padding:6px 12px}.lk a{padding:8px 12px;font-size:14px}.wrap{padding:10px}
 }
 @media(min-width:861px){
-  .grid{grid-template-columns:560px minmax(0,1fr)}
-  .day{min-height:74px;font-size:17px}
+  .grid{grid-template-columns:560px minmax(0,1fr)}.day{min-height:74px;font-size:17px}
   .mbar{height:15px;font-size:10px;line-height:15px;color:#fff;padding:0 4px;text-align:left;font-weight:600}
 }
-#ov{display:none}
-#ov.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40}
-.addpop{display:none}
-.addpop.show{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;width:min(620px,95vw);max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+#ov{display:none}#ov.show{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40}
+.addpop{display:none}.addpop.show{display:block;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;width:min(640px,95vw);max-height:88vh;overflow:auto;box-shadow:0 10px 40px rgba(0,0,0,.35)}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -260,12 +206,9 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
     <div>
       <div class="card">
         <div class="cal-h">
-          <button class="nav" id="pv" title="ย้อนกลับ 1 เดือน">‹</button>
+          <button class="nav" id="pv">‹</button>
           <span id="mt"></span>
-          <div class="cal-nav-g">
-            <button class="btn g sm" id="tdBtn">วันนี้</button>
-            <button class="nav" id="nx" title="ถัดไป 1 เดือน">›</button>
-          </div>
+          <div class="cal-nav-g"><button class="btn g sm" id="tdBtn">วันนี้</button><button class="nav" id="nx">›</button></div>
         </div>
         <div id="calWrap"></div>
         <div class="lg" id="lg"></div>
@@ -290,7 +233,7 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <div><label>เจ้าของงาน</label><select id="owner"></select><input id="onew" placeholder="พิมพ์ชื่อเจ้าของใหม่" autocomplete="off" style="margin-top:6px;display:none"></div>
           <div><label>ช่องทางติดต่อ</label><select id="ch"><option>WhatsApp</option><option>Line</option><option>Facebook</option><option>Telegram</option><option>Instagram</option><option>โทร</option><option>อื่นๆ</option></select></div>
           <div class="f"><label>ชื่อลูกค้า</label><input id="name" required placeholder="เช่น Mr. John Smith / คุณสมชาย"></div>
-          <div class="f"><label>🎨 สีแถบงานบนปฏิทิน (แบ่งสีงานหลายวัน)</label><input type="hidden" id="color" value=""><div class="swatches" id="swatches"></div></div>
+          <div class="f"><label>🎨 สีแถบงานบนปฏิทิน</label><input type="hidden" id="color" value=""><div class="swatches" id="swatches"></div></div>
           <div class="f"><label>เบอร์ / ID / ลิงก์</label><input id="ct" placeholder="เช่น 0812345678"></div>
 
           <div class="f loc-box">
@@ -301,14 +244,8 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
               <button type="button" class="loc-pill" data-v="Hotel">🏨 Hotel</button>
               <button type="button" class="loc-pill" data-v="Home">🏠 Home</button>
             </div>
-            <div class="loc-row">
-              <input id="from" placeholder="ชื่อสถานที่รับ (เช่น โรงแรม / บ้าน / สนามบิน)">
-              <button type="button" class="btn g loc-map-btn" id="fromFindMap">🗺️ ดูใน Maps</button>
-            </div>
-            <div class="loc-row">
-              <input id="fromMap" placeholder="📍 ลิงก์พิกัดรับ Google Maps (เว้นว่างได้ ระบบลิงก์จากชื่อให้)">
-              <button type="button" class="btn g loc-map-btn" id="fromOpenPin">📍 พิกัดรับ</button>
-            </div>
+            <div class="loc-row"><input id="from" placeholder="ชื่อสถานที่รับ"><button type="button" class="btn g loc-map-btn" id="fromFindMap">🗺️ ดูใน Maps</button></div>
+            <div class="loc-row"><input id="fromMap" placeholder="📍 ลิงก์พิกัดรับ Google Maps"><button type="button" class="btn g loc-map-btn" id="fromOpenPin">📍 พิกัดรับ</button></div>
           </div>
 
           <div class="f loc-box">
@@ -319,25 +256,31 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
               <button type="button" class="loc-pill" data-v="Hotel">🏨 Hotel</button>
               <button type="button" class="loc-pill" data-v="Home">🏠 Home</button>
             </div>
-            <div class="loc-row">
-              <input id="to" placeholder="ชื่อสถานที่ส่ง / โรงแรม / ที่เที่ยว (เช่น ดอยอินทนนท์)">
-              <button type="button" class="btn g loc-map-btn" id="toFindMap">🗺️ ดูใน Maps</button>
-            </div>
-            <div class="loc-row">
-              <input id="toMap" placeholder="🏁 ลิงก์พิกัดส่ง Google Maps (เว้นว่างได้ ระบบลิงก์จากชื่อให้)">
-              <button type="button" class="btn g loc-map-btn" id="toOpenPin">🏁 พิกัดส่ง</button>
-            </div>
+            <div class="loc-row"><input id="to" placeholder="ชื่อสถานที่ส่ง / ที่เที่ยว"><button type="button" class="btn g loc-map-btn" id="toFindMap">🗺️ ดูใน Maps</button></div>
+            <div class="loc-row"><input id="toMap" placeholder="🏁 ลิงก์พิกัดส่ง Google Maps"><button type="button" class="btn g loc-map-btn" id="toOpenPin">🏁 พิกัดส่ง</button></div>
           </div>
 
           <div><label>จำนวนคน</label><input type="number" id="pax" min="0" placeholder="0"></div>
           <div><label>ราคารวมทั้งหมด (บาท)</label><input type="number" id="price" min="0" placeholder="0"></div>
-          <div class="f"><label>รายละเอียด / หมายเหตุรวม</label><textarea id="note" placeholder="ที่นั่งเด็ก, ป้ายชื่อ, หมายเหตุ ฯลฯ"></textarea></div>
+          <div class="f"><label>หมายเหตุสั้น (แสดงบนการ์ดงาน)</label><textarea id="note" placeholder="ที่นั่งเด็ก, ป้ายชื่อ ฯลฯ"></textarea></div>
+
+          <!-- ช่องรายละเอียดงานฉบับเต็ม (Text ล้วน) + แนบรูปลง Google Drive -->
+          <div class="f att-box">
+            <label style="color:var(--pr);font-weight:700;margin:0">📄 รายละเอียดงานฉบับเต็ม (ซ่อนในปุ่มรายละเอียด · ก๊อปวางข้อความยาวๆ ได้)</label>
+            <textarea id="detailText" style="min-height:110px;background:var(--card)" placeholder="วางแชทลูกค้า, โปรแกรมทัวร์แบบละเอียด, เงื่อนไขต่างๆ ที่นี่..."></textarea>
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+              <input type="file" id="attFile" accept="image/*" multiple hidden>
+              <button type="button" class="btn g sm" id="attUpBtn">📎 แนบรูปภาพ (เลือกหลายรูปได้ · เก็บลง Drive)</button>
+              <span id="attStatus" class="sum" style="color:var(--pr);font-weight:600"></span>
+            </div>
+            <div class="att-grid" id="attGrid"></div>
+          </div>
+
           <div class="f" style="display:flex;gap:8px"><button class="btn" style="flex:1" type="submit" id="sv">บันทึก</button><button class="btn g" type="button" id="cn" hidden>ยกเลิกแก้ไข</button></div>
         </form>
       </div>
     </div>
 
-    <!-- รายการงานฝั่งขวา -->
     <div class="card">
       <div class="row">
         <div><b id="lt"></b><div class="sum" id="sm"></div><div class="sum" id="ss"></div></div>
@@ -349,40 +292,58 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
           <button class="btn g sm" id="sy">☁️ ซิงก์เลย</button>
         </div>
       </div>
-      <input id="q" placeholder="🔍 ค้นหาชื่อ / เจ้าของงาน / ไฟล์ทบิน / สถานที่ / เบอร์" style="margin-bottom:10px">
+      <input id="q" placeholder="🔍 ค้นหาชื่อ / เจ้าของงาน / ไฟล์ทบิน / สถานที่ / รายละเอียด / เบอร์" style="margin-bottom:10px">
       <div id="list"></div>
     </div>
   </div>
 </div>
 <button class="btn fab" id="fab">+ เพิ่มงาน</button>
 
-<!-- หน้าจัดการเจ้าของงาน + ตั้งค่าโลโก้หลักสำรอง -->
+<!-- หน้าต่างเปิดอ่านรายละเอียดงานฉบับเต็ม + รูปแนบจาก Google Drive -->
+<dialog id="detailModal">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:8px">
+    <b id="dtTitle">📄 รายละเอียดงาน</b>
+    <button class="btn g sm" id="dtClose" type="button">ปิด</button>
+  </div>
+  <div class="sum" id="dtSub" style="margin-top:4px"></div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px">
+    <label style="margin:0;font-weight:700;color:var(--pr)">📝 ข้อความรายละเอียด (Text)</label>
+    <button type="button" class="btn g sm" id="dtCopyBtn">📋 คัดลอกข้อความ</button>
+  </div>
+  <div class="dt-text" id="dtText"></div>
+  <div style="margin-top:14px">
+    <label style="font-weight:700;color:var(--pr)">🖼️ รูปภาพแนบ (คลิกที่รูปเพื่อเปิดดูขนาดเต็ม/ซูมใน Google Drive)</label>
+    <div class="dt-gallery" id="dtGallery"></div>
+  </div>
+  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:14px">
+    <button type="button" class="btn g" id="dtEditBtn">✏️ แก้ไขรายละเอียด / เพิ่มรูปแนบ</button>
+  </div>
+</dialog>
+
+<!-- หน้าจัดการเจ้าของงาน + โลโก้หลักสำรอง (เก็บลง Google Drive) -->
 <dialog id="ownerModal">
   <div style="display:flex;justify-content:space-between;align-items:center">
     <b>👤 จัดการเจ้าของงาน & โลโก้ <span id="ownerSyncStatus" style="font-size:12px;color:var(--pr);font-weight:600"></span></b>
     <button class="btn g sm" id="ownerClose" type="button">ปิด</button>
   </div>
-
   <div class="def-logo-card">
     <div class="def-logo-prev" id="owDefLogoPrev"><span class="ow-prev-empty">ยังไม่มี<br>โลโก้หลัก</span></div>
     <div style="flex:1;min-width:200px">
-      <div style="font-weight:700;font-size:13.5px">⭐ โลโก้หลักสำรอง (ใช้บนการ์ดงานและป้ายชูเมื่อไม่มีโลโก้เจ้าของงาน)</div>
-      <div class="sum" style="font-size:12px;margin:2px 0 6px">บันทึกลง Google Sheets อัตโนมัติ ใช้ได้พร้อมกันทุกโทรศัพท์</div>
+      <div style="font-weight:700;font-size:13.5px">⭐ โลโก้หลักสำรอง (เก็บลง Drive · ใช้เมื่อไม่มีโลโก้เจ้าของงาน)</div>
+      <div class="sum" style="font-size:12px;margin:2px 0 6px">บันทึกใน BookingWebSite/Logos ซิงก์ทุกเครื่องอัตโนมัติ</div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
         <button type="button" class="btn sm" id="owDefUpBtn">📤 อัปโหลดโลโก้หลัก</button>
         <button type="button" class="btn g sm" id="owDefClrBtn" style="color:var(--rd)">ลบโลโก้หลัก</button>
       </div>
     </div>
   </div>
-
   <form id="ownerForm" class="ow-form">
-    <input type="hidden" id="oEditId" value="">
-    <input type="hidden" id="oLogoData" value="">
-    <div><label>ชื่อเจ้าของงาน / เอเจนซี่ *</label><input id="oName" required placeholder="เช่น P.Nui / Bright Lanna Tours"></div>
-    <div><label>เบอร์โทร / Line / ช่องทางติดต่อ</label><input id="oContact" placeholder="เช่น 081-234-5678 หรือ Line ID"></div>
-    <div class="f"><label>รายละเอียดเพิ่มเติมของเจ้าของงาน (หมายเหตุ / เรตราคา / บัญชี)</label><textarea id="oNote" placeholder="เช่น เงื่อนไขการจ่ายเงิน, หมายเหตุรับงาน ฯลฯ"></textarea></div>
+    <input type="hidden" id="oEditId" value=""><input type="hidden" id="oLogoData" value="">
+    <div><label>ชื่อเจ้าของงาน / เอเจนซี่ *</label><input id="oName" required placeholder="เช่น P.Nui"></div>
+    <div><label>เบอร์โทร / Line / ช่องทางติดต่อ</label><input id="oContact" placeholder="เช่น 081-234-5678"></div>
+    <div class="f"><label>รายละเอียดเพิ่มเติม</label><textarea id="oNote" placeholder="หมายเหตุ / เรตราคา / บัญชี"></textarea></div>
     <div class="f">
-      <label>🖼️ โลโก้เจ้าของงาน (แสดงฝั่งขวาการ์ดงาน และดึงขึ้นป้ายชูให้อัตโนมัติ)</label>
+      <label>🖼️ โลโก้เจ้าของงาน (เก็บลง Google Drive ความคมชัดสูง)</label>
       <div class="ow-logo-row">
         <div class="ow-prev" id="oLogoPreview"><span class="ow-prev-empty">ยังไม่มี<br>โลโก้</span></div>
         <div style="flex:1;min-width:180px">
@@ -403,41 +364,38 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
       <button type="button" class="btn g" id="oCancelBtn" hidden>ยกเลิกแก้ไข</button>
     </div>
   </form>
-
   <div style="font-size:13px;font-weight:700;color:var(--mu);margin-bottom:8px">รายชื่อเจ้าของงานทั้งหมด</div>
   <div class="ow-list" id="ownerCards"></div>
 </dialog>
 
-<!-- หน้าต่างสร้างป้ายชูเดี่ยว (เว้นว่างข้อความหัวป้ายเป็นค่าเริ่มต้น) -->
+<!-- หน้าต่างป้ายชูเดี่ยว -->
 <dialog id="signModal">
   <div style="display:flex;justify-content:space-between;align-items:center">
-    <b>🪧 สร้างป้ายชูรับลูกค้า (Welcome Sign)</b>
+    <b>🪧 สร้างป้ายชูรับลูกค้า</b>
     <button class="btn g sm" id="signClose" type="button">ปิด</button>
   </div>
   <div class="sign-grid">
-    <div><label>ข้อความหัวป้าย (เว้นว่างได้)</label><input id="sHead" value="" placeholder="เว้นว่างได้ (เช่น WELCOME)"></div>
+    <div><label>ข้อความหัวป้าย (เว้นว่างได้)</label><input id="sHead" value="" placeholder="เว้นว่างได้"></div>
     <div>
       <label>ธีมสีป้าย</label>
       <select id="sTheme">
-        <option value="">ขาวคลาสสิก (อ่านง่าย/ประหยัดหมึก)</option>
-        <option value="th-navy">กรมท่า–ทอง (หรูหรา)</option>
-        <option value="th-teal">เขียวอมฟ้า–ขาว</option>
-        <option value="th-dark">ดำ–ขาว (ชูกลางคืนชัด)</option>
+        <option value="">ขาวคลาสสิก</option><option value="th-navy">กรมท่า–ทอง</option>
+        <option value="th-teal">เขียวอมฟ้า–ขาว</option><option value="th-dark">ดำ–ขาว</option>
       </select>
     </div>
-    <div class="f"><label>ชื่อลูกค้า (แสดงตรงกลางหน้ากระดาษ)</label><input id="sName" placeholder="เช่น MR. JOHN SMITH"></div>
+    <div class="f"><label>ชื่อลูกค้า (ตรงกลางหน้ากระดาษ)</label><input id="sName" placeholder="เช่น MR. JOHN SMITH"></div>
     <div><label>Flight (หมายเลขไฟล์ทบิน)</label><input id="sFlight" placeholder="เช่น TG102"></div>
     <div><label>AT (เวลา)</label><input id="sTime" placeholder="เช่น 14:30"></div>
     <div><label>วัน, เดือน, ปี</label><input id="sDate" placeholder="เช่น 20 Nov 2026"></div>
-    <div><label>Drop off at (ไปส่งที่ / สถานที่ท่องเที่ยว / ทัวร์)</label><input id="sSub" placeholder="เช่น Shangri-La Hotel"></div>
+    <div><label>Drop off at</label><input id="sSub" placeholder="เช่น Shangri-La Hotel"></div>
     <div class="f">
-      <label>🖼️ โลโก้บนป้าย (ดึงจากเจ้าของงานอัตโนมัติ / ไม่มีใช้โลโก้หลักแทน) <span id="logoSyncStatus" style="color:var(--pr);font-weight:600"></span></label>
+      <label>🖼️ โลโก้บนป้าย (เก็บใน Drive · ดึงตามเจ้าของงานอัตโนมัติ) <span id="logoSyncStatus" style="color:var(--pr);font-weight:600"></span></label>
       <input type="file" id="sLogoFile" accept="image/*" multiple hidden>
       <div class="logo-bar" id="sLogoList"></div>
       <div class="sign-logo-hint" id="sLogoHint"></div>
     </div>
     <div><label>ขนาดชื่อลูกค้า (<span id="sNameSzLbl">64</span>px)</label><input type="range" id="sNameSz" min="28" max="120" value="64" style="padding:0"></div>
-    <div><label>ขนาดความสูงโลโก้ (<span id="sLogoSzLbl">85</span>px)</label><input type="range" id="sLogoSz" min="40" max="180" value="85" style="padding:0"></div>
+    <div><label>ขนาดโลโก้ (<span id="sLogoSzLbl">85</span>px)</label><input type="range" id="sLogoSz" min="40" max="180" value="85" style="padding:0"></div>
   </div>
   <div class="sign-preview-wrap"><div id="signPreview"></div></div>
   <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;justify-content:flex-end">
@@ -448,32 +406,27 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
   </div>
 </dialog>
 
-<!-- หน้ารวมป้ายชู (Batch Signs — ไม่มีคำว่า WELCOME ติดมาอัตโนมัติ) -->
+<!-- หน้ารวมป้ายชู -->
 <dialog id="batchModal">
   <div style="display:flex;justify-content:space-between;align-items:center">
-    <b>📑 รวมป้ายชูทั้งหมด (เลือกเซฟ / ส่งต่อ LINE หลายป้าย)</b>
+    <b>📑 รวมป้ายชูทั้งหมด</b>
     <button class="btn g sm" id="batchClose" type="button">ปิด</button>
   </div>
   <div class="batch-toolbar">
-    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
       <button type="button" class="btn sm" id="bModeDay">งานวันที่เลือก</button>
       <button type="button" class="btn g sm" id="bModeMonth">งานทั้งเดือน</button>
       <button type="button" class="btn g sm" id="bToggleAll">เลือกทั้งหมด</button>
     </div>
-    <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+    <div style="display:flex;gap:6px;align-items:center">
       <select id="bTheme" style="width:auto;padding:5px 8px;font-size:13px">
-        <option value="">ธีมขาวคลาสสิก</option>
-        <option value="th-navy">ธีมกรมท่า–ทอง</option>
-        <option value="th-teal">ธีมเขียวอมฟ้า</option>
-        <option value="th-dark">ธีมดำ–ขาว</option>
+        <option value="">ธีมขาวคลาสสิก</option><option value="th-navy">ธีมกรมท่า–ทอง</option>
+        <option value="th-teal">ธีมเขียวอมฟ้า</option><option value="th-dark">ธีมดำ–ขาว</option>
       </select>
       <span class="sum" id="bCountLbl">เลือก 0 ป้าย</span>
     </div>
   </div>
-  <div style="margin-bottom:8px">
-    <label>🖼️ โหมดโลโก้ของป้ายชุดนี้ (ค่าเริ่มต้น = ดึงตามเจ้าของงานแต่ละป้าย / ไม่มีใช้โลโก้หลักแทน)</label>
-    <div class="logo-bar" id="bLogoList"></div>
-  </div>
+  <div style="margin-bottom:8px"><label>🖼️ โหมดโลโก้ของป้ายชุดนี้</label><div class="logo-bar" id="bLogoList"></div></div>
   <div class="batch-list" id="batchList"></div>
   <div class="batch-status" id="batchStatus"></div>
   <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:flex-end">
@@ -483,307 +436,242 @@ dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);colo
   </div>
 </dialog>
 
-<div id="signFs">
-  <button type="button" class="fs-exit" id="signFsExit">✕ ออกจากเต็มหน้าจอ</button>
-  <div id="signFsBody" style="width:100%;height:100%"></div>
-</div>
+<div id="signFs"><button type="button" class="fs-exit" id="signFsExit">✕ ออกจากเต็มหน้าจอ</button><div id="signFsBody" style="width:100%;height:100%"></div></div>
 <div id="printArea"></div>
 
 <dialog id="cf"><p id="cm" style="font-size:16px;margin:4px 0 14px"></p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn g" id="cno">ยกเลิก</button><button class="btn" id="cyes" style="background:var(--rd);color:#fff">ยืนยัน</button></div></dialog>
 <div id="ov"></div>
-<dialog id="td"><b>🗑️ ถังขยะ (ประวัติการลบ)</b><div id="tb" style="max-height:55vh;overflow:auto;margin-top:10px"></div><div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button class="btn g" id="tc" style="color:var(--rd)">ล้างทั้งหมด</button><button class="btn g" id="tx">ปิด</button></div></dialog>
-<dialog id="dg">
-  <b>สำรอง / กู้คืนข้อมูล</b>
-  <p class="sum">คัดลอกข้อความนี้เก็บไว้ หรือวางข้อมูลเก่าแล้วกด “กู้คืน”</p>
-  <textarea id="bx" style="min-height:160px"></textarea>
-  <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end">
-    <button class="btn g" id="cp">คัดลอก</button><button class="btn" id="rs">กู้คืน</button><button class="btn g" id="cl">ปิด</button>
-  </div>
-</dialog>
+<dialog id="td"><b>🗑️ ถังขยะ</b><div id="tb" style="max-height:55vh;overflow:auto;margin-top:10px"></div><div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button class="btn g" id="tc" style="color:var(--rd)">ล้างทั้งหมด</button><button class="btn g" id="tx">ปิด</button></div></dialog>
+<dialog id="dg"><b>สำรอง / กู้คืนข้อมูล</b><textarea id="bx" style="min-height:160px;margin-top:8px"></textarea><div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end"><button class="btn g" id="cp">คัดลอก</button><button class="btn" id="rs">กู้คืน</button><button class="btn g" id="cl">ปิด</button></div></dialog>
 
 <script>
-// =======================================================
-// 1. ตั้งค่าหลัก (ใส่ลิงก์ Web App /exec ของคุณไว้เรียบร้อยแล้ว)
-// =======================================================
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz5kMUgdEdBwMcaN4UYsnMQbHRutZsB7UjK5IZGGRaHhUkDFQp5HW-bDdWbO9xpGdOTPg/exec';
 const DEFAULT_LOGO_ID = '__default__';
-
 const COLOR_PALETTE = [
-  { code: '',        label: 'สีตามประเภท' },
-  { code: '#7c3aed', label: 'ม่วง' },
-  { code: '#ea580c', label: 'ส้ม' },
-  { code: '#db2777', label: 'ชมพู' },
-  { code: '#2563eb', label: 'น้ำเงิน' },
-  { code: '#ca8a04', label: 'เหลืองทอง' },
-  { code: '#0d9488', label: 'เขียวมิ้นต์' },
-  { code: '#dc2626', label: 'แดง' },
-  { code: '#475569', label: 'เทาเข้ม' }
+  { code:'', label:'สีตามประเภท' },{ code:'#7c3aed', label:'ม่วง' },{ code:'#ea580c', label:'ส้ม' },
+  { code:'#db2777', label:'ชมพู' },{ code:'#2563eb', label:'น้ำเงิน' },{ code:'#ca8a04', label:'เหลืองทอง' },
+  { code:'#0d9488', label:'เขียวมิ้นต์' },{ code:'#dc2626', label:'แดง' },{ code:'#475569', label:'เทาเข้ม' }
 ];
 const TC = { 'รับ':'#16a34a', 'ส่ง':'#dc2626', 'ทัวร์':'#0ea5e9', 'อื่นๆ':'#64748b' };
 const LOC_ICON = { 'Airport':'✈️ Airport', 'Hotel':'🏨 Hotel', 'Home':'🏠 Home' };
-
 const $=id=>document.getElementById(id);
 const KEY='booking-planner-v1';
 
-// =======================================================
-// 2. ฟังก์ชันจัดการวันที่/เวลา & ลิงก์ Google Maps อัตโนมัติ
-// =======================================================
+// Helper: วันที่, เวลา, แผนที่, Google Drive
 const pad=n=>String(n).padStart(2,'0');
 const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-
-function resolveMapUrl(mapLink, placeName){
-  const m=(mapLink||'').trim();
-  if(/^https?:\/\//i.test(m)) return m;
-  const q=(placeName||'').trim();
-  return q ? 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q) : '';
-}
-function extractNameFromMapUrl(url){
-  const m=String(url||'').match(/\/maps\/place\/([^/@?]+)/i);
-  if(!m) return '';
-  try{ return decodeURIComponent(m[1].replace(/\+/g,' ')).trim(); }catch(e){ return ''; }
-}
-function setupLocPicker(prefix){
-  const typeEl=$(prefix+'Type'), nameEl=$(prefix), mapEl=$(prefix+'Map'), pillsEl=$(prefix+'Pills');
-  const updateUI=()=>{
-    const val=typeEl.value;
-    pillsEl.querySelectorAll('.loc-pill').forEach(btn=>btn.classList.toggle('on', btn.dataset.v===val));
-    if(val==='Airport') nameEl.placeholder='ชื่อสนามบิน (เช่น สนามบินเชียงใหม่ / CNX)';
-    else if(val==='Hotel') nameEl.placeholder='ชื่อโรงแรม (ลิงก์ไป Google Maps ให้อัตโนมัติ)';
-    else if(val==='Home') nameEl.placeholder='ชื่อหมู่บ้าน / ที่อยู่บ้าน (ลิงก์ไป Google Maps ให้อัตโนมัติ)';
-    else nameEl.placeholder=prefix==='from'?'ชื่อสถานที่รับ (เช่น โรงแรม / บ้าน / สนามบิน)':'ชื่อสถานที่ส่ง / โรงแรม / ที่เที่ยว';
-  };
-  pillsEl.querySelectorAll('.loc-pill').forEach(btn=>{
-    btn.onclick=()=>{
-      const next=(typeEl.value===btn.dataset.v)?'':btn.dataset.v;
-      typeEl.value=next;
-      if(next==='Airport' && !nameEl.value.trim()) nameEl.value='Airport';
-      else if(next!=='Airport' && nameEl.value.trim()==='Airport') nameEl.value='';
-      updateUI();
-      if(next==='Hotel'||next==='Home') nameEl.focus();
-    };
-  });
-  mapEl.addEventListener('change',()=>{
-    if(!nameEl.value.trim()){ const ex=extractNameFromMapUrl(mapEl.value); if(ex) nameEl.value=ex; }
-  });
-  $(prefix+'FindMap').onclick=()=>{
-    const q=nameEl.value.trim();
-    if(!q){ alert('กรุณาพิมพ์ชื่อสถานที่ก่อนกดดูใน Maps ครับ'); nameEl.focus(); return; }
-    window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener');
-  };
-  $(prefix+'OpenPin').onclick=()=>{
-    const url=resolveMapUrl(mapEl.value, nameEl.value);
-    if(!url){ alert('กรุณาวางลิงก์ Google Maps หรือพิมพ์ชื่อสถานที่ก่อนครับ'); return; }
-    window.open(url,'_blank','noopener');
-  };
-  return updateUI;
-}
-const syncFromUI = setupLocPicker('from');
-const syncToUI   = setupLocPicker('to');
-
-function parseLocal(s){
-  if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null;
-  const [y,m,d]=s.split('-').map(Number);
-  return new Date(y,m-1,d);
-}
-function cleanDate(v){
-  const s=String(v||'').trim();
-  if(!s)return '';
-  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
-  const d=new Date(s);
-  return isNaN(d.getTime())?'':iso(d);
-}
-function cleanTime(v){
-  const s=String(v||'').trim();
-  if(!s)return '';
-  if(/^\d{1,2}:\d{2}$/.test(s)){ const [h,m]=s.split(':'); return pad(h)+':'+pad(m); }
-  if(s.includes('GMT')||s.includes('1899')){
-    const d=new Date(s);
-    if(!isNaN(d.getTime()))return pad(d.getHours())+':'+pad(d.getMinutes());
-  }
-  return s;
-}
-
+const parseLocal=s=>{ if(!s||!/^\d{4}-\d{2}-\d{2}$/.test(s))return null; const [y,m,d]=s.split('-').map(Number); return new Date(y,m-1,d); };
+const cleanDate=v=>{ const s=String(v||'').trim(); if(!s)return ''; if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s; const d=new Date(s); return isNaN(d.getTime())?'':iso(d); };
+const cleanTime=v=>{ const s=String(v||'').trim(); if(!s)return ''; if(/^\d{1,2}:\d{2}$/.test(s)){ const [h,m]=s.split(':'); return pad(h)+':'+pad(m); } if(s.includes('GMT')||s.includes('1899')){ const d=new Date(s); if(!isNaN(d.getTime()))return pad(d.getHours())+':'+pad(d.getMinutes()); } return s; };
 const thMonth=d=>d.toLocaleDateString('th-TH',{month:'long',year:'numeric'});
 const thMonthShort=d=>d.toLocaleDateString('th-TH',{month:'short',year:'2-digit'});
 const thDate=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{weekday:'short',day:'numeric',month:'short',year:'numeric'}):s};
 const thShort=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('th-TH',{day:'numeric',month:'short'}):s};
 const signDateFmt=s=>{const d=parseLocal(s);return d?d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}):(s||'')};
 const baht=n=>Number(n||0).toLocaleString('th-TH');
-
-function addDays(startIso, offset){
-  const d=parseLocal(startIso); if(!d)return '';
-  d.setDate(d.getDate()+offset); return iso(d);
-}
+const addDays=(s,off)=>{ const d=parseLocal(s); if(!d)return ''; d.setDate(d.getDate()+off); return iso(d); };
 const getEndDate=j=>(j.endDate&&j.endDate>=j.date)?j.endDate:j.date;
 const coversDate=(j,d)=>Boolean(j.date)&&d>=j.date&&d<=getEndDate(j);
-const overlapsMonth=(j,y,m)=>{
-  if(!j.date)return false;
-  const mStart=y+'-'+pad(m+1)+'-01', mEnd=y+'-'+pad(m+1)+'-'+pad(new Date(y,m+1,0).getDate());
-  return j.date<=mEnd&&getEndDate(j)>=mStart;
-};
-function dayCount(j){
-  const s=parseLocal(j.date), e=parseLocal(getEndDate(j));
-  if(!s||!e||e<=s)return 1;
-  return Math.round((e-s)/86400000)+1;
-}
-function dayNumber(j,d){
-  const s=parseLocal(j.date), curD=parseLocal(d);
-  if(!s||!curD)return 1;
-  return Math.round((curD-s)/86400000)+1;
-}
+const overlapsMonth=(j,y,m)=>{ if(!j.date)return false; const ms=y+'-'+pad(m+1)+'-01', me=y+'-'+pad(m+1)+'-'+pad(new Date(y,m+1,0).getDate()); return j.date<=me&&getEndDate(j)>=ms; };
+const dayCount=j=>{ const s=parseLocal(j.date), e=parseLocal(getEndDate(j)); return (!s||!e||e<=s)?1:Math.round((e-s)/86400000)+1; };
+const dayNumber=(j,d)=>{ const s=parseLocal(j.date), c=parseLocal(d); return (!s||!c)?1:Math.round((c-s)/86400000)+1; };
 const jobColor=j=>j.color||TC[j.type]||'#64748b';
-function normalizePlans(arr){
-  if(!Array.isArray(arr))return [];
-  return arr.map(item=>{
-    if(typeof item==='string')return { text: item.trim(), price: '' };
-    if(item && typeof item==='object') return { text: String(item.text||'').trim(), price: item.price!=null ? String(item.price).trim() : '' };
-    return { text: '', price: '' };
+const extractDriveId=url=>{ const m=String(url||'').match(/[?&]id=([^&]+)|\/d\/([^/?]+)/); return m?(m[1]||m[2]):''; };
+const resolveMapUrl=(m,q)=>/^https?:\/\//i.test((m||'').trim())?(m||'').trim():((q||'').trim()?'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q.trim()):'');
+const extractNameFromMapUrl=u=>{ const m=String(u||'').match(/\/maps\/place\/([^/@?]+)/i); if(!m)return ''; try{return decodeURIComponent(m[1].replace(/\+/g,' ')).trim()}catch(e){return ''} };
+
+function setupLocPicker(prefix){
+  const tEl=$(prefix+'Type'), nEl=$(prefix), mEl=$(prefix+'Map'), pEl=$(prefix+'Pills');
+  const up=()=>{
+    const v=tEl.value;
+    pEl.querySelectorAll('.loc-pill').forEach(b=>b.classList.toggle('on',b.dataset.v===v));
+    nEl.placeholder=v==='Airport'?'ชื่อสนามบิน (เช่น CNX)':v==='Hotel'?'ชื่อโรงแรม (ลิงก์ Maps อัตโนมัติ)':v==='Home'?'ชื่อหมู่บ้าน/ที่อยู่บ้าน':'ชื่อสถานที่';
+  };
+  pEl.querySelectorAll('.loc-pill').forEach(b=>b.onclick=()=>{
+    const nx=tEl.value===b.dataset.v?'':b.dataset.v; tEl.value=nx;
+    if(nx==='Airport'&&!nEl.value.trim())nEl.value='Airport'; else if(nx!=='Airport'&&nEl.value.trim()==='Airport')nEl.value='';
+    up(); if(nx==='Hotel'||nx==='Home')nEl.focus();
+  });
+  mEl.addEventListener('change',()=>{ if(!nEl.value.trim()){ const ex=extractNameFromMapUrl(mEl.value); if(ex)nEl.value=ex; } });
+  $(prefix+'FindMap').onclick=()=>{ const q=nEl.value.trim(); if(!q){alert('กรุณาพิมพ์ชื่อสถานที่ก่อนครับ');return;} window.open('https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(q),'_blank','noopener'); };
+  $(prefix+'OpenPin').onclick=()=>{ const u=resolveMapUrl(mEl.value,nEl.value); if(!u){alert('กรุณาวางลิงก์หรือพิมพ์ชื่อสถานที่ก่อนครับ');return;} window.open(u,'_blank','noopener'); };
+  return up;
+}
+const syncFromUI=setupLocPicker('from'), syncToUI=setupLocPicker('to');
+
+// ปรับขนาดรูปภาพก่อนอัปโหลดขึ้น Google Drive (โลโก้ PNG 800px / รูปแนบ JPEG 1600px)
+function prepareFileForDrive(file, isLogo){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onload=()=>{
+        const maxSide = isLogo ? 800 : 1600;
+        let w=img.width, h=img.height;
+        if(w>maxSide||h>maxSide){ const r=Math.min(maxSide/w, maxSide/h); w=Math.round(w*r); h=Math.round(h*r); }
+        const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
+        const ctx=cv.getContext('2d');
+        const mime = isLogo ? 'image/png' : 'image/jpeg';
+        if(!isLogo){ ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,w,h); }
+        ctx.drawImage(img,0,0,w,h);
+        const dataUrl = cv.toDataURL(mime, isLogo ? undefined : 0.85);
+        resolve({ base64: dataUrl.split(',')[1], mimeType: mime, dataUrl });
+      };
+      img.onerror=reject; img.src=ev.target.result;
+    };
+    reader.onerror=reject; reader.readAsDataURL(file);
   });
 }
 
+async function uploadImageToDrive(file, target){
+  const isLogo = (target==='logo');
+  const prep = await prepareFileForDrive(file, isLogo);
+  const res = await callSheetApi({
+    action: 'uploadImage', target,
+    name: file.name || ((isLogo?'logo_':'att_')+Date.now()),
+    mimeType: prep.mimeType, base64: prep.base64
+  });
+  if(!res.ok || !res.file) throw new Error(res.message || 'อัปโหลดรูปไม่สำเร็จ');
+  imgB64Cache[res.file.id] = prep.dataUrl; // แคชไว้สำหรับสร้างป้าย PNG ได้ทันที
+  return res.file;
+}
+
+// แคช Base64 ของรูปโลโก้จาก Drive สำหรับวาดบน Canvas (ป้องกัน CORS Tainted Canvas)
+const imgB64Cache = {};
+async function getSafeCanvasImgSrc(src){
+  if(!src) return '';
+  if(src.startsWith('data:')) return src;
+  const fid = extractDriveId(src);
+  if(!fid) return src;
+  if(imgB64Cache[fid]) return imgB64Cache[fid];
+  try{
+    const res = await callSheetApi({ action:'getImageBase64', fileId: fid });
+    if(res.ok && res.dataUrl){ imgB64Cache[fid] = res.dataUrl; return res.dataUrl; }
+  }catch(e){}
+  return '';
+}
+
 // =======================================================
-// 3. ระบบเจ้าของงาน (Owner Profiles + โลโก้ ซิงก์ผ่าน Sheets)
+// ระบบแนบรูปภาพของแต่ละงาน (เก็บลง BookingWebSite/Attachments)
+// =======================================================
+let currentAttachments = [];
+function renderFormAttachments(){
+  $('attGrid').innerHTML = currentAttachments.map((a,i)=>`<div class="att-thumb">
+    <img src="${esc(a.url)}" alt="${esc(a.name)}" onclick="window.open('${esc(a.viewUrl||a.url)}','_blank','noopener')" title="คลิกเพื่อดูรูปเต็ม">
+    <button type="button" class="att-del" data-adel="${i}" title="ลบรูปนี้">×</button>
+  </div>`).join('');
+  $('attGrid').querySelectorAll('[data-adel]').forEach(b=>b.onclick=()=>{
+    const rm=currentAttachments.splice(+b.dataset.adel,1)[0];
+    if(rm && rm.id) callSheetApi({action:'deleteImage', fileId:rm.id}).catch(()=>{});
+    renderFormAttachments();
+  });
+}
+$('attUpBtn').onclick=()=>$('attFile').click();
+$('attFile').onchange=async e=>{
+  const files=[...(e.target.files||[])]; if(!files.length) return;
+  for(let i=0;i<files.length;i++){
+    $('attStatus').textContent=`กำลังอัปโหลดรูปที่ ${i+1}/${files.length} ลง Google Drive...`;
+    try{
+      const fInfo = await uploadImageToDrive(files[i], 'attachment');
+      currentAttachments.push(fInfo);
+      renderFormAttachments();
+    }catch(err){ alert('อัปโหลดรูปไม่สำเร็จ: '+err.message); }
+  }
+  $('attStatus').textContent=`✅ อัปโหลดแล้ว (${currentAttachments.length} รูป)`;
+  e.target.value='';
+};
+
+// หน้าต่างเปิดดูรายละเอียดงานฉบับเต็ม + รูปแนบ
+let currentDetailJobId = null;
+function openDetailModal(job){
+  currentDetailJobId = job.id;
+  $('dtTitle').textContent=`📄 รายละเอียดงาน · ${job.name}`;
+  $('dtSub').textContent=`${thDate(job.date)} ${job.time||''}${job.flight?' · ✈️ '+job.flight:''}${job.owner?' · 👤 '+job.owner:''}`;
+  $('dtText').textContent=job.detailText || '— ยังไม่มีข้อความรายละเอียดเพิ่มเติม —';
+  const atts=Array.isArray(job.attachments)?job.attachments:[];
+  $('dtGallery').innerHTML=atts.length
+    ? atts.map(a=>`<a class="dt-img-card" href="${esc(a.viewUrl||a.url)}" target="_blank" rel="noopener">
+        <img src="${esc(a.url)}" alt="${esc(a.name||'image')}" loading="lazy">
+        <div class="dt-img-cap">🔍 ${esc(a.name||'เปิดดูรูปเต็ม')}</div>
+      </a>`).join('')
+    : '<div class="sum">ยังไม่มีรูปภาพแนบ</div>';
+  $('detailModal').showModal();
+}
+$('dtClose').onclick=()=>$('detailModal').close();
+$('dtCopyBtn').onclick=()=>{
+  const j=jobs.find(x=>x.id===currentDetailJobId);
+  const txt=j?.detailText||''; if(!txt) return;
+  navigator.clipboard?.writeText(txt).then(()=>{ $('dtCopyBtn').textContent='✅ คัดลอกแล้ว'; setTimeout(()=>$('dtCopyBtn').textContent='📋 คัดลอกข้อความ',1500); }).catch(()=>{});
+};
+$('dtEditBtn').onclick=()=>{ const id=currentDetailJobId; $('detailModal').close(); if(id) edit(id); };
+
+// =======================================================
+// ระบบเจ้าของงาน (Owner Profiles + โลโก้ลง Drive)
 // =======================================================
 const OWNER_PROFILES_KEY = KEY + '-owner-profiles';
-let ownerProfiles=[];
-try{ ownerProfiles=JSON.parse(localStorage.getItem(OWNER_PROFILES_KEY)||'[]'); }catch(e){ ownerProfiles=[]; }
-try{
-  const oldNames=JSON.parse(localStorage.getItem(KEY+'-owners')||'[]');
-  oldNames.forEach(n=>{
-    const clean=String(n||'').trim();
-    if(clean && !ownerProfiles.some(o=>o.name.toLowerCase()===clean.toLowerCase())){
-      ownerProfiles.push({ id:'ow_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), name:clean, contact:'', note:'', logo:'' });
-    }
-  });
-}catch(e){}
-
-function findOwnerProfile(name){
-  const clean=String(name||'').trim().toLowerCase();
-  if(!clean) return null;
-  return ownerProfiles.find(o=>o.name.trim().toLowerCase()===clean)||null;
-}
-function saveOwnerProfilesLocal(){
-  ownerProfiles.sort((a,b)=>a.name.localeCompare(b.name,'th'));
-  try{ localStorage.setItem(OWNER_PROFILES_KEY, JSON.stringify(ownerProfiles)); }catch(e){}
-}
+let ownerProfiles=[]; try{ownerProfiles=JSON.parse(localStorage.getItem(OWNER_PROFILES_KEY)||'[]')}catch(e){ownerProfiles=[]}
+const findOwnerProfile=n=>{ const c=String(n||'').trim().toLowerCase(); return c?(ownerProfiles.find(o=>o.name.trim().toLowerCase()===c)||null):null; };
+const saveOwnerProfilesLocal=()=>{ ownerProfiles.sort((a,b)=>a.name.localeCompare(b.name,'th')); try{localStorage.setItem(OWNER_PROFILES_KEY,JSON.stringify(ownerProfiles))}catch(e){} };
 async function syncOwnersToSheet(){
-  $('ownerSyncStatus').textContent='(กำลังบันทึกลง Google Sheets...)';
-  try{
-    const res=await callSheetApi({action:'saveOwners', owners:ownerProfiles});
-    if(!res.ok) throw new Error(res.message||'บันทึกเจ้าของงานไม่สำเร็จ');
-    $('ownerSyncStatus').textContent='(✅ บันทึกขึ้น Sheets แล้ว)';
-  }catch(err){
-    $('ownerSyncStatus').textContent='(⚠️ บันทึกไม่สำเร็จ: '+err.message+')';
-  }
+  $('ownerSyncStatus').textContent='(กำลังบันทึก...)';
+  try{ const r=await callSheetApi({action:'saveOwners',owners:ownerProfiles}); if(!r.ok)throw new Error(r.message); $('ownerSyncStatus').textContent='(✅ บันทึกแล้ว)'; }
+  catch(e){ $('ownerSyncStatus').textContent='(⚠️ '+e.message+')'; }
 }
 function drawOwners(){
   const v=$('owner').value;
-  const sorted=[...ownerProfiles].sort((a,b)=>a.name.localeCompare(b.name,'th'));
-  $('owner').innerHTML='<option value="">— ไม่ระบุ —</option>'
-    +sorted.map(o=>`<option value="${esc(o.name)}">${esc(o.name)}</option>`).join('')
-    +'<option value="__new">＋ เพิ่มเจ้าของใหม่</option>';
+  $('owner').innerHTML='<option value="">— ไม่ระบุ —</option>'+ownerProfiles.map(o=>`<option value="${esc(o.name)}">${esc(o.name)}</option>`).join('')+'<option value="__new">＋ เพิ่มเจ้าของใหม่</option>';
   $('owner').value=v;
 }
-function ensureOwnerExists(name){
-  const clean=String(name||'').trim();
-  if(!clean) return;
-  if(!findOwnerProfile(clean)){
-    ownerProfiles.push({ id:'ow_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), name:clean, contact:'', note:'', logo:'' });
-    saveOwnerProfilesLocal(); drawOwners();
-  }
-}
+function ensureOwnerExists(n){ const c=String(n||'').trim(); if(c&&!findOwnerProfile(c)){ ownerProfiles.push({id:'ow_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),name:c,contact:'',note:'',logo:''}); saveOwnerProfilesLocal(); drawOwners(); } }
 $('owner').onchange=()=>{$('onew').style.display=$('owner').value==='__new'?'block':'none'};
 
-function updateOwnerLogoPreview(dataUrl){
-  $('oLogoData').value=dataUrl||'';
-  $('oLogoPreview').innerHTML=dataUrl
-    ? `<img src="${dataUrl}" alt="owner logo">`
-    : `<span class="ow-prev-empty">ยังไม่มี<br>โลโก้</span>`;
-}
-function renderDefaultLogoBox(){
-  const def=getDefaultLogo();
-  $('owDefLogoPrev').innerHTML=def&&def.data
-    ? `<img src="${def.data}" alt="default logo">`
-    : `<span class="ow-prev-empty">ยังไม่มี<br>โลโก้หลัก</span>`;
-}
-function resetOwnerForm(){
-  $('oEditId').value=''; $('oName').value=''; $('oContact').value=''; $('oNote').value='';
-  updateOwnerLogoPreview('');
-  $('oSaveBtn').textContent='💾 บันทึกเจ้าของงาน'; $('oCancelBtn').hidden=true;
-}
-function loadOwnerIntoForm(profile){
-  $('oEditId').value=profile.id; $('oName').value=profile.name||'';
-  $('oContact').value=profile.contact||''; $('oNote').value=profile.note||'';
-  updateOwnerLogoPreview(profile.logo||'');
-  $('oSaveBtn').textContent='💾 อัปเดตข้อมูลเจ้าของงาน'; $('oCancelBtn').hidden=false;
-  $('ownerModal').scrollTop=0;
-}
+function updateOwnerLogoPreview(u){ $('oLogoData').value=u||''; $('oLogoPreview').innerHTML=u?`<img src="${esc(u)}" alt="">`:'<span class="ow-prev-empty">ยังไม่มี<br>โลโก้</span>'; }
+function renderDefaultLogoBox(){ const d=getDefaultLogo(); $('owDefLogoPrev').innerHTML=d&&d.data?`<img src="${esc(d.data)}" alt="">`:'<span class="ow-prev-empty">ยังไม่มี<br>โลโก้หลัก</span>'; }
+function resetOwnerForm(){ $('oEditId').value=''; $('oName').value=''; $('oContact').value=''; $('oNote').value=''; updateOwnerLogoPreview(''); $('oSaveBtn').textContent='💾 บันทึกเจ้าของงาน'; $('oCancelBtn').hidden=true; }
+function loadOwnerIntoForm(p){ $('oEditId').value=p.id; $('oName').value=p.name||''; $('oContact').value=p.contact||''; $('oNote').value=p.note||''; updateOwnerLogoPreview(p.logo||''); $('oSaveBtn').textContent='💾 อัปเดตข้อมูลเจ้าของงาน'; $('oCancelBtn').hidden=false; $('ownerModal').scrollTop=0; }
 function renderOwnerSignLogoPicker(){
   if(!logoList.length){ $('oSignLogoPickWrap').hidden=true; return; }
   $('oSignLogoPickWrap').hidden=false;
-  $('oSignLogoPick').innerHTML=logoList.map(l=>`<button type="button" class="ow-pick-thumb" data-opl="${l.id}" title="${esc(l.name)}"><img src="${l.data}" alt=""></button>`).join('');
-  $('oSignLogoPick').querySelectorAll('[data-opl]').forEach(btn=>{
-    btn.onclick=()=>{ const f=logoList.find(x=>x.id===btn.dataset.opl); if(f) updateOwnerLogoPreview(f.data); };
-  });
+  $('oSignLogoPick').innerHTML=logoList.map(l=>`<button type="button" class="ow-pick-thumb" data-opl="${l.id}"><img src="${esc(l.data)}" alt=""></button>`).join('');
+  $('oSignLogoPick').querySelectorAll('[data-opl]').forEach(b=>b.onclick=()=>{ const f=logoList.find(x=>x.id===b.dataset.opl); if(f) updateOwnerLogoPreview(f.data); });
 }
 function renderOwnerCards(){
-  const sorted=[...ownerProfiles].sort((a,b)=>a.name.localeCompare(b.name,'th'));
-  if(!sorted.length){ $('ownerCards').innerHTML='<div class="empty" style="grid-column:1/-1">ยังไม่มีข้อมูลเจ้าของงาน</div>'; return; }
-  $('ownerCards').innerHTML=sorted.map(o=>`<div class="ow-card">
-    <div class="ow-card-img">${o.logo?`<img src="${o.logo}" alt="${esc(o.name)}">`:`<span class="ow-prev-empty">ไม่มี<br>โลโก้</span>`}</div>
-    <div class="ow-card-meta">
-      <div class="ow-card-name">${esc(o.name)}</div>
-      ${o.contact?`<div class="ow-card-sub">📞 ${esc(o.contact)}</div>`:''}
-      ${o.note?`<div class="ow-card-sub">📝 ${esc(o.note)}</div>`:''}
-      <div class="acts" style="margin-top:6px">
-        <button type="button" class="btn g sm" data-owe="${o.id}">แก้ไข / ใส่โลโก้</button>
-        <button type="button" class="btn g sm" data-owx="${o.id}" style="color:var(--rd)">ลบ</button>
-      </div>
-    </div>
-  </div>`).join('');
+  if(!ownerProfiles.length){ $('ownerCards').innerHTML='<div class="empty" style="grid-column:1/-1">ยังไม่มีข้อมูลเจ้าของงาน</div>'; return; }
+  $('ownerCards').innerHTML=ownerProfiles.map(o=>`<div class="ow-card">
+    <div class="ow-card-img">${o.logo?`<img src="${esc(o.logo)}" alt="">`:'<span class="ow-prev-empty">ไม่มี<br>โลโก้</span>'}</div>
+    <div class="ow-card-meta"><div class="ow-card-name">${esc(o.name)}</div>${o.contact?`<div class="ow-card-sub">📞 ${esc(o.contact)}</div>`:''}${o.note?`<div class="ow-card-sub">📝 ${esc(o.note)}</div>`:''}
+      <div class="acts" style="margin-top:6px"><button type="button" class="btn g sm" data-owe="${o.id}">แก้ไข / ใส่โลโก้</button><button type="button" class="btn g sm" data-owx="${o.id}" style="color:var(--rd)">ลบ</button></div>
+    </div></div>`).join('');
   $('ownerCards').querySelectorAll('[data-owe]').forEach(b=>b.onclick=()=>{ const p=ownerProfiles.find(x=>x.id===b.dataset.owe); if(p) loadOwnerIntoForm(p); });
   $('ownerCards').querySelectorAll('[data-owx]').forEach(b=>b.onclick=async()=>{
     const p=ownerProfiles.find(x=>x.id===b.dataset.owx);
-    if(p && await ask(`ลบเจ้าของงาน "${p.name}"? (งานเดิมในปฏิทินจะยังอยู่ครบ)`)){
-      ownerProfiles=ownerProfiles.filter(x=>x.id!==p.id);
-      saveOwnerProfilesLocal(); drawOwners(); renderOwnerCards(); render();
-      if($('oEditId').value===p.id) resetOwnerForm();
-      await syncOwnersToSheet();
+    if(p&&await ask(`ลบเจ้าของงาน "${p.name}"?`)){
+      ownerProfiles=ownerProfiles.filter(x=>x.id!==p.id); saveOwnerProfilesLocal(); drawOwners(); renderOwnerCards(); render();
+      if($('oEditId').value===p.id) resetOwnerForm(); await syncOwnersToSheet();
     }
   });
 }
-function openOwnerModal(preselectName){
-  $('ownerSyncStatus').textContent='';
-  resetOwnerForm(); renderDefaultLogoBox(); renderOwnerSignLogoPicker(); renderOwnerCards();
-  if(preselectName){
-    ensureOwnerExists(preselectName);
-    const p=findOwnerProfile(preselectName);
-    if(p){ renderOwnerCards(); loadOwnerIntoForm(p); }
-  }
+function openOwnerModal(pre){
+  $('ownerSyncStatus').textContent=''; resetOwnerForm(); renderDefaultLogoBox(); renderOwnerSignLogoPicker(); renderOwnerCards();
+  if(pre){ ensureOwnerExists(pre); const p=findOwnerProfile(pre); if(p){ renderOwnerCards(); loadOwnerIntoForm(p); } }
   $('ownerModal').showModal();
 }
-$('openOwnersBtn').onclick=()=>openOwnerModal(null);
-$('ownerClose').onclick=()=>$('ownerModal').close();
-$('oCancelBtn').onclick=resetOwnerForm;
-$('oLogoUpBtn').onclick=()=>$('oLogoFile').click();
-$('oLogoClrBtn').onclick=()=>updateOwnerLogoPreview('');
-$('owDefUpBtn').onclick=()=>$('defLogoFile').click();
+$('openOwnersBtn').onclick=()=>openOwnerModal(null); $('ownerClose').onclick=()=>$('ownerModal').close();
+$('oCancelBtn').onclick=resetOwnerForm; $('oLogoUpBtn').onclick=()=>$('oLogoFile').click();
+$('oLogoClrBtn').onclick=()=>updateOwnerLogoPreview(''); $('owDefUpBtn').onclick=()=>$('defLogoFile').click();
 $('owDefClrBtn').onclick=async()=>{
-  if(!getExplicitDefaultLogo()) return;
+  const def=getExplicitDefaultLogo(); if(!def) return;
   if(await ask('ลบโลโก้หลักสำรองออก?')){
-    logoList=logoList.filter(x=>x.id!==DEFAULT_LOGO_ID);
-    saveLogosLocal(); refreshAllLogoUIs();
-    await syncLogosToSheet();
+    const fid=extractDriveId(def.data); if(fid) callSheetApi({action:'deleteImage',fileId:fid}).catch(()=>{});
+    logoList=logoList.filter(x=>x.id!==DEFAULT_LOGO_ID); saveLogosLocal(); refreshAllLogoUIs(); await syncLogosToSheet();
   }
 };
 $('oLogoFile').onchange=async e=>{
   const f=e.target.files?.[0]; if(!f) return;
-  $('ownerSyncStatus').textContent='(กำลังย่อขนาดรูปโลโก้...)';
-  try{
-    updateOwnerLogoPreview(await compressLogoForSheet(f));
-    $('ownerSyncStatus').textContent='(พร้อมบันทึกแล้ว กดปุ่มบันทึกด้านล่างได้เลย)';
-  }catch(err){ $('ownerSyncStatus').textContent='(⚠️ อ่านไฟล์รูปไม่สำเร็จ)'; }
+  $('ownerSyncStatus').textContent='(กำลังอัปโหลดโลโก้ลง Google Drive...)';
+  try{ const info=await uploadImageToDrive(f,'logo'); updateOwnerLogoPreview(info.url); $('ownerSyncStatus').textContent='(✅ อัปโหลดลง Drive แล้ว กดบันทึกด้านล่างได้เลย)'; }
+  catch(err){ $('ownerSyncStatus').textContent='(⚠️ '+err.message+')'; }
   e.target.value='';
 };
 $('ownerForm').onsubmit=async e=>{
@@ -791,91 +679,62 @@ $('ownerForm').onsubmit=async e=>{
   const id=$('oEditId').value.trim(), name=$('oName').value.trim(); if(!name) return;
   const contact=$('oContact').value.trim(), note=$('oNote').value.trim(), logo=$('oLogoData').value.trim();
   if(id){
-    const existing=ownerProfiles.find(x=>x.id===id), oldName=existing?existing.name:'';
+    const ex=ownerProfiles.find(x=>x.id===id), oldName=ex?ex.name:'';
     ownerProfiles=ownerProfiles.map(x=>x.id===id?{id,name,contact,note,logo}:x);
-    if(oldName && oldName!==name){ jobs.forEach(j=>{ if(j.owner===oldName){ j.owner=name; j.upd=Date.now(); } }); save(); }
+    if(oldName&&oldName!==name){ jobs.forEach(j=>{ if(j.owner===oldName){j.owner=name;j.upd=Date.now();} }); save(); }
   }else{
     const dup=findOwnerProfile(name);
     if(dup){ dup.contact=contact||dup.contact; dup.note=note||dup.note; dup.logo=logo||dup.logo; }
-    else ownerProfiles.push({ id:'ow_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), name, contact, note, logo });
+    else ownerProfiles.push({id:'ow_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),name,contact,note,logo});
   }
-  saveOwnerProfilesLocal(); drawOwners(); renderOwnerCards(); render(); resetOwnerForm();
-  await syncOwnersToSheet();
+  saveOwnerProfilesLocal(); drawOwners(); renderOwnerCards(); render(); resetOwnerForm(); await syncOwnersToSheet();
 };
 
 // =======================================================
-// 4. ระบบแผนงานรายวัน + ราคารายวันในฟอร์มงาน
+// แผนงานรายวัน + ปฏิทิน 2 เดือน + รายการงาน
 // =======================================================
-function getCurrentDayPlanInputs(){
-  return [...document.querySelectorAll('.dp-row')].map(row=>({
-    text:(row.querySelector('.dp-inp')?.value||'').trim(),
-    price:(row.querySelector('.dp-price')?.value||'').trim()
-  }));
+const normalizePlans=a=>Array.isArray(a)?a.map(i=>typeof i==='string'?{text:i.trim(),price:''}:(i&&typeof i==='object'?{text:String(i.text||'').trim(),price:i.price!=null?String(i.price).trim():''}:{text:'',price:''})):[];
+const getCurrentDayPlanInputs=()=>[...document.querySelectorAll('.dp-row')].map(r=>({text:(r.querySelector('.dp-inp')?.value||'').trim(),price:(r.querySelector('.dp-price')?.value||'').trim()}));
+function recalcDayPrices(syncMain){
+  let sum=0, any=false; document.querySelectorAll('.dp-price').forEach(el=>{ const v=el.value.trim(); if(v!==''){any=true;sum+=Number(v)||0;} });
+  $('dpTotal').textContent=any?`รวมราคารายวัน: ${baht(sum)} บาท`:''; if(syncMain&&any) $('price').value=sum;
 }
-function recalcDayPrices(syncMainPrice){
-  const inputs=[...document.querySelectorAll('.dp-price')]; let sum=0, hasAny=false;
-  inputs.forEach(el=>{ const v=el.value.trim(); if(v!==''){ hasAny=true; sum+=Number(v)||0; } });
-  $('dpTotal').textContent=hasAny?`รวมราคารายวัน: ${baht(sum)} บาท`:'';
-  if(syncMainPrice && hasAny) $('price').value=sum;
-}
-function renderDayPlanInputs(presetPlans){
+function renderDayPlanInputs(preset){
   const s=$('date').value, e=$('endDate').value; $('endDate').min=s||'';
   const sD=parseLocal(s), eD=parseLocal(e);
   if(!sD||!eD||eD<=sD){ $('dayInfo').textContent=''; $('dayPlansBox').hidden=true; $('dayPlansList').innerHTML=''; $('dpTotal').textContent=''; return; }
-  const n=Math.round((eD-sD)/86400000)+1;
-  $('dayInfo').textContent=`📅 งานจองยาว ${n} วัน (${thShort(s)} – ${thShort(e)})`;
-  const prev=Array.isArray(presetPlans)?normalizePlans(presetPlans):getCurrentDayPlanInputs(), limit=Math.min(n,60);
-  const phs=['เช่น รับเข้าสนามบิน -> ส่งโรงแรม','เช่น พาเที่ยววัด / คาเฟ่','เช่น ไปดอยสุเทพ / ดอยอินทนนท์','เช่น ไปอ่างเก็บน้ำ / ตลาด','เช่น ส่งสนามบิน / จบทริป'];
-  let html='';
-  for(let i=0;i<limit;i++){
-    const item=prev[i]||{ text:'', price:'' };
-    html+=`<div class="dp-row">
-      <div class="dp-lbl">วันที่ ${i+1} (${thShort(addDays(s,i))})</div>
-      <input type="text" class="dp-inp" value="${esc(item.text)}" placeholder="${phs[Math.min(i,phs.length-1)]}">
-      <input type="number" class="dp-price" min="0" value="${esc(item.price)}" placeholder="ราคา (฿)">
-    </div>`;
-  }
-  if(n>60) html+=`<div class="sum">แสดงช่องกรอกสูงสุด 60 วันแรก</div>`;
+  const n=Math.round((eD-sD)/86400000)+1; $('dayInfo').textContent=`📅 งานจองยาว ${n} วัน (${thShort(s)} – ${thShort(e)})`;
+  const prev=Array.isArray(preset)?normalizePlans(preset):getCurrentDayPlanInputs();
+  let html=''; for(let i=0;i<Math.min(n,60);i++){ const it=prev[i]||{text:'',price:''}; html+=`<div class="dp-row"><div class="dp-lbl">วันที่ ${i+1} (${thShort(addDays(s,i))})</div><input class="dp-inp" value="${esc(it.text)}" placeholder="แผนงาน"><input type="number" class="dp-price" min="0" value="${esc(it.price)}" placeholder="ราคา (฿)"></div>`; }
   $('dayPlansList').innerHTML=html; $('dayPlansBox').hidden=false;
   $('dayPlansList').querySelectorAll('.dp-price').forEach(el=>el.addEventListener('input',()=>recalcDayPrices(true)));
   recalcDayPrices(false);
 }
 $('date').addEventListener('change',()=>{ if($('endDate').value&&$('endDate').value<$('date').value)$('endDate').value=$('date').value; renderDayPlanInputs(); });
 $('endDate').addEventListener('change',()=>renderDayPlanInputs());
-
-function drawSwatches(selected){
-  $('color').value=selected||'';
-  $('swatches').innerHTML=COLOR_PALETTE.map(c=>{
-    const on=(selected||'')===c.code?' on':'';
-    if(!c.code) return `<button type="button" class="sw sw-auto${on}" data-c="" title="${c.label}">${c.label}</button>`;
-    return `<button type="button" class="sw${on}" data-c="${c.code}" style="background:${c.code}" title="${c.label}"></button>`;
-  }).join('');
+function drawSwatches(selC){
+  $('color').value=selC||'';
+  $('swatches').innerHTML=COLOR_PALETTE.map(c=>!c.code?`<button type="button" class="sw sw-auto${!selC?' on':''}" data-c="">${c.label}</button>`:`<button type="button" class="sw${selC===c.code?' on':''}" data-c="${c.code}" style="background:${c.code}"></button>`).join('');
   $('swatches').querySelectorAll('.sw').forEach(b=>b.onclick=()=>drawSwatches(b.dataset.c));
 }
 
-// =======================================================
-// 5. ระบบตารางงาน + ปฏิทิน 2 เดือน (บน-ล่าง) + ต้นเดือนถัดไป
-// =======================================================
 let jobs=[];try{jobs=JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){jobs=[]}
 let trash=[];try{trash=JSON.parse(localStorage.getItem(KEY+'-trash')||'[]')}catch(e){trash=[]}
 const fixT=a=>a.forEach(j=>{
   if(j.type==='รับ-ส่ง'||j.type==='รับ / ส่ง')j.type='รับ'; else if(j.type==='เช่ารถ')j.type='อื่นๆ';
-  j.date=cleanDate(j.date); j.endDate=cleanDate(j.endDate);
-  if(j.endDate&&j.endDate<=j.date)j.endDate=''; j.time=cleanTime(j.time);
-  if(typeof j.dayPlans==='string'){ try{j.dayPlans=JSON.parse(j.dayPlans)}catch(e){j.dayPlans=[]} }
-  j.dayPlans=normalizePlans(j.dayPlans);
+  j.date=cleanDate(j.date); j.endDate=cleanDate(j.endDate); if(j.endDate&&j.endDate<=j.date)j.endDate=''; j.time=cleanTime(j.time);
+  if(typeof j.dayPlans==='string'){ try{j.dayPlans=JSON.parse(j.dayPlans)}catch(e){j.dayPlans=[]} } j.dayPlans=normalizePlans(j.dayPlans);
+  if(typeof j.attachments==='string'){ try{j.attachments=JSON.parse(j.attachments)}catch(e){j.attachments=[]} }
+  if(!Array.isArray(j.attachments)) j.attachments=[];
 });
 fixT(jobs);fixT(trash);
-
 const saveL=()=>{try{localStorage.setItem(KEY,JSON.stringify(jobs));localStorage.setItem(KEY+'-trash',JSON.stringify(trash))}catch(e){}};
 const save=()=>{saveL();sched()};
-const today=new Date();
-let cur=new Date(today.getFullYear(),today.getMonth(),1),sel=iso(today),mode='day',editId=null;
+const today=new Date(); let cur=new Date(today.getFullYear(),today.getMonth(),1),sel=iso(today),mode='day',editId=null;
 
 function links(j){
-  const c=(j.ct||'').trim(),out=[];if(!c)return out;
-  const isUrl=/^https?:\/\//i.test(c),digits=c.replace(/[^\d]/g,'');
-  const intl=digits.startsWith('0')?'66'+digits.slice(1):digits, id=c.replace(/^@/,'');
+  const c=(j.ct||'').trim(),out=[]; if(!c)return out;
+  const isUrl=/^https?:\/\//i.test(c), digits=c.replace(/[^\d]/g,''), intl=digits.startsWith('0')?'66'+digits.slice(1):digits, id=c.replace(/^@/,'');
   if(j.ch==='WhatsApp')out.push(['wa','💬 เปิด WhatsApp',isUrl?c:'https://wa.me/'+intl]);
   else if(j.ch==='Line')out.push(['ln','💚 เปิด Line',isUrl?c:'https://line.me/ti/p/~'+id]);
   else if(j.ch==='Facebook')out.push(['fb','📘 เปิด Facebook',isUrl?c:'https://m.me/'+id]);
@@ -886,37 +745,28 @@ function links(j){
   return out;
 }
 
-function buildDayCell(dateIso, labelText, isNextMonth){
-  const dj=jobs.filter(j=>coversDate(j,dateIso)&&j.st!=='ยกเลิก'), n=dj.length;
-  const multi=dj.filter(j=>dayCount(j)>1).sort((a,b)=>a.date.localeCompare(b.date));
-  const single=dj.filter(j=>dayCount(j)===1);
-  const barsHtml=multi.length?`<span class="mbars">${multi.slice(0,3).map(j=>{
-    const idx=dayNumber(j,dateIso)-1, pItem=(j.dayPlans&&j.dayPlans[idx])||{};
-    return `<span class="mbar" style="background:${jobColor(j)}" title="${esc(j.name)} (วันที่ ${idx+1}/${dayCount(j)}${pItem.text?' : '+esc(pItem.text):''})">${esc(j.name)}</span>`;
-  }).join('')}</span>`:'';
-  const dotsHtml=single.length?`<span class="dots">${single.slice(0,4).map(j=>`<i style="background:${jobColor(j)}"></i>`).join('')}</span>`:'';
-  const cls='day'+(isNextMonth?' next-m':'')+(dateIso===iso(today)?' today':'')+(dateIso===sel?' sel':'');
-  return `<button class="${cls}" data-d="${dateIso}"><span class="dnum">${labelText}</span>${n?`<span class="n">${n}</span>`:''}${barsHtml}${dotsHtml}</button>`;
+function buildDayCell(dIso, lbl, isNext){
+  const dj=jobs.filter(j=>coversDate(j,dIso)&&j.st!=='ยกเลิก'), n=dj.length;
+  const multi=dj.filter(j=>dayCount(j)>1).sort((a,b)=>a.date.localeCompare(b.date)), single=dj.filter(j=>dayCount(j)===1);
+  const bars=multi.length?`<span class="mbars">${multi.slice(0,3).map(j=>`<span class="mbar" style="background:${jobColor(j)}">${esc(j.name)}</span>`).join('')}</span>`:'';
+  const dots=single.length?`<span class="dots">${single.slice(0,4).map(j=>`<i style="background:${jobColor(j)}"></i>`).join('')}</span>`:'';
+  return `<button class="day${isNext?' next-m':''}${dIso===iso(today)?' today':''}${dIso===sel?' sel':''}" data-d="${dIso}"><span class="dnum">${lbl}</span>${n?`<span class="n">${n}</span>`:''}${bars}${dots}</button>`;
 }
-
-function buildMonthHtml(year, month, includeTrailing){
-  const dObj=new Date(year, month, 1), first=dObj.getDay(), dim=new Date(year, month+1, 0).getDate();
-  let cells=['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<div class="dow">${d}</div>`).join('');
-  for(let i=0;i<first;i++) cells+='<div></div>';
-  for(let d=1;d<=dim;d++) cells+=buildDayCell(year+'-'+pad(month+1)+'-'+pad(d), String(d), false);
-  let titleExtra='';
-  if(includeTrailing){
-    const lastDow=new Date(year, month, dim).getDay(), trailingCount=(lastDow===6)?7:(6-lastDow);
-    const nextD=new Date(year, month+1, 1), ny=nextD.getFullYear(), nm=nextD.getMonth();
-    const nmShort=nextD.toLocaleDateString('th-TH',{month:'short'});
-    titleExtra=` <span class="sum" style="font-weight:400">+ ต้น ${nmShort}</span>`;
-    for(let td=1;td<=trailingCount;td++) cells+=buildDayCell(ny+'-'+pad(nm+1)+'-'+pad(td), `${td} ${nmShort}`, true);
+function buildMonthHtml(y,m,trail){
+  const dObj=new Date(y,m,1), first=dObj.getDay(), dim=new Date(y,m+1,0).getDate();
+  let c=['อา','จ','อ','พ','พฤ','ศ','ส'].map(d=>`<div class="dow">${d}</div>`).join('');
+  for(let i=0;i<first;i++) c+='<div></div>';
+  for(let d=1;d<=dim;d++) c+=buildDayCell(y+'-'+pad(m+1)+'-'+pad(d), String(d), false);
+  let ex='';
+  if(trail){
+    const ld=new Date(y,m,dim).getDay(), tc=(ld===6)?7:(6-ld), nd=new Date(y,m+1,1), ny=nd.getFullYear(), nm=nd.getMonth(), nms=nd.toLocaleDateString('th-TH',{month:'short'});
+    ex=` <span class="sum" style="font-weight:400">+ ต้น ${nms}</span>`;
+    for(let td=1;td<=tc;td++) c+=buildDayCell(ny+'-'+pad(nm+1)+'-'+pad(td), `${td} ${nms}`, true);
   }
-  return `<div class="cal-m-title"><span>${thMonth(dObj)}${titleExtra}</span></div><div class="cal">${cells}</div>`;
+  return `<div class="cal-m-title"><span>${thMonth(dObj)}${ex}</span></div><div class="cal">${c}</div>`;
 }
-
 function renderCal(){
-  const m1=new Date(cur.getFullYear(), cur.getMonth(), 1), m2=new Date(cur.getFullYear(), cur.getMonth()+1, 1);
+  const m1=new Date(cur.getFullYear(),cur.getMonth(),1), m2=new Date(cur.getFullYear(),cur.getMonth()+1,1);
   $('mt').textContent=`${thMonthShort(m1)} – ${thMonthShort(m2)}`;
   $('calWrap').innerHTML=buildMonthHtml(m1.getFullYear(),m1.getMonth(),false)+'<hr class="cal-sep">'+buildMonthHtml(m2.getFullYear(),m2.getMonth(),true);
   $('calWrap').querySelectorAll('.day').forEach(b=>b.onclick=()=>{ sel=b.dataset.d; mode='day'; $('date').value=sel; render(); });
@@ -925,602 +775,327 @@ function renderCal(){
 function render(){
   jobs.forEach(j=>{ if(j.owner) ensureOwnerExists(j.owner); });
   drawOwners(); renderCal();
-  const selObj=parseLocal(sel)||cur, y=selObj.getFullYear(), m=selObj.getMonth();
-  const q=$('q').value.trim().toLowerCase();
+  const selObj=parseLocal(sel)||cur, y=selObj.getFullYear(), m=selObj.getMonth(), q=$('q').value.trim().toLowerCase();
   let list=jobs.filter(j=>mode==='day'?coversDate(j,sel):overlapsMonth(j,y,m));
-  if(q) list=jobs.filter(j=>[j.name,j.flight,j.owner,j.from,j.fromType,j.to,j.toType,j.ct,j.note,j.type,...(j.dayPlans||[]).map(p=>p.text||'')].join(' ').toLowerCase().includes(q));
+  if(q) list=jobs.filter(j=>[j.name,j.flight,j.owner,j.from,j.fromType,j.to,j.toType,j.ct,j.note,j.detailText,j.type,...(j.dayPlans||[]).map(p=>p.text||'')].join(' ').toLowerCase().includes(q));
   list.sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
   $('lt').textContent=q?'ผลการค้นหา':mode==='day'?'งานวันที่ '+thDate(sel):'งานทั้งเดือน '+thMonth(new Date(y,m,1));
-  const act=list.filter(j=>j.st!=='ยกเลิก'), tot=act.reduce((a,j)=>a+Number(j.price||0),0);
-  $('sm').textContent=`${act.length} งาน · รวม ${baht(tot)} บาท`;
-
+  const act=list.filter(j=>j.st!=='ยกเลิก'); $('sm').textContent=`${act.length} งาน · รวม ${baht(act.reduce((a,j)=>a+Number(j.price||0),0))} บาท`;
   const defLogoObj = getDefaultLogo();
 
   $('list').innerHTML=list.length?list.map(j=>{
     const col=jobColor(j), days=dayCount(j), curDayNum=(mode==='day'&&!q)?dayNumber(j,sel):0;
     const spanBadge=days>1?`<span class="tag" style="background:${col};color:#fff">📅 ${days} วัน (${thShort(j.date)}–${thShort(getEndDate(j))})${curDayNum?` · วันที่ ${curDayNum}/${days}`:''}</span>`:'';
     const flightTag=j.flight?`<span class="tag">✈️ ${esc(j.flight)}</span>`:'';
-    let plansHtml='';
-    const plans=normalizePlans(j.dayPlans);
+    let plansHtml=''; const plans=normalizePlans(j.dayPlans);
     if(days>1 && plans.some(p=>p.text||p.price)){
-      let rows='';
-      for(let i=0;i<Math.min(days,60);i++){
-        const item=plans[i]||{ text:'', price:'' }, isNow=(curDayNum===i+1);
-        rows+=`<div class="dp-item${isNow?' now':''}">
-          <span>วันที่ ${i+1} (${thShort(addDays(j.date,i))}): ${item.text?esc(item.text):'<span class="sum">—</span>'}${isNow?'<span class="dp-badge">วันนี้</span>':''}</span>
-          ${item.price?`<span class="dp-p">${baht(item.price)} ฿</span>`:''}
-        </div>`;
-      }
+      let rows=''; for(let i=0;i<Math.min(days,60);i++){ const it=plans[i]||{text:'',price:''}, now=curDayNum===i+1; rows+=`<div class="dp-item${now?' now':''}"><span>วันที่ ${i+1} (${thShort(addDays(j.date,i))}): ${it.text?esc(it.text):'<span class="sum">—</span>'}${now?'<span class="dp-badge">วันนี้</span>':''}</span>${it.price?`<span class="dp-p">${baht(it.price)} ฿</span>`:''}</div>`; }
       plansHtml=`<div class="dp-card"><div class="dp-card-title">📋 แผนงานรายวัน & ราคา</div>${rows}</div>`;
     }
-    const fromBadge=j.fromType?`<span class="loc-tag">${LOC_ICON[j.fromType]||esc(j.fromType)}</span>`:'';
-    const toBadge=j.toType?`<span class="loc-tag">${LOC_ICON[j.toType]||esc(j.toType)}</span>`:'';
-    const fromLine=(j.from||j.fromType)?`🚏 รับ: ${fromBadge}${esc(j.from||'')}<br>`:'';
-    const toLine=(j.to||j.toType)?`🏁 ไป: ${toBadge}${esc(j.to||'')}<br>`:'';
-    const fromUrl=resolveMapUrl(j.fromMap, j.from), toUrl=resolveMapUrl(j.toMap, j.to);
-    const pinFrom=fromUrl?`<a class="mp-in" href="${esc(fromUrl)}" target="_blank" rel="noopener">📍 พิกัดรับ</a>`:'';
-    const pinTo=toUrl?`<a class="mp-out" href="${esc(toUrl)}" target="_blank" rel="noopener">🏁 พิกัดส่ง</a>`:'';
-    const lk=links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
-    const allLinks=pinFrom+pinTo+lk;
+    const fLine=(j.from||j.fromType)?`🚏 รับ: ${j.fromType?`<span class="loc-tag">${LOC_ICON[j.fromType]||esc(j.fromType)}</span>`:''}${esc(j.from||'')}<br>`:'';
+    const tLine=(j.to||j.toType)?`🏁 ไป: ${j.toType?`<span class="loc-tag">${LOC_ICON[j.toType]||esc(j.toType)}</span>`:''}${esc(j.to||'')}<br>`:'';
+    const fUrl=resolveMapUrl(j.fromMap,j.from), tUrl=resolveMapUrl(j.toMap,j.to);
+    const allLk=(fUrl?`<a class="mp-in" href="${esc(fUrl)}" target="_blank" rel="noopener">📍 พิกัดรับ</a>`:'')+(tUrl?`<a class="mp-out" href="${esc(tUrl)}" target="_blank" rel="noopener">🏁 พิกัดส่ง</a>`:'')+links(j).map(l=>`<a class="${l[0]}" href="${esc(l[2])}" target="_blank" rel="noopener">${l[1]}</a>`).join('');
 
-    // โซนโลโก้ฝั่งขวาของการ์ด: ถ้ามีเจ้าของงานใช้โลโก้เจ้าของงาน / ถ้าไม่มีเจ้าของงานใช้โลโก้หลักสำรอง
-    let ownerSideHtml='';
+    let sideHtml='';
     if(j.owner){
       const ow=findOwnerProfile(j.owner);
-      ownerSideHtml=(ow && ow.logo)
-        ? `<div class="job-side"><button type="button" class="owner-logo-box" data-ologo="${esc(j.owner)}" title="คลิกแก้ไขโลโก้/ข้อมูลของ ${esc(j.owner)}"><img src="${ow.logo}" alt="${esc(j.owner)}"></button><span class="owner-logo-cap">${esc(j.owner)}</span></div>`
-        : `<div class="job-side"><button type="button" class="owner-logo-add" data-ologo="${esc(j.owner)}" title="เพิ่มโลโก้ให้ ${esc(j.owner)}"><span style="font-size:18px;line-height:1">🖼️</span><span>＋ โลโก้<br>${esc(j.owner)}</span></button></div>`;
+      sideHtml=(ow&&ow.logo)?`<div class="job-side"><button type="button" class="owner-logo-box" data-ologo="${esc(j.owner)}"><img src="${esc(ow.logo)}" alt=""></button><span class="owner-logo-cap">${esc(j.owner)}</span></div>`:`<div class="job-side"><button type="button" class="owner-logo-add" data-ologo="${esc(j.owner)}"><span style="font-size:18px;line-height:1">🖼️</span><span>＋ โลโก้<br>${esc(j.owner)}</span></button></div>`;
     }else{
-      ownerSideHtml=(defLogoObj && defLogoObj.data)
-        ? `<div class="job-side"><button type="button" class="owner-logo-box" data-updefcard="1" title="โลโก้หลัก (คลิกเพื่อเปลี่ยนโลโก้หลัก)"><img src="${defLogoObj.data}" alt="โลโก้หลัก"></button><span class="owner-logo-cap">⭐ โลโก้หลัก</span></div>`
-        : `<div class="job-side"><button type="button" class="owner-logo-add" data-updefcard="1" title="อัปโหลดโลโก้หลักสำรอง"><span style="font-size:18px;line-height:1">⭐</span><span>＋ โลโก้หลัก</span></button></div>`;
+      sideHtml=(defLogoObj&&defLogoObj.data)?`<div class="job-side"><button type="button" class="owner-logo-box" data-updefcard="1"><img src="${esc(defLogoObj.data)}" alt=""></button><span class="owner-logo-cap">⭐ โลโก้หลัก</span></div>`:`<div class="job-side"><button type="button" class="owner-logo-add" data-updefcard="1"><span style="font-size:18px;line-height:1">⭐</span><span>＋ โลโก้หลัก</span></button></div>`;
     }
+
+    const attCount=(j.attachments||[]).length, hasDetail=Boolean((j.detailText||'').trim() || attCount>0);
+    const dtLabel=attCount?`📄 รายละเอียด (${attCount} รูป)`:(hasDetail?'📄 รายละเอียด ●':'📄 รายละเอียด');
 
     return `<div class="job${j.st==='เสร็จแล้ว'||j.st==='ยกเลิก'?' done':''}" style="border-left:6px solid ${col}">
       <div class="top"><div><div class="t">${esc(j.time||'--:--')} · ${esc(j.name)}</div>
       <div><span class="tag" style="background:${TC[j.type]||'#64748b'};color:#fff">${esc(j.type)}</span><span class="tag">${esc(j.st)}</span>${flightTag}${spanBadge}${(mode==='month'||q)&&days===1?`<span class="sum">${thDate(j.date)}</span>`:''}</div></div>
       <div class="pr">${j.price?baht(j.price)+' ฿':''}</div></div>
       ${plansHtml}
-      <div class="job-body">
-        <div class="job-info">
-          <div class="rt">${fromLine}${toLine}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
-          <div class="sum">ติดต่อ: ${esc(j.ch)} ${esc(j.ct)}</div>
-          ${allLinks?`<div class="lk">${allLinks}</div>`:''}
-          <div class="acts">
-            <button class="btn g sm" data-s="${j.id}">🪧 ชูป้าย</button>
-            <button class="btn g sm" data-e="${j.id}">แก้ไข</button>
-            <button class="btn g sm" data-x="${j.id}" style="color:var(--rd)">ลบ</button>
-          </div>
+      <div class="job-body"><div class="job-info">
+        <div class="rt">${fLine}${tLine}${j.owner?'👤 เจ้าของ: '+esc(j.owner)+'<br>':''}${j.pax?'👥 '+esc(j.pax)+' คน<br>':''}${j.note?'📝 '+esc(j.note):''}</div>
+        <div class="sum">ติดต่อ: ${esc(j.ch)} ${esc(j.ct)}</div>
+        ${allLk?`<div class="lk">${allLk}</div>`:''}
+        <div class="acts">
+          <button class="btn g sm${hasDetail?' has-dt':''}" data-dt="${j.id}">${dtLabel}</button>
+          <button class="btn g sm" data-s="${j.id}">🪧 ชูป้าย</button>
+          <button class="btn g sm" data-e="${j.id}">แก้ไข</button>
+          <button class="btn g sm" data-x="${j.id}" style="color:var(--rd)">ลบ</button>
         </div>
-        ${ownerSideHtml}
-      </div>
-    </div>`}).join(''):'<div class="empty">ยังไม่มีงาน</div>';
+      </div>${sideHtml}</div></div>`;
+  }).join(''):'<div class="empty">ยังไม่มีงาน</div>';
 
   $('list').querySelectorAll('[data-ologo]').forEach(b=>b.onclick=()=>openOwnerModal(b.dataset.ologo));
   $('list').querySelectorAll('[data-updefcard]').forEach(b=>b.onclick=()=>$('defLogoFile').click());
+  $('list').querySelectorAll('[data-dt]').forEach(b=>b.onclick=()=>{ const j=jobs.find(x=>x.id===b.dataset.dt); if(j) openDetailModal(j); });
   $('list').querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{ const j=jobs.find(x=>x.id===b.dataset.s); if(j) openSignModal(j); });
   $('list').querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>edit(b.dataset.e));
-  $('list').querySelectorAll('[data-x]').forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>x.id===b.dataset.x);if(j&&await ask('ลบงานนี้? (ดูย้อนหลังและกู้คืนได้ที่ถังขยะ)')){trash.unshift({...j,del:new Date().toISOString()});jobs=jobs.filter(x=>x.id!==j.id);save();render()}});
+  $('list').querySelectorAll('[data-x]').forEach(b=>b.onclick=async()=>{const j=jobs.find(x=>x.id===b.dataset.x);if(j&&await ask('ลบงานนี้?')){trash.unshift({...j,del:new Date().toISOString()});jobs=jobs.filter(x=>x.id!==j.id);save();render()}});
 }
 
-// =======================================================
-// 6. ฟอร์มเพิ่ม/แก้ไขงาน
-// =======================================================
-const F=['date','endDate','time','flight','type','st','name','owner','ch','ct','fromType','from','fromMap','toType','to','toMap','pax','price','color','note'];
+const F=['date','endDate','time','flight','type','st','name','owner','ch','ct','fromType','from','fromMap','toType','to','toMap','pax','price','color','note','detailText'];
 function edit(id){
-  const j=jobs.find(x=>x.id===id);if(!j)return;
+  const j=jobs.find(x=>x.id===id); if(!j)return;
   editId=id; F.forEach(k=>$(k).value=j[k]??''); setT(j.time);
+  currentAttachments = Array.isArray(j.attachments) ? j.attachments.map(x=>({...x})) : [];
+  $('attStatus').textContent=''; renderFormAttachments();
   syncFromUI(); syncToUI(); drawSwatches(j.color||''); renderDayPlanInputs(j.dayPlans||[]);
-  $('ft').textContent='แก้ไขงาน';$('sv').textContent='อัปเดต';$('cn').hidden=false;
-  $('ad').classList.add('show');$('ov').classList.add('show');
+  $('ft').textContent='แก้ไขงาน'; $('sv').textContent='อัปเดต'; $('cn').hidden=false;
+  $('ad').classList.add('show'); $('ov').classList.add('show');
 }
 function reset(){
-  const lo=window.lastOw||''; editId=null;$('fm').reset();
-  $('owner').value=lo;$('onew').style.display='none';$('date').value=sel;$('endDate').value='';
+  const lo=window.lastOw||''; editId=null; $('fm').reset();
+  $('owner').value=lo; $('onew').style.display='none'; $('date').value=sel; $('endDate').value='';
   $('fromType').value=''; $('toType').value=''; syncFromUI(); syncToUI();
+  currentAttachments=[]; $('attStatus').textContent=''; renderFormAttachments();
   drawSwatches(''); renderDayPlanInputs([]);
-  $('ft').textContent='เพิ่มงานใหม่';$('sv').textContent='บันทึก';$('cn').hidden=true;
+  $('ft').textContent='เพิ่มงานใหม่'; $('sv').textContent='บันทึก'; $('cn').hidden=true;
 }
 $('fm').onsubmit=e=>{
   e.preventDefault(); $('time').onblur({target:$('time')});
-  const o={};F.forEach(k=>o[k]=$(k).value.trim());
-  let isNewOwner=false;
-  if(o.owner==='__new'){ o.owner=$('onew').value.trim(); if(o.owner && !findOwnerProfile(o.owner)) isNewOwner=true; }
-  if(!o.endDate||o.endDate<=o.date){ o.endDate=''; o.dayPlans=[]; } else { o.dayPlans=getCurrentDayPlanInputs(); }
-  ensureOwnerExists(o.owner);
-  if(isNewOwner) syncOwnersToSheet();
-  window.lastOw=o.owner;
-  if(editId){jobs=jobs.map(j=>j.id===editId?{...o,id:editId,upd:Date.now()}:j)}
+  const o={}; F.forEach(k=>o[k]=(k==='detailText'?$(k).value:$(k).value.trim()));
+  let isNew=false; if(o.owner==='__new'){ o.owner=$('onew').value.trim(); if(o.owner&&!findOwnerProfile(o.owner)) isNew=true; }
+  if(!o.endDate||o.endDate<=o.date){ o.endDate=''; o.dayPlans=[]; } else o.dayPlans=getCurrentDayPlanInputs();
+  o.attachments = currentAttachments;
+  ensureOwnerExists(o.owner); if(isNew) syncOwnersToSheet(); window.lastOw=o.owner;
+  if(editId) jobs=jobs.map(j=>j.id===editId?{...o,id:editId,upd:Date.now()}:j);
   else jobs.push({...o,id:Date.now().toString(36),upd:Date.now()});
-  save();sel=o.date;cur=new Date(sel.slice(0,4),sel.slice(5,7)-1,1);mode='day';
-  reset();closeAd();render();
-  if(innerWidth<=860)$('lt').scrollIntoView({behavior:'smooth'});
+  save(); sel=o.date; cur=new Date(sel.slice(0,4),sel.slice(5,7)-1,1); mode='day'; reset(); closeAd(); render();
 };
 $('cn').onclick=()=>{reset();closeAd()};
 $('pv').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()-1,1);render()};
 $('nx').onclick=()=>{cur=new Date(cur.getFullYear(),cur.getMonth()+1,1);render()};
 $('tdBtn').onclick=()=>{cur=new Date(today.getFullYear(),today.getMonth(),1);sel=iso(today);mode='day';$('date').value=sel;render()};
-$('vd').onclick=()=>{mode='day';render()};$('vm').onclick=()=>{mode='month';render()};
-$('q').oninput=render;
-$('bk').onclick=()=>{$('bx').value=JSON.stringify(jobs);$('dg').showModal()};
-$('cl').onclick=()=>$('dg').close();
-$('cp').onclick=()=>{$('bx').select();try{navigator.clipboard.writeText($('bx').value)}catch(e){document.execCommand('copy')}};
-$('rs').onclick=async()=>{let a;try{a=JSON.parse($('bx').value)}catch(e){}if(!Array.isArray(a)){$('bx').value='';$('bx').placeholder='ข้อมูลไม่ถูกต้อง';return}if(await ask('แทนที่ข้อมูลปัจจุบันทั้งหมด?')){a.forEach(j=>j.upd=Date.now());jobs=a;fixT(jobs);save();$('dg').close();render()}};
+$('vd').onclick=()=>{mode='day';render()}; $('vm').onclick=()=>{mode='month';render()}; $('q').oninput=render;
+$('bk').onclick=()=>{$('bx').value=JSON.stringify(jobs);$('dg').showModal()}; $('cl').onclick=()=>$('dg').close();
+$('cp').onclick=()=>{$('bx').select();navigator.clipboard?.writeText($('bx').value)};
+$('rs').onclick=async()=>{let a;try{a=JSON.parse($('bx').value)}catch(e){}if(!Array.isArray(a))return;if(await ask('แทนที่ข้อมูลทั้งหมด?')){a.forEach(j=>j.upd=Date.now());jobs=a;fixT(jobs);save();$('dg').close();render()}};
 function setT(t){$('time').value=t||''}
 $('time').oninput=e=>{const d=e.target.value.replace(/\D/g,'').slice(0,4);e.target.value=d.length>2?d.slice(0,2)+':'+d.slice(2):d};
 $('time').onblur=e=>{const d=e.target.value.replace(/\D/g,'');if(!d)return;let h,m;if(d.length<=2){h=d;m='00'}else if(d.length===3){h='0'+d[0];m=d.slice(1)}else{h=d.slice(0,2);m=d.slice(2)}e.target.value=pad(Math.min(+h,23))+':'+pad(Math.min(+m,59))};
 function closeAd(){$('ad').classList.remove('show');$('ov').classList.remove('show')}
 $('fab').onclick=()=>{reset();$('ad').classList.add('show');$('ov').classList.add('show')};
-$('adx').onclick=closeAd;$('ov').onclick=closeAd;
+$('adx').onclick=closeAd; $('ov').onclick=closeAd;
 
 // =======================================================
-// 7. ระบบป้ายชู + เชื่อมโลโก้เจ้าของงานอัตโนมัติ + โลโก้หลักสำรอง
+// ระบบป้ายชู + คลังโลโก้ (Google Drive) + แชร์ LINE
 // =======================================================
 const LOGO_STORE_KEY = KEY + '-logos';
 let logoList=[];try{logoList=JSON.parse(localStorage.getItem(LOGO_STORE_KEY)||'[]')}catch(e){logoList=[]}
+let signLogoMode='__auto__', batchLogoMode='__auto__', currentSignJob=null;
 
-let signLogoMode = '__auto__';
-let batchLogoMode = '__auto__';
-let currentSignJob = null;
-
-// คืนค่าโลโก้หลักที่ตั้งไว้โดยตรง หรือถ้ายังไม่ได้ตั้งแต่มีโลโก้ในคลังให้ใช้ใบแรกสำรองอัตโนมัติ
-const getExplicitDefaultLogo = () => logoList.find(x => x.id === DEFAULT_LOGO_ID) || null;
-const getDefaultLogo = () => getExplicitDefaultLogo() || logoList[0] || null;
-const getExtraLogos  = () => logoList.filter(x => x.id !== DEFAULT_LOGO_ID);
+const getExplicitDefaultLogo=()=>logoList.find(x=>x.id===DEFAULT_LOGO_ID)||null;
+const getDefaultLogo=()=>getExplicitDefaultLogo()||logoList[0]||null;
+const getExtraLogos=()=>logoList.filter(x=>x.id!==DEFAULT_LOGO_ID);
 
 function resolveSignLogo(job, mode){
-  if(mode === '') return { data:'', label:'ไม่ใช้โลโก้' };
-  if(mode === '__auto__'){
-    if(job && job.owner){
-      const ow = findOwnerProfile(job.owner);
-      if(ow && ow.logo) return { data: ow.logo, label: `ดึงโลโก้ของเจ้าของงาน "${ow.name}" อัตโนมัติ` };
-    }
-    const def = getDefaultLogo();
-    if(def && def.data) return { data: def.data, label: 'ใช้ ⭐ โลโก้หลักสำรองอัตโนมัติ (งานนี้ไม่มีโลโก้เจ้าของงาน)' };
-    return { data:'', label:'ยังไม่มีโลโก้เจ้าของงาน และยังไม่ได้อัปโหลด ⭐ โลโก้หลักสำรอง' };
+  if(mode==='') return {data:'',label:'ไม่ใช้โลโก้'};
+  if(mode==='__auto__'){
+    if(job&&job.owner){ const ow=findOwnerProfile(job.owner); if(ow&&ow.logo) return {data:ow.logo,label:`ดึงโลโก้ของ "${ow.name}" อัตโนมัติ`}; }
+    const def=getDefaultLogo();
+    return def&&def.data?{data:def.data,label:'ใช้ ⭐ โลโก้หลักสำรองอัตโนมัติ'}:{data:'',label:'ยังไม่มีโลโก้เจ้าของงาน และยังไม่ได้อัปโหลดโลโก้หลัก'};
   }
-  if(mode === DEFAULT_LOGO_ID){
-    const def = getDefaultLogo();
-    return def ? { data: def.data, label: 'กำลังใช้ ⭐ โลโก้หลักสำรอง' } : { data:'', label:'ยังไม่ได้อัปโหลด ⭐ โลโก้หลักสำรอง' };
-  }
-  const found = logoList.find(x => x.id === mode);
-  return found ? { data: found.data, label: `เลือกใช้โลโก้: ${found.name}` } : { data:'', label:'' };
+  if(mode===DEFAULT_LOGO_ID){ const def=getDefaultLogo(); return def?{data:def.data,label:'กำลังใช้ ⭐ โลโก้หลักสำรอง'}:{data:'',label:''}; }
+  const f=logoList.find(x=>x.id===mode); return f?{data:f.data,label:`โลโก้: ${f.name}`}:{data:'',label:''};
 }
-
-function saveLogosLocal(){
-  try{ localStorage.setItem(LOGO_STORE_KEY, JSON.stringify(logoList)); }catch(e){}
-}
+const saveLogosLocal=()=>{try{localStorage.setItem(LOGO_STORE_KEY,JSON.stringify(logoList))}catch(e){}};
 async function syncLogosToSheet(){
-  const msgSaving = '(กำลังบันทึกลง Google Sheets...)';
-  $('logoSyncStatus').textContent=msgSaving;
-  if($('ownerModal').open) $('ownerSyncStatus').textContent=msgSaving;
-  if($('batchModal').open) $('batchStatus').textContent='กำลังบันทึกโลโก้ลง Google Sheets...';
-  try{
-    const res=await callSheetApi({action:'saveLogos', logos:logoList});
-    if(!res.ok) throw new Error(res.message||'บันทึกโลโก้ไม่สำเร็จ');
-    $('logoSyncStatus').textContent='(✅ บันทึกขึ้น Sheets แล้ว)';
-    if($('ownerModal').open) $('ownerSyncStatus').textContent='(✅ บันทึกโลโก้หลักขึ้น Sheets แล้ว)';
-    if($('batchModal').open) $('batchStatus').textContent='✅ บันทึกโลโก้ขึ้น Sheets แล้ว';
-  }catch(err){
-    $('logoSyncStatus').textContent='(⚠️ บันทึกไม่สำเร็จ: '+err.message+')';
-    if($('ownerModal').open) $('ownerSyncStatus').textContent='(⚠️ บันทึกไม่สำเร็จ: '+err.message+')';
-    if($('batchModal').open) $('batchStatus').textContent='⚠️ บันทึกไม่สำเร็จ: '+err.message;
-  }
+  $('logoSyncStatus').textContent='(กำลังบันทึก...)';
+  try{ const r=await callSheetApi({action:'saveLogos',logos:logoList}); if(!r.ok)throw new Error(r.message); $('logoSyncStatus').textContent='(✅ บันทึกแล้ว)'; }
+  catch(e){ $('logoSyncStatus').textContent='(⚠️ '+e.message+')'; }
 }
-function compressLogoForSheet(file){
-  return new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      const img=new Image();
-      img.onload=()=>{
-        const MAX_CHARS=45000;
-        const makeDataUrl=(side, mime, quality)=>{
-          let w=img.width, h=img.height;
-          if(w>side||h>side){ const r=Math.min(side/w, side/h); w=Math.round(w*r); h=Math.round(h*r); }
-          const cv=document.createElement('canvas'); cv.width=w; cv.height=h;
-          const ctx=cv.getContext('2d');
-          if(mime==='image/jpeg'){ ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,w,h); }
-          ctx.drawImage(img,0,0,w,h);
-          return cv.toDataURL(mime, quality);
-        };
-        let out=makeDataUrl(320,'image/png');
-        if(out.length>MAX_CHARS) out=makeDataUrl(320,'image/webp',0.8);
-        if(out.length>MAX_CHARS) out=makeDataUrl(240,'image/webp',0.72);
-        if(out.length>MAX_CHARS) out=makeDataUrl(220,'image/jpeg',0.72);
-        if(out.length>MAX_CHARS) out=makeDataUrl(180,'image/jpeg',0.6);
-        resolve(out);
-      };
-      img.onerror=reject; img.src=ev.target.result;
-    };
-    reader.onerror=reject; reader.readAsDataURL(file);
-  });
-}
-
 function refreshAllLogoUIs(){
-  renderDefaultLogoBox();
-  renderOwnerSignLogoPicker();
-  renderLogoBarTo('sLogoList', true);
-  renderLogoBarTo('bLogoList', false);
-  render(); // อัปเดตโลโก้หลักบนการ์ดงานที่ไม่มีเจ้าของด้วย
-  if($('signModal').open) renderSignBoard();
-  if($('batchModal').open) renderBatchList();
+  renderDefaultLogoBox(); renderOwnerSignLogoPicker();
+  renderLogoBarTo('sLogoList',true); renderLogoBarTo('bLogoList',false); render();
+  if($('signModal').open) renderSignBoard(); if($('batchModal').open) renderBatchList();
 }
-
-// อัปโหลดโลโก้หลักสำรอง
 $('defLogoFile').onchange=async e=>{
   const f=e.target.files?.[0]; if(!f) return;
+  $('logoSyncStatus').textContent='(กำลังอัปโหลดโลโก้หลักลง Drive...)';
+  if($('ownerModal').open) $('ownerSyncStatus').textContent='(กำลังอัปโหลดโลโก้หลักลง Drive...)';
   try{
-    const dataUrl=await compressLogoForSheet(f);
+    const old=getExplicitDefaultLogo();
+    const info=await uploadImageToDrive(f,'logo');
+    if(old){ const fid=extractDriveId(old.data); if(fid) callSheetApi({action:'deleteImage',fileId:fid}).catch(()=>{}); }
     logoList=logoList.filter(x=>x.id!==DEFAULT_LOGO_ID);
-    logoList.unshift({ id: DEFAULT_LOGO_ID, name: 'โลโก้หลักสำรอง', data: dataUrl });
-    saveLogosLocal(); refreshAllLogoUIs();
-    await syncLogosToSheet();
-  }catch(err){ alert('อ่านไฟล์รูปไม่สำเร็จ'); }
+    logoList.unshift({id:DEFAULT_LOGO_ID,name:'โลโก้หลักสำรอง',data:info.url});
+    saveLogosLocal(); refreshAllLogoUIs(); await syncLogosToSheet();
+    if($('ownerModal').open) $('ownerSyncStatus').textContent='(✅ อัปโหลดโลโก้หลักลง Drive แล้ว)';
+  }catch(err){ alert('อัปโหลดโลโก้หลักไม่สำเร็จ: '+err.message); }
   e.target.value='';
 };
 
-function renderLogoBarTo(containerId, isSingle){
-  const el=$(containerId); if(!el) return;
-  const activeMode = isSingle ? signLogoMode : batchLogoMode;
-  const defLogo = getExplicitDefaultLogo();
-  const extras = getExtraLogos();
-
-  let html=`<div class="logo-item${activeMode==='__auto__'?' on':''}" data-lid="__auto__" title="ดึงโลโก้ตามเจ้าของงานอัตโนมัติ ถ้าไม่มีใช้โลโก้หลักแทน">
-    <span class="logo-none">✨ อัตโนมัติ<br><span style="font-size:10px;font-weight:400">ตามเจ้าของงาน</span></span>
-  </div>`;
-
-  if(defLogo && defLogo.data){
-    html+=`<div class="logo-item${activeMode===DEFAULT_LOGO_ID?' on':''}" data-lid="${DEFAULT_LOGO_ID}" title="โลโก้หลักสำรอง">
-      <img src="${defLogo.data}" alt="โลโก้หลัก">
-      <span class="logo-tag">⭐ หลัก</span>
-      ${isSingle?`<button type="button" class="logo-del" data-ldel="${DEFAULT_LOGO_ID}" title="ลบโลโก้หลัก">×</button>`:''}
-    </div>`;
-  }
-
-  html+=`<div class="logo-item${activeMode===''?' on':''}" data-lid="">
-    <span class="logo-none">ไม่ใช้<br>โลโก้</span>
-  </div>`;
-
-  extras.forEach(item=>{
-    html+=`<div class="logo-item${activeMode===item.id?' on':''}" data-lid="${item.id}" title="${esc(item.name)}">
-      <img src="${item.data}" alt="${esc(item.name)}">
-      ${isSingle?`<button type="button" class="logo-del" data-ldel="${item.id}" title="ลบโลโก้นี้">×</button>`:''}
-    </div>`;
-  });
-
+function renderLogoBarTo(cid, isSingle){
+  const el=$(cid); if(!el)return;
+  const activeMode=isSingle?signLogoMode:batchLogoMode, defLogo=getExplicitDefaultLogo(), extras=getExtraLogos();
+  let html=`<div class="logo-item${activeMode==='__auto__'?' on':''}" data-lid="__auto__"><span class="logo-none">✨ อัตโนมัติ<br><span style="font-size:10px;font-weight:400">ตามเจ้าของงาน</span></span></div>`;
+  if(defLogo&&defLogo.data) html+=`<div class="logo-item${activeMode===DEFAULT_LOGO_ID?' on':''}" data-lid="${DEFAULT_LOGO_ID}"><img src="${esc(defLogo.data)}" alt=""><span class="logo-tag">⭐ หลัก</span>${isSingle?`<button type="button" class="logo-del" data-ldel="${DEFAULT_LOGO_ID}">×</button>`:''}</div>`;
+  html+=`<div class="logo-item${activeMode===''?' on':''}" data-lid=""><span class="logo-none">ไม่ใช้<br>โลโก้</span></div>`;
+  extras.forEach(it=>{ html+=`<div class="logo-item${activeMode===it.id?' on':''}" data-lid="${it.id}"><img src="${esc(it.data)}" alt="">${isSingle?`<button type="button" class="logo-del" data-ldel="${it.id}">×</button>`:''}</div>`; });
   html+=`<button type="button" class="logo-add-btn" data-updef="1">${defLogo?'⭐ เปลี่ยนโลโก้หลัก':'⭐ อัปโหลดโลโก้หลัก'}</button>`;
   if(isSingle) html+=`<button type="button" class="logo-add-btn" id="logoAddBtn">＋ โลโก้อื่น</button>`;
-
   el.innerHTML=html;
-
-  el.querySelectorAll('.logo-item').forEach(box=>{
-    box.onclick=()=>{
-      if(isSingle){ signLogoMode=box.dataset.lid; renderLogoBarTo('sLogoList', true); renderSignBoard(); }
-      else{ batchLogoMode=box.dataset.lid; renderLogoBarTo('bLogoList', false); renderBatchList(); }
-    };
-  });
-  el.querySelectorAll('[data-updef]').forEach(btn=>btn.onclick=()=>$('defLogoFile').click());
-
+  el.querySelectorAll('.logo-item').forEach(b=>b.onclick=()=>{ if(isSingle){signLogoMode=b.dataset.lid;renderLogoBarTo('sLogoList',true);renderSignBoard();}else{batchLogoMode=b.dataset.lid;renderLogoBarTo('bLogoList',false);renderBatchList();} });
+  el.querySelectorAll('[data-updef]').forEach(b=>b.onclick=()=>$('defLogoFile').click());
   if(isSingle){
-    el.querySelectorAll('[data-ldel]').forEach(btn=>{
-      btn.onclick=async e=>{
-        e.stopPropagation();
-        const id=btn.dataset.ldel;
-        logoList=logoList.filter(x=>x.id!==id);
-        if(signLogoMode===id) signLogoMode='__auto__';
-        if(batchLogoMode===id) batchLogoMode='__auto__';
-        saveLogosLocal(); refreshAllLogoUIs();
-        await syncLogosToSheet();
-      };
+    el.querySelectorAll('[data-ldel]').forEach(b=>b.onclick=async e=>{
+      e.stopPropagation(); const id=b.dataset.ldel, found=logoList.find(x=>x.id===id);
+      if(found){ const fid=extractDriveId(found.data); if(fid) callSheetApi({action:'deleteImage',fileId:fid}).catch(()=>{}); }
+      logoList=logoList.filter(x=>x.id!==id);
+      if(signLogoMode===id)signLogoMode='__auto__'; if(batchLogoMode===id)batchLogoMode='__auto__';
+      saveLogosLocal(); refreshAllLogoUIs(); await syncLogosToSheet();
     });
-    const addBtn=$('logoAddBtn');
-    if(addBtn) addBtn.onclick=()=>$('sLogoFile').click();
+    const ab=$('logoAddBtn'); if(ab) ab.onclick=()=>$('sLogoFile').click();
   }
 }
-
 $('sLogoFile').onchange=async e=>{
   const files=[...(e.target.files||[])]; if(!files.length) return;
-  $('logoSyncStatus').textContent='(กำลังย่อขนาดและอัปโหลด...)';
+  $('logoSyncStatus').textContent='(กำลังอัปโหลดโลโก้ลง Drive...)';
   for(const f of files){
-    try{
-      const dataUrl=await compressLogoForSheet(f);
-      const id='lg_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
-      logoList.push({ id, name: f.name, data: dataUrl });
-      signLogoMode=id;
-    }catch(err){}
+    try{ const info=await uploadImageToDrive(f,'logo'); const id='lg_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5); logoList.push({id,name:f.name,data:info.url}); signLogoMode=id; }catch(err){}
   }
-  e.target.value='';
-  saveLogosLocal(); refreshAllLogoUIs();
-  await syncLogosToSheet();
+  e.target.value=''; saveLogosLocal(); refreshAllLogoUIs(); await syncLogosToSheet();
 };
 
-function buildBottomLines(data){
-  const lines=[];
-  const f=(data.flight||'').trim(), t=(data.time||'').trim();
-  if(f && t) lines.push(`Flight: ${f}   AT: ${t}`);
-  else if(f) lines.push(`Flight: ${f}`);
-  else if(t) lines.push(`AT: ${t}`);
-  if((data.dateText||'').trim()) lines.push(data.dateText.trim());
-  if((data.sub||'').trim()) lines.push(`Drop off at ${data.sub.trim()}`);
+function buildBottomLines(d){
+  const lines=[], f=(d.flight||'').trim(), t=(d.time||'').trim();
+  if(f&&t) lines.push(`Flight: ${f}   AT: ${t}`); else if(f) lines.push(`Flight: ${f}`); else if(t) lines.push(`AT: ${t}`);
+  if((d.dateText||'').trim()) lines.push(d.dateText.trim());
+  if((d.sub||'').trim()) lines.push(`Drop off at ${d.sub.trim()}`);
   return lines;
 }
-
-function createSignHtml(data){
-  const botLines = buildBottomLines(data);
-  const botHtml = botLines.length ? `<div class="sb-bot-text">${botLines.map(l=>`<div>${esc(l)}</div>`).join('')}</div>` : '';
-  return `<div class="sign-board ${data.theme||''}">
-    <div class="sb-top">${data.logoData?`<img class="sb-logo" src="${data.logoData}" style="height:${data.logoSz||85}px" alt="logo">`:''}</div>
-    <div class="sb-mid">${data.head?`<div class="sb-head">${esc(data.head)}</div>`:''}<div class="sb-name" style="font-size:${data.nameSz||64}px">${esc(data.name||'ชื่อลูกค้า')}</div></div>
-    <div class="sb-bot">${botHtml}</div>
+function createSignHtml(d){
+  const bot=buildBottomLines(d);
+  return `<div class="sign-board ${d.theme||''}">
+    <div class="sb-top">${d.logoData?`<img class="sb-logo" src="${esc(d.logoData)}" style="height:${d.logoSz||85}px" alt="">`:''}</div>
+    <div class="sb-mid">${d.head?`<div class="sb-head">${esc(d.head)}</div>`:''}<div class="sb-name" style="font-size:${d.nameSz||64}px">${esc(d.name||'ชื่อลูกค้า')}</div></div>
+    <div class="sb-bot">${bot.length?`<div class="sb-bot-text">${bot.map(l=>`<div>${esc(l)}</div>`).join('')}</div>`:''}</div>
   </div>`;
 }
-
 function getSingleSignData(){
-  const resolved = resolveSignLogo(currentSignJob, signLogoMode);
-  return {
-    head:$('sHead').value.trim(), name:$('sName').value.trim()||'ชื่อลูกค้า',
-    flight:$('sFlight').value.trim(), time:$('sTime').value.trim(),
-    dateText:$('sDate').value.trim(), sub:$('sSub').value.trim(),
-    theme:$('sTheme').value, nameSz:Number($('sNameSz').value)||64, logoSz:Number($('sLogoSz').value)||85,
-    logoData: resolved.data, logoLabel: resolved.label
-  };
+  const r=resolveSignLogo(currentSignJob,signLogoMode);
+  return { head:$('sHead').value.trim(), name:$('sName').value.trim()||'ชื่อลูกค้า', flight:$('sFlight').value.trim(), time:$('sTime').value.trim(), dateText:$('sDate').value.trim(), sub:$('sSub').value.trim(), theme:$('sTheme').value, nameSz:+$('sNameSz').value||64, logoSz:+$('sLogoSz').value||85, logoData:r.data, logoLabel:r.label };
 }
-function renderSignBoard(){
-  $('sNameSzLbl').textContent=$('sNameSz').value;
-  $('sLogoSzLbl').textContent=$('sLogoSz').value;
-  const d=getSingleSignData();
-  $('sLogoHint').textContent=d.logoLabel||'';
-  $('signPreview').innerHTML=createSignHtml(d);
-}
+function renderSignBoard(){ $('sNameSzLbl').textContent=$('sNameSz').value; $('sLogoSzLbl').textContent=$('sLogoSz').value; const d=getSingleSignData(); $('sLogoHint').textContent=d.logoLabel||''; $('signPreview').innerHTML=createSignHtml(d); }
 function openSignModal(job){
-  currentSignJob = job || null;
-  signLogoMode = '__auto__';
-  $('sName').value=job?(job.name||''):'';
-  $('sFlight').value=job?(job.flight||''):'';
-  $('sTime').value=job?(job.time||''):'';
-  $('sDate').value=job?signDateFmt(job.date):signDateFmt(sel);
-  $('sSub').value=job?(job.to||''):'';
-  $('logoSyncStatus').textContent='';
-  renderLogoBarTo('sLogoList', true); renderSignBoard();
-  $('signModal').showModal();
+  currentSignJob=job||null; signLogoMode='__auto__';
+  $('sName').value=job?(job.name||''):''; $('sFlight').value=job?(job.flight||''):''; $('sTime').value=job?(job.time||''):'';
+  $('sDate').value=job?signDateFmt(job.date):signDateFmt(sel); $('sSub').value=job?(job.to||''):'';
+  $('logoSyncStatus').textContent=''; renderLogoBarTo('sLogoList',true); renderSignBoard(); $('signModal').showModal();
 }
-['sHead','sTheme','sName','sFlight','sTime','sDate','sSub','sNameSz','sLogoSz'].forEach(id=>{
-  $(id).addEventListener('input', renderSignBoard);
-  $(id).addEventListener('change', renderSignBoard);
-});
-$('openSignTopBtn').onclick=()=>openSignModal(null);
-$('signClose').onclick=()=>$('signModal').close();
-$('signFsBtn').onclick=()=>{
-  $('signFsBody').innerHTML=createSignHtml(getSingleSignData());
-  $('signFs').classList.add('show');
-  if(document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(()=>{});
-};
-function exitSignFs(){
-  $('signFs').classList.remove('show');
-  if(document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
-}
-$('signFsExit').onclick=exitSignFs;
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('signFs').classList.contains('show')) exitSignFs(); });
+['sHead','sTheme','sName','sFlight','sTime','sDate','sSub','sNameSz','sLogoSz'].forEach(id=>{ $(id).addEventListener('input',renderSignBoard); $(id).addEventListener('change',renderSignBoard); });
+$('openSignTopBtn').onclick=()=>openSignModal(null); $('signClose').onclick=()=>$('signModal').close();
+$('signFsBtn').onclick=()=>{ $('signFsBody').innerHTML=createSignHtml(getSingleSignData()); $('signFs').classList.add('show'); document.documentElement.requestFullscreen?.().catch(()=>{}); };
+const exitSignFs=()=>{ $('signFs').classList.remove('show'); if(document.fullscreenElement) document.exitFullscreen?.().catch(()=>{}); };
+$('signFsExit').onclick=exitSignFs; document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&$('signFs').classList.contains('show')) exitSignFs(); });
 $('signPrintBtn').onclick=()=>{ $('printArea').innerHTML=createSignHtml(getSingleSignData()); window.print(); };
 
-const SIGN_THEMES = {
-  '':        { bg:'#ffffff', fg:'#0f172a', head:'#0f766e' },
-  'th-navy': { bg:'#0f172a', fg:'#f8fafc', head:'#fbbf24' },
-  'th-teal': { bg:'#0f766e', fg:'#ffffff', head:'#ccfbf1' },
-  'th-dark': { bg:'#111111', fg:'#ffffff', head:'#a3a3a3' }
-};
-function loadImgAsync(src){
-  return new Promise(resolve=>{
-    if(!src) return resolve(null);
-    const img=new Image(); img.onload=()=>resolve(img); img.onerror=()=>resolve(null); img.src=src;
-  });
-}
-function wrapCanvasText(ctx, text, maxW){
-  const words=String(text||'').split(/\s+/), lines=[]; let curLine='';
-  words.forEach(w=>{
-    const test=curLine?(curLine+' '+w):w;
-    if(ctx.measureText(test).width>maxW && curLine){ lines.push(curLine); curLine=w; } else curLine=test;
-  });
-  if(curLine) lines.push(curLine);
-  return lines.length?lines:[''];
-}
-async function renderSignToBlob(data){
+const SIGN_THEMES={'':{bg:'#ffffff',fg:'#0f172a',head:'#0f766e'},'th-navy':{bg:'#0f172a',fg:'#f8fafc',head:'#fbbf24'},'th-teal':{bg:'#0f766e',fg:'#ffffff',head:'#ccfbf1'},'th-dark':{bg:'#111111',fg:'#ffffff',head:'#a3a3a3'}};
+const loadImgAsync=s=>new Promise(r=>{ if(!s)return r(null); const i=new Image(); i.onload=()=>r(i); i.onerror=()=>r(null); i.src=s; });
+function wrapCanvasText(ctx,text,maxW){ const w=String(text||'').split(/\s+/), l=[]; let c=''; w.forEach(x=>{ const t=c?c+' '+x:x; if(ctx.measureText(t).width>maxW&&c){l.push(c);c=x;}else c=t; }); if(c)l.push(c); return l.length?l:['']; }
+async function renderSignToBlob(d){
   const W=1600, H=1131, cv=document.createElement('canvas'); cv.width=W; cv.height=H;
-  const ctx=cv.getContext('2d'), pal=SIGN_THEMES[data.theme||'']||SIGN_THEMES[''];
-  const fontFam='"Noto Sans Thai", system-ui, sans-serif';
+  const ctx=cv.getContext('2d'), pal=SIGN_THEMES[d.theme||'']||SIGN_THEMES[''], ff='"Noto Sans Thai",system-ui,sans-serif';
   ctx.fillStyle=pal.bg; ctx.fillRect(0,0,W,H); ctx.textAlign='center';
-
-  if(data.logoData){
-    const img=await loadImgAsync(data.logoData);
-    if(img){
-      const ratio=img.width/img.height;
-      let drawH=Math.min(Math.round((data.logoSz||85)*2.1), 260), drawW=drawH*ratio;
-      if(drawW>W*0.65){ drawW=W*0.65; drawH=drawW/ratio; }
-      ctx.drawImage(img, (W-drawW)/2, 55, drawW, drawH);
-    }
+  if(d.logoData){
+    const safeSrc = await getSafeCanvasImgSrc(d.logoData);
+    const img = await loadImgAsync(safeSrc);
+    if(img){ const r=img.width/img.height; let dh=Math.min(Math.round((d.logoSz||85)*2.1),260), dw=dh*r; if(dw>W*0.65){dw=W*0.65;dh=dw/r;} ctx.drawImage(img,(W-dw)/2,55,dw,dh); }
   }
-  const namePx=Math.round((data.nameSz||64)*2.0);
-  ctx.font=`800 ${namePx}px ${fontFam}`;
-  const nameLines=wrapCanvasText(ctx, data.name||'ชื่อลูกค้า', W*0.86), lineH=namePx*1.18, totalNameH=nameLines.length*lineH, midY=H/2;
-  ctx.textBaseline='middle';
-  if(data.head){ ctx.fillStyle=pal.head; ctx.font=`700 40px ${fontFam}`; ctx.fillText(data.head.toUpperCase(), W/2, midY - totalNameH/2 - 48); }
-  ctx.fillStyle=pal.fg; ctx.font=`800 ${namePx}px ${fontFam}`;
-  const startY=midY - ((nameLines.length-1)*lineH)/2;
-  nameLines.forEach((line,idx)=>ctx.fillText(line, W/2, startY + idx*lineH));
-
-  const botLines=buildBottomLines(data);
-  if(botLines.length){
-    ctx.fillStyle=pal.fg; ctx.font=`600 34px ${fontFam}`; ctx.textBaseline='bottom';
-    botLines.forEach((line, idx)=>ctx.fillText(line, W/2, (H - 55) - (botLines.length - 1 - idx)*48, W*0.9));
-  }
-  return new Promise(res=>cv.toBlob(b=>res(b),'image/png'));
+  const np=Math.round((d.nameSz||64)*2.0); ctx.font=`800 ${np}px ${ff}`;
+  const nl=wrapCanvasText(ctx,d.name||'ชื่อลูกค้า',W*0.86), lh=np*1.18, th=nl.length*lh, my=H/2; ctx.textBaseline='middle';
+  if(d.head){ ctx.fillStyle=pal.head; ctx.font=`700 40px ${ff}`; ctx.fillText(d.head.toUpperCase(),W/2,my-th/2-48); }
+  ctx.fillStyle=pal.fg; ctx.font=`800 ${np}px ${ff}`; nl.forEach((line,i)=>ctx.fillText(line,W/2,my-((nl.length-1)*lh)/2+i*lh));
+  const bl=buildBottomLines(d);
+  if(bl.length){ ctx.fillStyle=pal.fg; ctx.font=`600 34px ${ff}`; ctx.textBaseline='bottom'; bl.forEach((line,i)=>ctx.fillText(line,W/2,(H-55)-(bl.length-1-i)*48,W*0.9)); }
+  return new Promise(r=>cv.toBlob(b=>r(b),'image/png'));
 }
-function downloadBlob(blob, filename){
-  const url=URL.createObjectURL(blob), a=document.createElement('a');
-  a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url), 4000);
-}
-async function shareOrDownloadSigns(signDataList, forceDownload, statusEl){
-  if(!signDataList.length){ alert('กรุณาเลือกอย่างน้อย 1 ป้ายครับ'); return; }
-  if(statusEl) statusEl.textContent=`กำลังสร้างรูปภาพ ${signDataList.length} ป้าย...`;
+const downloadBlob=(b,fn)=>{ const u=URL.createObjectURL(b), a=document.createElement('a'); a.href=u; a.download=fn; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(u),4000); };
+async function shareOrDownloadSigns(list, forceDl, stEl){
+  if(!list.length){ alert('กรุณาเลือกอย่างน้อย 1 ป้ายครับ'); return; }
+  if(stEl) stEl.textContent=`กำลังสร้างรูปภาพ ${list.length} ป้าย...`;
   const files=[];
-  for(let i=0;i<signDataList.length;i++){
-    const d=signDataList[i], blob=await renderSignToBlob(d);
-    const safeName=(d.name||'guest').replace(/[^\wก-๙-]+/g,'_').slice(0,30);
-    files.push(new File([blob], `Sign_${i+1}_${safeName}.png`, { type:'image/png' }));
+  for(let i=0;i<list.length;i++){
+    const d=list[i], blob=await renderSignToBlob(d);
+    files.push(new File([blob], `Sign_${i+1}_${(d.name||'guest').replace(/[^\wก-๙-]+/g,'_').slice(0,30)}.png`, {type:'image/png'}));
   }
-  if(!forceDownload && navigator.share && navigator.canShare && navigator.canShare({ files })){
-    try{
-      if(statusEl) statusEl.textContent='กำลังเปิดเมนูแชร์ไปยัง LINE / Messenger...';
-      await navigator.share({ files, title:`ป้ายชูรับลูกค้า (${files.length} ป้าย)` });
-      if(statusEl) statusEl.textContent='✅ แชร์เรียบร้อยแล้ว';
-      return;
-    }catch(err){ if(err && err.name==='AbortError'){ if(statusEl) statusEl.textContent=''; return; } }
+  if(!forceDl && navigator.share && navigator.canShare && navigator.canShare({files})){
+    try{ await navigator.share({files, title:`ป้ายชูรับลูกค้า (${files.length} ป้าย)`}); if(stEl)stEl.textContent='✅ แชร์เรียบร้อยแล้ว'; return; }
+    catch(e){ if(e&&e.name==='AbortError'){ if(stEl)stEl.textContent=''; return; } }
   }
-  files.forEach((file, idx)=>setTimeout(()=>downloadBlob(file, file.name), idx*260));
-  if(statusEl) statusEl.textContent=forceDownload?`✅ ดาวน์โหลดรูป PNG จำนวน ${files.length} ป้ายเรียบร้อย`:`✅ บันทึกรูปลงเครื่อง ${files.length} ป้ายแล้ว (ส่งรูปที่โหลดเข้า LINE ได้เลย)`;
+  files.forEach((f,i)=>setTimeout(()=>downloadBlob(f,f.name), i*260));
+  if(stEl) stEl.textContent=`✅ ดาวน์โหลดรูป PNG จำนวน ${files.length} ป้ายแล้ว`;
 }
-$('signDlBtn').onclick=()=>shareOrDownloadSigns([getSingleSignData()], true, null);
-$('signShareBtn').onclick=()=>shareOrDownloadSigns([getSingleSignData()], false, null);
+$('signDlBtn').onclick=()=>shareOrDownloadSigns([getSingleSignData()],true,null);
+$('signShareBtn').onclick=()=>shareOrDownloadSigns([getSingleSignData()],false,null);
 
-// หน้ารวมป้ายชู (Batch Signs — เว้นว่างหัวป้าย ไม่บังคับ WELCOME)
 let batchScope='day', batchChecked=new Set();
-function getBatchJobs(){
-  const selObj=parseLocal(sel)||cur, y=selObj.getFullYear(), m=selObj.getMonth();
-  return jobs.filter(j=>j.st!=='ยกเลิก' && (batchScope==='day'?coversDate(j,sel):overlapsMonth(j,y,m)))
-    .sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||'')));
-}
-function jobToSignData(j){
-  const resolved = resolveSignLogo(j, batchLogoMode);
-  return {
-    head:$('sHead').value.trim(), // เว้นว่างไว้ตามจริง ไม่เติม WELCOME อัตโนมัติ
-    name:j.name||'ชื่อลูกค้า',
-    flight:j.flight||'', time:j.time||'', dateText:signDateFmt(j.date), sub:j.to||'',
-    theme:$('bTheme').value, nameSz:64, logoSz:85, logoData: resolved.data
-  };
-}
+const getBatchJobs=()=>{ const s=parseLocal(sel)||cur; return jobs.filter(j=>j.st!=='ยกเลิก'&&(batchScope==='day'?coversDate(j,sel):overlapsMonth(j,s.getFullYear(),s.getMonth()))).sort((a,b)=>(a.date+(a.time||'')).localeCompare(b.date+(b.time||''))); };
+const jobToSignData=j=>{ const r=resolveSignLogo(j,batchLogoMode); return {head:$('sHead').value.trim(),name:j.name||'ชื่อลูกค้า',flight:j.flight||'',time:j.time||'',dateText:signDateFmt(j.date),sub:j.to||'',theme:$('bTheme').value,nameSz:64,logoSz:85,logoData:r.data}; };
 function renderBatchList(){
-  const list=getBatchJobs();
-  $('bModeDay').className=batchScope==='day'?'btn sm':'btn g sm';
-  $('bModeMonth').className=batchScope==='month'?'btn sm':'btn g sm';
-  if(!list.length){ $('batchList').innerHTML='<div class="empty" style="grid-column:1/-1">ไม่มีงานในช่วงเวลาที่เลือก</div>'; $('bCountLbl').textContent='เลือก 0 ป้าย'; return; }
-  $('batchList').innerHTML=list.map(j=>{
-    const on=batchChecked.has(j.id);
-    return `<div class="batch-card${on?' checked':''}" data-bid="${j.id}">
-      <div class="batch-card-head">
-        <input type="checkbox" ${on?'checked':''}>
-        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">${esc(j.time||'--:--')} · ${esc(j.name)}</span>
-        ${j.owner?`<span class="sum" style="font-size:11px;white-space:nowrap">${esc(j.owner)}</span>`:''}
-      </div>
-      <div class="batch-mini">${createSignHtml(jobToSignData(j))}</div>
-    </div>`;
-  }).join('');
-  $('batchList').querySelectorAll('.batch-card').forEach(card=>{
-    card.onclick=()=>{ const id=card.dataset.bid; if(batchChecked.has(id)) batchChecked.delete(id); else batchChecked.add(id); renderBatchList(); };
-  });
-  const selCount=list.filter(j=>batchChecked.has(j.id)).length;
-  $('bCountLbl').textContent=`เลือก ${selCount} / ${list.length} ป้าย`;
-  $('bToggleAll').textContent=(selCount===list.length && list.length>0)?'ยกเลิกเลือกทั้งหมด':'เลือกทั้งหมด';
+  const list=getBatchJobs(); $('bModeDay').className=batchScope==='day'?'btn sm':'btn g sm'; $('bModeMonth').className=batchScope==='month'?'btn sm':'btn g sm';
+  if(!list.length){ $('batchList').innerHTML='<div class="empty" style="grid-column:1/-1">ไม่มีงาน</div>'; $('bCountLbl').textContent='เลือก 0 ป้าย'; return; }
+  $('batchList').innerHTML=list.map(j=>{ const on=batchChecked.has(j.id); return `<div class="batch-card${on?' checked':''}" data-bid="${j.id}"><div class="batch-card-head"><input type="checkbox" ${on?'checked':''}><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">${esc(j.time||'--:--')} · ${esc(j.name)}</span>${j.owner?`<span class="sum" style="font-size:11px">${esc(j.owner)}</span>`:''}</div><div class="batch-mini">${createSignHtml(jobToSignData(j))}</div></div>`; }).join('');
+  $('batchList').querySelectorAll('.batch-card').forEach(c=>c.onclick=()=>{ const id=c.dataset.bid; batchChecked.has(id)?batchChecked.delete(id):batchChecked.add(id); renderBatchList(); });
+  const sc=list.filter(j=>batchChecked.has(j.id)).length; $('bCountLbl').textContent=`เลือก ${sc} / ${list.length} ป้าย`;
+  $('bToggleAll').textContent=(sc===list.length&&list.length>0)?'ยกเลิกเลือกทั้งหมด':'เลือกทั้งหมด';
 }
-$('openBatchBtn').onclick=()=>{
-  batchScope='day'; batchLogoMode='__auto__';
-  batchChecked=new Set(getBatchJobs().map(j=>j.id));
-  $('bTheme').value=$('sTheme').value; $('batchStatus').textContent='';
-  renderLogoBarTo('bLogoList', false); renderBatchList(); $('batchModal').showModal();
-};
+$('openBatchBtn').onclick=()=>{ batchScope='day'; batchLogoMode='__auto__'; batchChecked=new Set(getBatchJobs().map(j=>j.id)); $('bTheme').value=$('sTheme').value; $('batchStatus').textContent=''; renderLogoBarTo('bLogoList',false); renderBatchList(); $('batchModal').showModal(); };
 $('batchClose').onclick=()=>$('batchModal').close();
 $('bModeDay').onclick=()=>{ batchScope='day'; batchChecked=new Set(getBatchJobs().map(j=>j.id)); renderBatchList(); };
 $('bModeMonth').onclick=()=>{ batchScope='month'; batchChecked=new Set(getBatchJobs().map(j=>j.id)); renderBatchList(); };
 $('bTheme').onchange=renderBatchList;
-$('bToggleAll').onclick=()=>{ const list=getBatchJobs(); if(list.every(j=>batchChecked.has(j.id))) batchChecked.clear(); else list.forEach(j=>batchChecked.add(j.id)); renderBatchList(); };
-const getSelectedBatchSignData=()=>getBatchJobs().filter(j=>batchChecked.has(j.id)).map(jobToSignData);
-$('bShareBtn').onclick=()=>shareOrDownloadSigns(getSelectedBatchSignData(), false, $('batchStatus'));
-$('bDlBtn').onclick=()=>shareOrDownloadSigns(getSelectedBatchSignData(), true, $('batchStatus'));
-$('bPrintBtn').onclick=()=>{ const items=getSelectedBatchSignData(); if(!items.length){ alert('กรุณาเลือกอย่างน้อย 1 ป้ายครับ'); return; } $('printArea').innerHTML=items.map(createSignHtml).join(''); window.print(); };
+$('bToggleAll').onclick=()=>{ const l=getBatchJobs(); l.every(j=>batchChecked.has(j.id))?batchChecked.clear():l.forEach(j=>batchChecked.add(j.id)); renderBatchList(); };
+const getSelBatch=()=>getBatchJobs().filter(j=>batchChecked.has(j.id)).map(jobToSignData);
+$('bShareBtn').onclick=()=>shareOrDownloadSigns(getSelBatch(),false,$('batchStatus'));
+$('bDlBtn').onclick=()=>shareOrDownloadSigns(getSelBatch(),true,$('batchStatus'));
+$('bPrintBtn').onclick=()=>{ const it=getSelBatch(); if(!it.length){alert('กรุณาเลือกอย่างน้อย 1 ป้ายครับ');return;} $('printArea').innerHTML=it.map(createSignHtml).join(''); window.print(); };
 
 // =======================================================
-// 8. ระบบซิงก์ข้อมูลงาน + คลังโลโก้ + เจ้าของงาน กับ Google Sheets
+// ระบบซิงก์ข้อมูลกับ Google Sheets & Drive
 // =======================================================
-let busy=false,again=false,stm;
-const setS=t=>{$('ss').textContent=t};
-function sched(){clearTimeout(stm);stm=setTimeout(sync,1200)}
-
+let busy=false,again=false,stm; const setS=t=>{$('ss').textContent=t};
+function sched(){ clearTimeout(stm); stm=setTimeout(sync,1200); }
 async function callSheetApi(payload){
-  const res=await fetch((SCRIPT_URL||'').trim(),{
-    method:'POST', mode:'cors', redirect:'follow',
-    headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify(payload)
-  });
-  const text=await res.text();
-  try{return JSON.parse(text)}catch(e){
-    throw new Error('Google Sheets ตอบกลับผิดรูปแบบ กรุณาเช็กการ Deploy เวอร์ชันใหม่');
-  }
+  const res=await fetch(SCRIPT_URL,{method:'POST',mode:'cors',redirect:'follow',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+  const text=await res.text(); try{return JSON.parse(text)}catch(e){throw new Error('กรุณา Deploy Code.gs เวอร์ชันใหม่')}
 }
-
 async function sync(){
-  if(busy){again=true;return}
-  busy=true;setS('☁️ กำลังซิงก์กับ Google Sheets...');
+  if(busy){again=true;return} busy=true; setS('☁️ กำลังซิงก์...');
   try{
-    const res=await callSheetApi({action:'get'});
-    if(!res.ok)throw new Error(res.message||'ซิงก์ไม่สำเร็จ');
-
-    if(Array.isArray(res.logos)){
-      logoList=res.logos;
-      saveLogosLocal();
-      refreshAllLogoUIs();
-    }
+    const res=await callSheetApi({action:'get'}); if(!res.ok)throw new Error(res.message);
+    if(Array.isArray(res.logos)){ logoList=res.logos; saveLogosLocal(); refreshAllLogoUIs(); }
     if(Array.isArray(res.owners)){
-      const mapO=new Map();
-      res.owners.forEach(o=>{ if(o.name) mapO.set(o.name.trim().toLowerCase(), o); });
-      ownerProfiles.forEach(local=>{
-        const k=local.name.trim().toLowerCase();
-        if(!mapO.has(k)) mapO.set(k, local);
-      });
-      ownerProfiles=[...mapO.values()];
-      saveOwnerProfilesLocal(); drawOwners();
+      const mO=new Map(); res.owners.forEach(o=>{ if(o.name)mO.set(o.name.trim().toLowerCase(),o); });
+      ownerProfiles.forEach(l=>{ const k=l.name.trim().toLowerCase(); if(!mO.has(k))mO.set(k,l); });
+      ownerProfiles=[...mO.values()]; saveOwnerProfilesLocal(); drawOwners();
       if($('ownerModal').open){ renderDefaultLogoBox(); renderOwnerSignLogoPicker(); renderOwnerCards(); }
-      if($('signModal').open) renderSignBoard();
-      if($('batchModal').open) renderBatchList();
+      if($('signModal').open) renderSignBoard(); if($('batchModal').open) renderBatchList();
     }
-
-    const rem=res.data||[];
-    const ts=x=>x.del?Math.max(+x.upd||0,Date.parse(x.del)||0):(+x.upd||0),m=new Map();
-    [...jobs,...trash,...rem].forEach(x=>{if(!x.id)return;const o=m.get(x.id);if(!o||ts(x)>ts(o))m.set(x.id,x)});
+    const rem=res.data||[], ts=x=>x.del?Math.max(+x.upd||0,Date.parse(x.del)||0):(+x.upd||0), m=new Map();
+    [...jobs,...trash,...rem].forEach(x=>{ if(!x.id)return; const o=m.get(x.id); if(!o||ts(x)>ts(o))m.set(x.id,x); });
     const all=[...m.values()].map(x=>({...x,upd:+x.upd||0}));
-    jobs=all.filter(x=>!x.del);
-    trash=all.filter(x=>x.del).sort((a,b)=>String(b.del).localeCompare(String(a.del)));
-    fixT(jobs);fixT(trash);saveL();render();
-
-    const saveRes=await callSheetApi({action:'save',data:[...jobs,...trash]});
-    if(!saveRes.ok)throw new Error(saveRes.message||'บันทึกไม่สำเร็จ');
+    jobs=all.filter(x=>!x.del); trash=all.filter(x=>x.del).sort((a,b)=>String(b.del).localeCompare(String(a.del)));
+    fixT(jobs); fixT(trash); saveL(); render();
+    const sv=await callSheetApi({action:'save',data:[...jobs,...trash]}); if(!sv.ok)throw new Error(sv.message);
     setS('✅ ซิงก์แล้ว '+new Date().toLocaleTimeString('th-TH',{hour12:false,hour:'2-digit',minute:'2-digit'}));
-  }catch(e){
-    setS('⚠️ ซิงก์ไม่สำเร็จ: '+e.message);
-  }
-  busy=false;
-  if(again){again=false;sync()}
+  }catch(e){ setS('⚠️ ซิงก์ไม่สำเร็จ: '+e.message); }
+  busy=false; if(again){again=false;sync();}
 }
-
-$('sy').onclick=()=>sync();
-document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()});
-addEventListener('online',()=>sync());
+$('sy').onclick=()=>sync(); document.addEventListener('visibilitychange',()=>{if(!document.hidden)sync()}); addEventListener('online',()=>sync());
 
 const ask=msg=>new Promise(r=>{const d=$('cf');$('cm').textContent=msg;const done=v=>{d.close();r(v)};$('cyes').onclick=()=>done(true);$('cno').onclick=()=>done(false);d.oncancel=()=>r(false);d.showModal()});
 $('lg').innerHTML=Object.entries(TC).map(([k,c])=>`<span><i style="background:${c}"></i>${k}</span>`).join('');
-
 function renderTrash(){
-  $('tb').innerHTML=trash.some(x=>!x.purged)?trash.map((j,i)=>j.purged?'':`<div class="job" style="border-left:5px solid ${jobColor(j)}"><div class="t">${esc(j.name)} · ${thDate(j.date)}${dayCount(j)>1?' – '+thShort(getEndDate(j)):''} ${esc(j.time||'')}</div><div class="sum">${esc(j.type)}${j.flight?' · ✈️ '+esc(j.flight):''}${j.from?' · '+esc(j.from):''}${j.to?' → '+esc(j.to):''}${j.price?' · '+baht(j.price)+' ฿':''}</div><div class="sum">ลบเมื่อ ${new Date(j.del).toLocaleString('th-TH',{hour12:false})}</div><div class="acts"><button class="btn sm" data-r="${i}">กู้คืน</button><button class="btn g sm" data-p="${i}" style="color:var(--rd)">ลบถาวร</button></div></div>`).join(''):'<div class="empty">ถังขยะว่าง</div>';
+  $('tb').innerHTML=trash.some(x=>!x.purged)?trash.map((j,i)=>j.purged?'':`<div class="job" style="border-left:5px solid ${jobColor(j)}"><div class="t">${esc(j.name)} · ${thDate(j.date)} ${esc(j.time||'')}</div><div class="sum">${esc(j.type)}${j.flight?' · ✈️ '+esc(j.flight):''}${j.to?' → '+esc(j.to):''}</div><div class="acts"><button class="btn sm" data-r="${i}">กู้คืน</button><button class="btn g sm" data-p="${i}" style="color:var(--rd)">ลบถาวร</button></div></div>`).join(''):'<div class="empty">ถังขยะว่าง</div>';
   $('tb').querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const t=trash.splice(+b.dataset.r,1)[0];delete t.del;delete t.purged;t.upd=Date.now();jobs.push(t);save();renderTrash();render()});
-  $('tb').querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{if(await ask('ลบถาวร? กู้คืนไม่ได้อีก')){trash[+b.dataset.p]={...trash[+b.dataset.p],purged:1,del:new Date().toISOString()};save();renderTrash()}});
+  $('tb').querySelectorAll('[data-p]').forEach(b=>b.onclick=async()=>{if(await ask('ลบถาวร?')){trash[+b.dataset.p]={...trash[+b.dataset.p],purged:1,del:new Date().toISOString()};save();renderTrash()}});
 }
-$('tr').onclick=()=>{renderTrash();$('td').showModal()};
-$('tx').onclick=()=>$('td').close();
-$('tc').onclick=async()=>{if(trash.length&&await ask('ล้างถังขยะทั้งหมด? กู้คืนไม่ได้อีก')){trash=trash.map(x=>({...x,purged:1,del:new Date().toISOString()}));save();renderTrash()}};
+$('tr').onclick=()=>{renderTrash();$('td').showModal()}; $('tx').onclick=()=>$('td').close();
+$('tc').onclick=async()=>{if(trash.length&&await ask('ล้างถังขยะทั้งหมด?')){trash=trash.map(x=>({...x,purged:1,del:new Date().toISOString()}));save();renderTrash()}};
 
-$('date').value=sel;
-drawSwatches('');
-render();
-sync();
+$('date').value=sel; drawSwatches(''); render(); sync();
 </script>
 </body>
 </html>
